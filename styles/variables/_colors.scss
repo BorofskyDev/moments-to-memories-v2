@@ -1,0 +1,12 @@
+:root {
+  --background-color: 0 0% 11%; // #1C1C1C
+  --text-color: 0 0% 88%; // #E0E0E0
+  --primary-color: 46 65% 52%; // #D4AF37
+  --secondary-color: 0 0% 75%; // #C0C0C0
+
+  --gradient: linear-gradient(
+    45deg,
+    hsl(var(--primary-color)) 0%,
+    hsl(var(--secondary-color)) 73%
+  );
+}
