@@ -1,0 +1,8 @@
+@use '../../../styles/mixins' as *;
+
+.sectionHeading {
+    font-size: var(--fs-800);
+    line-height: var(--lh-300);
+    text-align: center;
+    @include gradientText;
+}

@@ -1,0 +1,9 @@
+@use '../../../styles/mixins' as *;
+
+.pageHeading {
+  font-size: var(--fs-900);
+  line-height: var(--lh-500);
+  text-align: center;
+
+  @include gradientText;
+}
