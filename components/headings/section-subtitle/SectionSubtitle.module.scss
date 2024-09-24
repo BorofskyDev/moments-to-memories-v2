@@ -1,8 +1,9 @@
 @use '../../../styles/mixins' as *;
 
 .sectionSubtitle {
-    font-size: var(--fs-700);
-    line-height: var(--lh-600);
+    font-size: var(--fs-600);
+    line-height: var(--lh-500);
     text-align: center;
     font-weight: 700;
+    
 }
