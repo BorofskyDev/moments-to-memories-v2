@@ -5,6 +5,7 @@ import PageHeading from '@/components/headings/page-heading/PageHeading'
 import SectionHeading from '@/components/headings/section-heading/SectionHeading'
 import SectionSubtitle from '@/components/headings/section-subtitle/SectionSubtitle'
 import CtaButton from '@/components/links/cta-button/CtaButton'
+import InternalPageLink from '@/components/links/internal-page-link/InternalPageLink'
 
 function HeroSection() {
   return (
@@ -21,8 +22,8 @@ function HeroSection() {
           art, and hearts
         </SectionSubtitle>
         <div className={styles.heroSection__btnGroup}>
-
         <CtaButton href='/contact'>Book Your Session</CtaButton>
+        <InternalPageLink href="#about">Learn more about moments to memories</InternalPageLink>
         </div>
       </div>
       <SvgBackgroundContainer

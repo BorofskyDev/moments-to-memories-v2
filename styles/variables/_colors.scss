@@ -9,6 +9,12 @@
     hsl(var(--primary-color)) 0%,
     hsl(var(--secondary-color)) 73%
   );
+
+  --gradient-hover: linear-gradient(
+    90deg, 
+    hsl(var(--secondary-color)) 0%;
+    hsl(var(--primary-color)) 73%;
+  )
 }
 
 [data-theme='light'] {

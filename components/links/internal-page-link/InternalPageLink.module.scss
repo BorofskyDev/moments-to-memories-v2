@@ -1,0 +1,49 @@
+@use '../../../styles/mixins' as *;
+
+.internalPageLink {
+  position: relative;
+  padding-inline: var(--spacing-100);
+  color: hsl(var(--text-color));
+  font-weight: 600;
+  text-transform: capitalize;
+  transition: var(--transition-main);
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 0.15rem;
+    background-color: hsl(var(--text-color));
+    transition: var(--transition-main);
+  }
+
+  &::before {
+    top: -0.25rem;
+    left: -150%;
+    opacity: 0;
+  }
+
+  &::after {
+    bottom: -0.5rem;
+    right: 0;
+  }
+
+  &:hover,
+  &:focus {
+    color: hsl(var(--primary-color));
+  }
+
+  &:hover::before,
+  &:focus::before,
+  &:hover::after,
+  &:focus::after {
+    background-color: hsl(var(--primary-color));
+  }
+
+  &:hover::before, 
+  &:focus::before {
+    left: 0;
+    opacity: 1;
+  }
+}
