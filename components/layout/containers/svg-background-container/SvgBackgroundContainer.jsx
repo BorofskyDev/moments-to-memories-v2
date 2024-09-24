@@ -1,15 +1,18 @@
 // components/SvgBackgroundContainer.jsx
 import PropTypes from 'prop-types'
 import styles from './SvgBackgroundContainer.module.scss'
+import Image from 'next/image'
 
 function SvgBackgroundContainer({ src, className, style }) {
   return (
-    <img
+    <Image
       src={src}
       className={`${styles.svgBackgroundContainer} ${className}`}
       style={style}
       alt='' 
       aria-hidden='true' 
+      width={1920}
+      height={1080}
     />
   )
 }
