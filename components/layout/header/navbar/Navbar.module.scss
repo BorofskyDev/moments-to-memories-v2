@@ -1,0 +1,8 @@
+@use '../../../../styles/mixins' as *;
+
+.navbar {
+   display: grid;
+   place-content: flex-end;
+    @include sectionLayout;
+
+}

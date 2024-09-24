@@ -2,5 +2,16 @@
 
 .header {
     padding: var(--spacing-300) 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
     @include sectionLayout;
+
+    @include breakpoint(tab) {
+        padding: var(--spacing-400) 0;
+    }
+
+    @include breakpoint(laptop) {
+        padding: var(--spacing-600) 0;
+    }
 }

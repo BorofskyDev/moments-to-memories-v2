@@ -1,0 +1,59 @@
+@use '../../../../../styles/mixins' as *;
+
+.hamburger {
+    position: relative;
+    width: 2rem;
+    border: none;
+    height: var(--fs-600);
+    background-color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    cursor: pointer;
+    z-index: 3000;
+
+    @include breakpoint(laptop) {
+        display: none;
+    }
+
+    & span {
+        position: absolute;
+        height: 0.15rem;
+        width: 100%;
+        display: block;
+        background-color: hsl(var(--text-color));
+        transition: var(--transition-main);
+
+        &:nth-of-type(1) {
+            top: 0;
+        }
+
+        &:nth-of-type(2) {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        &:nth-of-type(3) {
+            bottom: 0;
+        }
+    }
+}
+
+.opened {
+    & span {
+        &:nth-of-type(1) {
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        &:nth-of-type(2) {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+
+        &:nth-of-type(3) {
+            top: 50%;
+            transform: translateY(-50%) rotate(-45deg);
+        }
+    }
+}
