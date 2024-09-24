@@ -1,5 +1,6 @@
 import { bebasNeue, montserrat, lato } from "./fonts";
 import "../styles/globals.scss";
+import Header from "@/components/layout/header/Header";
 
 
 export const metadata = {
@@ -11,6 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${bebasNeue.variable} ${montserrat.variable} ${lato.variable}`}>
+       <Header />
         {children}
       </body>
     </html>
