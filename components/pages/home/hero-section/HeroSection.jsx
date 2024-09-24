@@ -12,18 +12,21 @@ function HeroSection() {
     <SvgSectionContainer>
       <div className={styles.heroSection}>
         <div className={styles.heroSection__mainTitle}>
-        <PageHeading>Moments to memories</PageHeading>
-        <SectionHeading>By</SectionHeading>
-        <SectionHeading>kelli ann leibold</SectionHeading>
-
+          <PageHeading>Moments to memories</PageHeading>
+          <div>
+            <SectionHeading>By</SectionHeading>
+            <SectionHeading>kelli ann leibold</SectionHeading>
+          </div>
         </div>
         <SectionSubtitle>
-          Capturing life&apos;s most cherished moments through photography,
-          art, and hearts
+          Capturing life&apos;s most cherished moments through photography, art,
+          and hearts
         </SectionSubtitle>
         <div className={styles.heroSection__btnGroup}>
-        <CtaButton href='/contact'>Book Your Session</CtaButton>
-        <InternalPageLink href="#about">Learn more about moments to memories</InternalPageLink>
+          <CtaButton href='/contact'>Book Your Session</CtaButton>
+          <InternalPageLink href='#about'>
+            Learn more about moments to memories
+          </InternalPageLink>
         </div>
       </div>
       <SvgBackgroundContainer
