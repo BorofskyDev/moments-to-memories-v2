@@ -1,6 +1,6 @@
-function page() {
+function AdminPage() {
   return (
-    <div>page</div>
+    <div>AdminPage</div>
   )
 }
-export default page
+export default AdminPage
