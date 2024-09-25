@@ -22,7 +22,7 @@ function ServicesSection() {
           title='People'
           imageSrc={image1}
           imageAlt='Baby wrapped in a towell and a headbow asleep on a comfortable blanket'
-          description='Capturing the essence of who you are, whether it&apros;s a personal portrait or the personality of a beloved pet. These sessions are designed to tell your unique story with grace and authenticity.'
+          description='Capturing the essence of who you are, whether it&apos;s a personal portrait or the personality of a beloved pet. These sessions are designed to tell your unique story with grace and authenticity.'
           features={[
             {
               title: 'People',

@@ -5,8 +5,8 @@ import styles from './BodyText.module.scss'
 
 function BodyText({ children, className }) {
   return (
-    <FlashWrapper>
-      <p className={`${className} ${styles.bodyText}`}>{children}</p>
+    <FlashWrapper className={className}>
+      <p className={styles.bodyText}>{children}</p>
     </FlashWrapper>
   )
 }

@@ -9,16 +9,16 @@ import PortraitImage from '@/components/images/portrait-image/PortraitImage'
 function ServiceItem({ title, imageSrc, imageAlt, description, features }) {
   return (
     <div className={styles.serviceItem}>
-      <ParagraphHeading className={styles.title}>{title}</ParagraphHeading>
+      <ParagraphHeading className={styles.serviceItem__title}>{title}</ParagraphHeading>
 
-      <div className={styles.imageWrapper}>
+      <div className={styles.serviceItem__imageWrapper}>
         <PortraitImage src={imageSrc} alt={imageAlt} />
       </div>
 
-      <BodyText className={styles.description}>{description}</BodyText>
+      <BodyText className={styles.serviceItem__description}>{description}</BodyText>
 
       {features && features.length > 0 && (
-        <div className={styles.featuresWrapper}>
+        <div className={styles.serviceItem__featuresWrapper}>
           {features.map((feature, index) => (
             <FeatureItem
               key={index}

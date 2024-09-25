@@ -5,4 +5,11 @@
     object-fit: cover;
     object-position: center;
     box-shadow: var(--box-shadow-400);
+
+    @include breakpoint(tab) {
+        max-height: 22rem;
+    }
+    @include breakpoint(laptop) {
+        max-height: 30rem;
+    }
 }
