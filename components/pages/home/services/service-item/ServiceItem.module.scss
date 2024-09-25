@@ -1,0 +1,9 @@
+@use '../../../../../styles/mixins' as *;
+
+.serviceItem {
+    margin-top: var(--spacing-600);
+    display: grid;
+    place-content: center;
+    place-items: center;
+    gap: var(--spacing-200);
+}

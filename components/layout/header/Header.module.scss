@@ -1,6 +1,7 @@
 @use '../../../styles/mixins' as *;
 
 .header {
+    margin: 0 auto;
     padding: var(--spacing-300) 0;
     display: grid;
     grid-template-columns: 1fr 1fr;

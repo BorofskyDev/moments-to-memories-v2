@@ -1,0 +1,15 @@
+@use '../../../../styles/mixins' as *;
+
+.servicesSection {
+    display: grid;
+    place-content: center;
+    gap: var(--spacing-400);
+    
+    @include sectionLayout;
+
+    &__heading {
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-200);
+    }
+}

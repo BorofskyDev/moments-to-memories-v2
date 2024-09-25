@@ -1,0 +1,8 @@
+@use '../../../styles/mixins' as *;
+
+.portraitImage {
+    max-height: 20rem;
+    object-fit: cover;
+    object-position: center;
+    box-shadow: var(--box-shadow-400);
+}

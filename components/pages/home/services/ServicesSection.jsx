@@ -4,15 +4,19 @@ import SectionSubtitle from '@/components/headings/section-subtitle/SectionSubti
 import ServiceItem from './service-item/ServiceItem'
 import image1 from '@/public/profile-photos/baby1.png'
 import image2 from '@/public/profile-photos/jets1.png'
+import image3 from '@/public/profile-photos/model1.png'
 import styles from './ServicesSection.module.scss'
 
 function ServicesSection() {
   return (
     <SectionContainer className={styles.servicesSection}>
+      <div className={styles.servicesSection__heading}>
       <SectionHeading>
-        It&apros;s your story - how will it be written?
+        It&apos;s your story - how will it be written?
       </SectionHeading>
       <SectionSubtitle>Services For Every Occasion</SectionSubtitle>
+
+      </div>
       <div className={styles.servicesList}>
         <ServiceItem
           title='People'
@@ -36,7 +40,7 @@ function ServicesSection() {
           title='Commercial'
           imageSrc={image2}
           imageAlt='F-18 Blue Angel against the sky'
-          description='Bring poise and creativity to your spaces. Whether it&apros;s for a home, office, or a gallery, these aret pieces are shot to inspire and elevate.'
+          description='Bring poise and creativity to your spaces. Whether it&apos;s for a home, office, or a gallery, these aret pieces are shot to inspire and elevate.'
           features={[
             {
               title: 'Art for Home',
@@ -47,6 +51,24 @@ function ServicesSection() {
               title: 'Art for Business',
               description:
                 "Professional and artistic images that enhance your brand's environment, making a lasting impression on clients and employees.",
+            },
+          ]}
+        />
+        <ServiceItem
+          title='Artistic'
+          imageSrc={image3}
+          imageAlt='woman in sunglasses and a bikini laying on a pool chair'
+          description='Push the boundaries of creativity with sessions that are as unique as your imagination. Perfect for models and those looking for themed, avant-garde shoots.'
+          features={[
+            {
+              title: 'Models',
+              description:
+                'High-fashion, editorial-style photography that turns every pose into a statement.',
+            },
+            {
+              title: 'Themed Shots',
+              description:
+                "Dive into a world of creativity, with customized themes that reflect your vision and personality.",
             },
           ]}
         />
