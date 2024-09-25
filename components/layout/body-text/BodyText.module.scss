@@ -1,0 +1,6 @@
+@use '../../../styles/mixins' as *;
+
+.bodyText {
+    max-width: var(--width-body);
+    margin: var(--spacing-400) auto;
+}

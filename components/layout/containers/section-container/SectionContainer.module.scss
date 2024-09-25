@@ -1,0 +1,7 @@
+@use '../../../../styles/mixins' as *;
+
+.sectionContainer {
+    position: relative;
+    margin: var(--spacing-800) auto;
+    @include sectionLayout;
+}
