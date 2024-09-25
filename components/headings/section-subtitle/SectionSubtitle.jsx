@@ -5,7 +5,6 @@ function SectionSubtitle({ children, className }) {
   return (
     <FlashWrapper>
       <h3 className={`${styles.sectionSubtitle} ${className}`}>{children}</h3>
-
     </FlashWrapper>
   )
 }
