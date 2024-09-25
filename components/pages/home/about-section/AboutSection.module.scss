@@ -30,7 +30,7 @@
 
         @include breakpoint(laptop) {
             max-width: 18rem;
-            max-height: 38rem;
+            max-height: 42rem;
             margin-left: var(--spacing-900);
         }
     }
