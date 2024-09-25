@@ -1,0 +1,6 @@
+@use '../../../styles/mixins' as *;
+
+.paragraphHeading {
+    font-size: var(--fs-500);
+    font-weight: 500;
+}

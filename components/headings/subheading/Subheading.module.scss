@@ -1,5 +1,7 @@
 @use '../../../styles/mixins' as *;
 
 .subheading {
-    
+    font-size: var(--fs-600);
+    text-transform: capitalize;
+    font-weight: 600;
 }
