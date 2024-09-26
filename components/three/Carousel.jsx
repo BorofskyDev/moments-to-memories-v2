@@ -41,7 +41,7 @@ const Carousel = ({ images }) => {
   const displayItems = (item, index, active) => {
     const piramidalIndex = getPiramidalIndex(items, active)[index]
     gsap.to(item.position, {
-      x: (index - active) * (1 + 0.1), // Adjust based on plane width and gap
+      x: (index - active) * 1.1, // Adjust based on plane width and gap
       y: items.length * -0.1 + piramidalIndex * 0.1,
     })
   }
@@ -105,7 +105,7 @@ const Carousel = ({ images }) => {
     if (activePlane !== null && prevActivePlane === null) {
       progress.current = (activePlane / (items.length - 1)) * 100
     }
-  }, [activePlane, items])
+  }, [activePlane, items, prevActivePlane])
 
   /*--------------------
   Render Plane Events
@@ -152,7 +152,7 @@ const Carousel = ({ images }) => {
     <group>
       {renderPlaneEvents()}
       {renderSlider()}
-      <PostProcessing ref={postRef} />
+      <PostProcessing ref={postRef} /> {/* Re-add PostProcessing */}
     </group>
   )
 }

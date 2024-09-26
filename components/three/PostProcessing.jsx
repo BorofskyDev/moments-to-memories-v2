@@ -1,11 +1,11 @@
-// components/three/PostProcessing.jsx
+
 
 'use client'
 
 import React, { forwardRef } from 'react'
 import { useThree } from '@react-three/fiber'
 import { MeshTransmissionMaterial } from '@react-three/drei'
-import * as THREE from 'three'
+import { Color } from 'three'
 
 const PostProcessing = forwardRef(({ ...props }, ref) => {
   const { viewport } = useThree()
@@ -13,45 +13,45 @@ const PostProcessing = forwardRef(({ ...props }, ref) => {
   const active = true
   const ior = 0.9
 
-  // Retrieve and parse the CSS variable
+  // Function to retrieve and parse the CSS variable
   const getBackgroundColor = () => {
     const root = document.documentElement
     const bgColor = getComputedStyle(root)
       .getPropertyValue('--background-color')
       .trim()
-
-    // Remove percentage signs and parse values
     const hslValues = bgColor
-      .replace(/%/g, '')
-      .split(' ')
-      .map((value) => parseFloat(value))
+      .replace(/%/g, '') // Remove percentage signs
+      .split(' ') // Split by space
+      .map((value) => parseFloat(value)) // Convert to numbers
     const [h, s, l] = hslValues
 
-    // Convert h, s, l values to the range expected by THREE.Color.setHSL
-    const hue = h / 360 // Hue between 0 and 1
-    const saturation = s / 100 // Saturation between 0 and 1
-    const lightness = l / 100 // Lightness between 0 and 1
+    const hue = h / 360
+    const saturation = s / 100
+    const lightness = l / 100
 
-    // Create and return the THREE.Color object
-    const color = new THREE.Color()
-    color.setHSL(hue, saturation, lightness)
-    return color
+    return { hue, saturation, lightness }
   }
 
-  // Get the background color
-  const backgroundColor = getBackgroundColor()
+  const { hue, saturation, lightness } = getBackgroundColor()
+  console.log('PostProcessing HSL:', { hue, saturation, lightness })
+
+  // Create a color based on HSL
+  const backgroundColor = new Color()
+  backgroundColor.setHSL(hue, saturation, lightness)
 
   return active ? (
-    <mesh position={[0, 0, 1]} {...props}>
+    <mesh position={[0, 0, 0.5]} {...props}>
+      {' '}
+      {/* Adjusted position to avoid blocking scene */}
       <planeGeometry args={[viewport.width, viewport.height]} />
       <MeshTransmissionMaterial
         ref={ref}
         background={backgroundColor}
-        transmission={0.7}
-        roughness={0}
-        thickness={0}
-        chromaticAberration={0.06}
-        anisotropy={0}
+        transmission={0.5} // Reduced transmission to avoid excessive transparency
+        roughness={0.1} // Slight roughness to prevent perfect reflections
+        thickness={0.3} // Adjusted thickness
+        chromaticAberration={0.04} // Reduced chromatic aberration
+        anisotropy={0.1} // Added slight anisotropy
         ior={ior}
       />
     </mesh>

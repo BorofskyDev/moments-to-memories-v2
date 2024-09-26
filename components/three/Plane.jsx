@@ -1,4 +1,4 @@
-// components/three/Plane.jsx
+
 
 'use client'
 
