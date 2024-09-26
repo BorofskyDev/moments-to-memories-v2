@@ -21,5 +21,7 @@ const images = [
     '/site-gallery-images/image20.jpg',
     '/site-gallery-images/image21.jpg',
     '/site-gallery-images/image22.jpg',
-    
+
 ]
+
+export default images

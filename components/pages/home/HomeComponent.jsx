@@ -1,6 +1,7 @@
 import AboutSection from './about-section/AboutSection';
 import HeroSection from './hero-section/HeroSection';
 import styles from './HomeComponent.module.scss';
+import GallerySection from './services/gallery/Gallery';
 import ServicesSection from './services/ServicesSection';
 
 function HomeComponent() {
@@ -9,6 +10,7 @@ function HomeComponent() {
       <HeroSection />
       <AboutSection />
       <ServicesSection />
+      <GallerySection />
     </div>
   )
 }
