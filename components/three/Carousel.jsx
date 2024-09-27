@@ -74,6 +74,20 @@ const Carousel = ({ images }) => {
   const oldProgress = useRef(0)
   const speedRef = useRef(0)
 
+  const { viewport } = useThree()
+
+  /*--------------------
+  Responsive Settings
+  --------------------*/
+  const responsiveSettings = useMemo(() => {
+    const isMobile = viewport.width < 600
+    return {
+      width: isMobile ? PlaneSettings.width * 1.5 : PlaneSettings.width,
+      height: isMobile ? PlaneSettings.height * 1.5 : PlaneSettings.height,
+      gap: isMobile ? PlaneSettings.gap * 1.5 : PlaneSettings.gap,
+    }
+  }, [viewport.width])
+
   const items = useMemo(() => {
     return root ? Array.from(root.children) : []
   }, [root])
@@ -84,7 +98,7 @@ const Carousel = ({ images }) => {
   const displayItems = (item, index, active) => {
     const piramidalIndex = getPiramidalIndex(items, active)[index]
     gsap.to(item.position, {
-      x: (index - active) * (PlaneSettings.width + PlaneSettings.gap),
+      x: (index - active) * (responsiveSettings.width + responsiveSettings.gap),
       y: items.length * -0.1 + piramidalIndex * 0.1,
       duration: 2.5,
       ease: 'power3.out',
@@ -157,16 +171,17 @@ const Carousel = ({ images }) => {
   --------------------*/
   const renderSlider = () => {
     return (
-      <group ref={setRoot}>
+      <group ref={setRoot} position={[0, 0, 0]}>
         {images.map((image, index) => (
           <CarouselItem
-            width={PlaneSettings.width}
-            height={PlaneSettings.height}
+            width={responsiveSettings.width}
+            height={responsiveSettings.height}
             setActivePlane={setActivePlane}
             activePlane={activePlane}
             key={index} // Use index as key; ensure images are static
             item={{ image }}
             index={index}
+            gap={responsiveSettings.gap} // Use responsive gap
           />
         ))}
       </group>

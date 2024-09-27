@@ -7,6 +7,8 @@ import Carousel from './Carousel'
 import styles from './ThreeDSlider.module.scss'
 import images from '../../libs/data/images' // Ensure this path is correct
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
+import CameraSetup from './CameraSetup'
+
 
 const ThreeDSlider = () => {
   return (
@@ -16,6 +18,7 @@ const ThreeDSlider = () => {
         camera={{ position: [0, 0, 5], fov: 60 }}
         gl={{ antialias: true, alpha: true }}
       >
+        <CameraSetup />
         <Suspense fallback={null}>
           <Carousel images={images} />
           <EffectComposer>

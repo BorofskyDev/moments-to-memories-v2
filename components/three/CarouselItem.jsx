@@ -13,6 +13,7 @@ const CarouselItem = ({
   setActivePlane,
   activePlane,
   item,
+  gap, // Dynamic gap
 }) => {
   const meshRef = useRef()
   const [hover, setHover] = useState(false)
@@ -46,32 +47,32 @@ const CarouselItem = ({
           x: 0,
           y: 0,
           z: 0.5, // Bring forward
-          duration: 0.5,
+          duration: 2.5, // 2.5 seconds on open
           ease: 'power3.out',
         })
         gsap.to(meshRef.current.scale, {
           x: 1.2,
           y: 1.2,
-          duration: 0.5,
+          duration: 2.5, // 2.5 seconds on open
           ease: 'power3.out',
         })
       } else {
         gsap.to(meshRef.current.position, {
-          x: (index - activePlane) * (width + 0.1), // Adjust based on index and gap
+          x: (index - activePlane) * (width + gap), // Use dynamic gap
           y: 0,
           z: -0.01, // Send back
-          duration: 0.5,
+          duration: 1, // 1 second on close
           ease: 'power3.out',
         })
         gsap.to(meshRef.current.scale, {
           x: 1,
           y: 1,
-          duration: 0.5,
+          duration: 1, // 1 second on close
           ease: 'power3.out',
         })
       }
     }
-  }, [isActive, index, activePlane, width])
+  }, [isActive, index, activePlane, width, gap])
 
   /*------------------------------
   Hover Effect
@@ -97,7 +98,7 @@ const CarouselItem = ({
     clearTimeout(timeoutID.current)
     timeoutID.current = setTimeout(() => {
       setCloseActive(false)
-    }, 1500) // Duration depends on closing animation
+    }, 1000) // Match with close duration
   }
 
   /*------------------------------
