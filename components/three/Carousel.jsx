@@ -1,24 +1,67 @@
-// components/three/Carousel.jsx
-
+// Carousel.jsx
 'use client'
 
-import { useEffect, useRef, useState, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { usePrevious } from 'react-use'
 import gsap from 'gsap'
 import CarouselItem from './CarouselItem'
 import { lerp, getPiramidalIndex } from './utils'
-import PostProcessing from './PostProcessing'
+import PostProcessing from './PostProcessing' // Ensure this component is correctly implemented
 
+/*------------------------------
+Plane Settings
+------------------------------*/
+const PlaneSettings = {
+  width: 1,
+  height: 2.5,
+  gap: 0.1,
+}
+
+/*------------------------------
+Gsap Defaults
+------------------------------*/
+gsap.defaults({
+  duration: 2.5,
+  ease: 'power3.out',
+})
+
+/*------------------------------
+PlaneEvents Component
+------------------------------*/
+const PlaneEvents = ({
+  onWheel,
+  onPointerDown,
+  onPointerUp,
+  onPointerMove,
+  onPointerLeave,
+  onPointerCancel,
+}) => {
+  const { viewport } = useThree()
+
+  return (
+    <mesh
+      position={[0, 0, -0.01]}
+      onWheel={onWheel}
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
+      onPointerCancel={onPointerCancel}
+    >
+      <planeGeometry args={[viewport.width, viewport.height]} />
+      <meshBasicMaterial transparent opacity={0} />
+    </mesh>
+  )
+}
+
+/*------------------------------
+Carousel Component
+------------------------------*/
 const Carousel = ({ images }) => {
-  console.log('Carousel images:', images) // Debugging line
-
-  const rootRef = useRef()
+  const [root, setRoot] = useState(null)
   const postRef = useRef()
 
   const [activePlane, setActivePlane] = useState(null)
-  const prevActivePlane = usePrevious(activePlane)
-  const { viewport } = useThree()
 
   /*--------------------
   Variables
@@ -29,11 +72,11 @@ const Carousel = ({ images }) => {
   const speedWheel = 0.02
   const speedDrag = -0.3
   const oldProgress = useRef(0)
-  const speed = useRef(0)
+  const speedRef = useRef(0)
 
   const items = useMemo(() => {
-    return rootRef.current ? Array.from(rootRef.current.children) : []
-  }, [rootRef.current])
+    return root ? Array.from(root.children) : []
+  }, [root])
 
   /*--------------------
   Display Items
@@ -41,8 +84,10 @@ const Carousel = ({ images }) => {
   const displayItems = (item, index, active) => {
     const piramidalIndex = getPiramidalIndex(items, active)[index]
     gsap.to(item.position, {
-      x: (index - active) * 1.1, // Adjust based on plane width and gap
+      x: (index - active) * (PlaneSettings.width + PlaneSettings.gap),
       y: items.length * -0.1 + piramidalIndex * 0.1,
+      duration: 0.5,
+      ease: 'power3.out',
     })
   }
 
@@ -56,8 +101,8 @@ const Carousel = ({ images }) => {
 
     const active = Math.floor((progress.current / 100) * (items.length - 1))
     items.forEach((item, index) => displayItems(item, index, active))
-    speed.current = lerp(
-      speed.current,
+    speedRef.current = lerp(
+      speedRef.current,
       Math.abs(oldProgress.current - progress.current),
       0.1
     )
@@ -65,7 +110,7 @@ const Carousel = ({ images }) => {
     oldProgress.current = lerp(oldProgress.current, progress.current, 0.1)
 
     if (postRef.current) {
-      postRef.current.thickness = speed.current
+      postRef.current.thickness = speedRef.current
     }
   })
 
@@ -73,14 +118,14 @@ const Carousel = ({ images }) => {
   Event Handlers
   --------------------*/
   const handleWheel = (e) => {
-    if (activePlane !== null) return
+    if (activePlane !== null) return // Only allow scroll if no plane is active
     const isVerticalScroll = Math.abs(e.deltaY) > Math.abs(e.deltaX)
     const wheelProgress = isVerticalScroll ? e.deltaY : e.deltaX
     progress.current += wheelProgress * speedWheel
   }
 
   const handleDown = (e) => {
-    if (activePlane !== null) return
+    if (activePlane !== null) return // Prevent dragging if a plane is active
     isDown.current = true
     startX.current = e.clientX || (e.touches && e.touches[0].clientX) || 0
   }
@@ -90,7 +135,7 @@ const Carousel = ({ images }) => {
   }
 
   const handleMove = (e) => {
-    if (activePlane !== null || !isDown.current) return
+    if (activePlane !== null || !isDown.current) return // Prevent moving if a plane is active
     const x = e.clientX || (e.touches && e.touches[0].clientX) || 0
     const mouseProgress = (x - startX.current) * speedDrag
     progress.current += mouseProgress
@@ -98,48 +143,28 @@ const Carousel = ({ images }) => {
   }
 
   /*--------------------
-  Click Handler
+  Click Handling
   --------------------*/
   useEffect(() => {
     if (!items) return
-    if (activePlane !== null && prevActivePlane === null) {
-      progress.current = (activePlane / (items.length - 1)) * 100
+    if (activePlane !== null) {
+      progress.current = (activePlane / (items.length - 1)) * 100 // Update progress based on activePlane
     }
-  }, [activePlane, items, prevActivePlane])
-
-  /*--------------------
-  Render Plane Events
-  --------------------*/
-  const renderPlaneEvents = () => {
-    return (
-      <mesh
-        position={[0, 0, -0.01]}
-        onWheel={handleWheel}
-        onPointerDown={handleDown}
-        onPointerUp={handleUp}
-        onPointerMove={handleMove}
-        onPointerLeave={handleUp}
-        onPointerCancel={handleUp}
-      >
-        <planeGeometry args={[viewport.width, viewport.height]} />
-        <meshBasicMaterial transparent opacity={0} />
-      </mesh>
-    )
-  }
+  }, [activePlane, items])
 
   /*--------------------
   Render Slider
   --------------------*/
   const renderSlider = () => {
     return (
-      <group ref={rootRef}>
+      <group ref={setRoot}>
         {images.map((image, index) => (
           <CarouselItem
-            width={1}
-            height={2.5}
+            width={PlaneSettings.width}
+            height={PlaneSettings.height}
             setActivePlane={setActivePlane}
             activePlane={activePlane}
-            key={index}
+            key={index} // Use index as key; ensure images are static
             item={{ image }}
             index={index}
           />
@@ -150,9 +175,16 @@ const Carousel = ({ images }) => {
 
   return (
     <group>
-      {renderPlaneEvents()}
+      <PlaneEvents
+        onWheel={handleWheel}
+        onPointerDown={handleDown}
+        onPointerUp={handleUp}
+        onPointerMove={handleMove}
+        onPointerLeave={handleUp}
+        onPointerCancel={handleUp}
+      />
       {renderSlider()}
-      <PostProcessing ref={postRef} /> {/* Re-add PostProcessing */}
+      <PostProcessing ref={postRef} />
     </group>
   )
 }
