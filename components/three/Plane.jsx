@@ -33,8 +33,8 @@ const Plane = ({ texture, width, height, active, ...props }) => {
         uImageRes: {
           value: { x: tex.source.data.width, y: tex.source.data.height },
         },
-        uPrimaryColor: { value: new THREE.Color(0xffffff) }, // Use actual colors as needed
-        uSecondaryColor: { value: new THREE.Color(0x000000) },
+        uPrimaryColor: { value: new THREE.Color(0xd4af37) }, // Use actual colors as needed
+        uSecondaryColor: { value: new THREE.Color(0xc0c0c0) },
       },
       vertexShader: /* glsl */ `
         varying vec2 vUv;
@@ -86,7 +86,7 @@ const Plane = ({ texture, width, height, active, ...props }) => {
           edgeDist = min(edgeDist, 1.0 - uv.y);
 
           // Define the thickness of the outline
-          float outlineThickness = 0.05; // Adjust this to control the outline size
+          float outlineThickness = 0.0; // Adjust this to control the outline size
 
           // Mix between primary and secondary colors for the outline
           vec3 outlineColor = mix(uPrimaryColor, uSecondaryColor, edgeDist);
@@ -117,14 +117,14 @@ const Plane = ({ texture, width, height, active, ...props }) => {
 
       gsap.to(meshRef.current.material.uniforms.uProgress, {
         value: active ? 1 : 0,
-        duration: 0.5,
+        duration: 2.5,
         ease: 'power3.out',
       })
 
       gsap.to(meshRef.current.material.uniforms.uRes.value, {
         x: active ? viewport.width : width,
         y: active ? viewport.height : height,
-        duration: 0.5,
+        duration: 1,
         ease: 'power3.out',
       })
     }

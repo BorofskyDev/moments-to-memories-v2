@@ -86,7 +86,7 @@ const Carousel = ({ images }) => {
     gsap.to(item.position, {
       x: (index - active) * (PlaneSettings.width + PlaneSettings.gap),
       y: items.length * -0.1 + piramidalIndex * 0.1,
-      duration: 0.5,
+      duration: 2.5,
       ease: 'power3.out',
     })
   }
