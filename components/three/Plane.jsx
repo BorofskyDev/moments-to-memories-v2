@@ -86,7 +86,7 @@ const Plane = ({ texture, width, height, active, ...props }) => {
           edgeDist = min(edgeDist, 1.0 - uv.y);
 
           // Define the thickness of the outline
-          float outlineThickness = 0.0; // Adjust this to control the outline size
+          float outlineThickness = 0.01; // Adjust this to control the outline size
 
           // Mix between primary and secondary colors for the outline
           vec3 outlineColor = mix(uPrimaryColor, uSecondaryColor, edgeDist);
