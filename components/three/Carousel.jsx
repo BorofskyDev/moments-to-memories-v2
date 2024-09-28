@@ -6,7 +6,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import gsap from 'gsap'
 import CarouselItem from './CarouselItem'
 import { lerp, getPiramidalIndex } from './utils'
-import PostProcessing from './PostProcessing' // Ensure this component is correctly implemented
+import PostProcessing from './PostProcessing'
 
 /*------------------------------
 Plane Settings

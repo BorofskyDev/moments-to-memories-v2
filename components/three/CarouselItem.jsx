@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useThree } from '@react-three/fiber'
 import gsap from 'gsap'
 import Plane from './Plane'
+import { getImageDimensions } from './utils'
 
 const CarouselItem = ({
   index,
@@ -19,8 +20,46 @@ const CarouselItem = ({
   const [hover, setHover] = useState(false)
   const [isActive, setIsActive] = useState(false)
   const [isCloseActive, setCloseActive] = useState(false)
+  const [imageSize, setImageSize] = useState({ width, height }) // State to hold image dimensions
   const { viewport } = useThree()
   const timeoutID = useRef()
+
+  /*------------------------------
+  Fetch and Set Image Dimensions
+  ------------------------------*/
+  useEffect(() => {
+    if (!item || !item.image) {
+      console.warn(
+        `CarouselItem: 'item' or 'item.image' is undefined for index ${index}`
+      )
+      return
+    }
+
+    const fetchDimensions = async () => {
+      try {
+        const dims = await getImageDimensions(item.image)
+        const aspectRatio = dims.width / dims.height
+        // Adjust plane dimensions to maintain aspect ratio
+        let adjustedWidth = width
+        let adjustedHeight = height
+        if (aspectRatio > 1) {
+          // Landscape
+          adjustedHeight = width / aspectRatio
+        } else if (aspectRatio < 1) {
+          // Portrait
+          adjustedWidth = height * aspectRatio
+        }
+        setImageSize({ width: adjustedWidth, height: adjustedHeight })
+      } catch (error) {
+        console.error(
+          `Error fetching image dimensions for ${item.image}:`,
+          error
+        )
+      }
+    }
+
+    fetchDimensions()
+  }, [item, width, height, index])
 
   /*------------------------------
   Set Active State
@@ -78,6 +117,7 @@ const CarouselItem = ({
   Hover Effect
   ------------------------------*/
   useEffect(() => {
+    if (!meshRef.current) return
     const hoverScale = hover && !isActive ? 1.1 : 1
     gsap.to(meshRef.current.scale, {
       x: hoverScale,
@@ -120,13 +160,17 @@ const CarouselItem = ({
       onPointerLeave={() => setHover(false)}
       renderOrder={isActive ? 1 : 0} // Ensure active planes are on top
     >
-      <Plane
-        width={width}
-        height={height}
-        texture={item.image}
-        active={isActive}
-      />
+      {/* Only render Plane if imageSize is set */}
+      {imageSize && imageSize.width && imageSize.height && (
+        <Plane
+          width={imageSize.width}
+          height={imageSize.height}
+          texture={item.image}
+          active={isActive}
+        />
+      )}
 
+      {/* Overlay to handle closing */}
       {isCloseActive && (
         <mesh position={[0, 0, 0.01]} onClick={handleClose}>
           <planeGeometry args={[viewport.width, viewport.height]} />

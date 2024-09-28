@@ -1,0 +1,38 @@
+@use '../../../../styles/mixins' as *;
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: hsla(var(--background-color) / .8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  &__modalContent {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: var(--spacing-200);
+    box-shadow: var(--box-shadow-400);
+    cursor: zoom-out;
+    transition: var(--transition-main);
+
+    @include breakpoint(tab) {
+      max-width: 95%;
+      max-height: 95%;
+    }
+
+    @include breakpoint(laptop) {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    @include breakpoint(desktop) {
+      max-width: 85%;
+      max-height: 85%;
+    }
+  }
+}
