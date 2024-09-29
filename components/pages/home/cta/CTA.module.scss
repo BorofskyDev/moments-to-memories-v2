@@ -1,0 +1,11 @@
+.cta {
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-400);
+
+    &__title {
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-200);
+    }
+}

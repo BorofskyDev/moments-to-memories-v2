@@ -3,6 +3,7 @@ import HeroSection from './hero-section/HeroSection';
 import styles from './HomeComponent.module.scss';
 import GallerySection from './gallery/GallerySection';
 import ServicesSection from './services/ServicesSection';
+import CTA from './cta/CTA';
 
 function HomeComponent() {
   return (
@@ -11,6 +12,7 @@ function HomeComponent() {
       <AboutSection />
       <ServicesSection />
       <GallerySection />
+      <CTA />
     </div>
   )
 }
