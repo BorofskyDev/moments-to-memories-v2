@@ -9,8 +9,9 @@ import FormInput from '@/components/form-components/form-input/FormInput' // Adj
 import SectionContainer from '@/components/layout/containers/section-container/SectionContainer'
 import SectionHeading from '@/components/headings/section-heading/SectionHeading'
 import PageHeading from '@/components/headings/page-heading/PageHeading'
-import styles from './LoginComponent.module.scss'
 import CtaButton from '@/components/links/cta-button/CtaButton'
+import GoogleSvg from '@/components/layout/svgs/google-svg/GoogleSvg'
+import styles from './LoginComponent.module.scss'
 
 const LoginComponent = () => {
   const router = useRouter()
@@ -111,15 +112,30 @@ const LoginComponent = () => {
 
         {generalError && <p style={{ color: 'red' }}>{generalError}</p>}
 
-        <button className={styles.loginComponent__loginBtn} type='submit' disabled={loading}>
+        <button
+          className={styles.loginComponent__loginBtn}
+          type='submit'
+          disabled={loading}
+        >
           {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
 
-      
-
-      <button className={styles.loginComponent_googleBtn} onClick={handleGoogleLogin} disabled={loading}>
-        {loading ? 'Signing in with Google...' : 'Sign in with Google'}
+      <button
+        className={styles.loginComponent__googleBtn}
+        onClick={handleGoogleLogin}
+        disabled={loading}
+      >
+        {loading ? (
+          <>
+            <GoogleSvg /> Signing in with Google...
+          </>
+        ) : (
+          <>
+            {' '}
+            <GoogleSvg /> Sign in with Google{' '}
+          </>
+        )}
       </button>
     </SectionContainer>
   )

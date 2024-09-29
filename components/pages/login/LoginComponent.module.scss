@@ -20,4 +20,21 @@
         text-align: center;
         cursor: pointer;
     }
+
+    &__googleBtn {
+        padding: var(--spacing-100) var(--spacing-600);
+        background-color: hsl(var(--background-color));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-200);
+        color: hsl(var(--text-color));
+        border: none;
+        cursor: pointer;
+
+        & svg {
+            height: 4rem;
+            width: 4rem;
+        }
+    }
 }
