@@ -1,0 +1,10 @@
+@mixin gradientBorder {
+  border: 1px solid hsl(var(--primary-color));
+  border: 1px solid transparent;
+  border-image: linear-gradient(
+      45deg,
+      hsl(var(--primary-color)) 0%,
+      hsl(var(--secondary-color)) 100%
+    )
+    1;
+}

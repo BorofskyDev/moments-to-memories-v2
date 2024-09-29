@@ -1,0 +1,23 @@
+@use '../../../styles/mixins' as *;
+
+.loginComponent {
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-400);
+
+    & form {
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-200);
+    }
+
+    &__loginBtn {
+        margin-top: var(--spacing-400);
+        padding: var(--spacing-100) var(--spacing-400);
+        background-image: var(--gradient);
+        border: none;
+        box-shadow: var(--box-shadow-400);
+        text-align: center;
+        cursor: pointer;
+    }
+}
