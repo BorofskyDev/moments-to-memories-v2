@@ -1,0 +1,13 @@
+.gallerySection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-400);
+
+    &__title {
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-200);
+    }
+}

@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import images from '@/libs/data/images'
 import useCarouselOpacity from '@/libs/hooks/carousel/useCarouselOpacity'
-import Modal from './modal/Modal'
+import Modal from '../modal/Modal'
 import styles from './CarouselGallery.module.scss'
 
 const CarouselGallery = () => {

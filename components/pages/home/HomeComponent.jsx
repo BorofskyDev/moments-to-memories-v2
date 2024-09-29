@@ -1,7 +1,7 @@
 import AboutSection from './about-section/AboutSection';
 import HeroSection from './hero-section/HeroSection';
 import styles from './HomeComponent.module.scss';
-import GallerySection from './services/gallery/GallerySection';
+import GallerySection from './gallery/GallerySection';
 import ServicesSection from './services/ServicesSection';
 
 function HomeComponent() {
