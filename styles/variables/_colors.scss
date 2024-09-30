@@ -12,9 +12,16 @@
 
   --gradient-hover: linear-gradient(
     90deg, 
-    hsl(var(--secondary-color)) 0%;
-    hsl(var(--primary-color)) 73%;
+    hsl(var(--secondary-color)) 0%,
+    hsl(var(--primary-color)) 73%
   )
+
+  --dark-gradient: linear-gradient(
+    135deg,
+    hsl(var(--background-color)) 50%,
+    hsl(var(--secondary-color) / 0.1) 100%
+  );
+  
 }
 
 [data-theme='light'] {
