@@ -8,7 +8,7 @@ import React from 'react'
 const AdminDashboard = () => {
   return (
     <div>
-      <PageHeading>Admin Dashboard</PageHeading>
+      <PageHeading>Kelli&apos;s Moments</PageHeading>
       <SignOutButton />
       {/* Add your admin functionalities here */}
     </div>
