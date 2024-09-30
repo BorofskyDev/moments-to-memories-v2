@@ -56,7 +56,7 @@ function AdminNav({ isMenuOpen, handleMenuToggle }) {
           </motion.div>
         </button>
         <ul>
-          {isMenuOpen && <SectionSubtitle>Admin Navigation</SectionSubtitle>}
+          <SectionSubtitle>Admin Navigation</SectionSubtitle>
           {navigationLinks.map(({ href, label, icon }, index) => (
             <li key={index}>
               <NavLink href={href} onClick={handleLinkClick}>
@@ -64,7 +64,7 @@ function AdminNav({ isMenuOpen, handleMenuToggle }) {
                   {icon}
                   
                   </div>
-                {isMenuOpen && <span className={styles.label}>{label}</span>}
+                 <span className={styles.label}>{label}</span>
               </NavLink>
             </li>
           ))}

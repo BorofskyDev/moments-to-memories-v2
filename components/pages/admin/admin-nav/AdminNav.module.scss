@@ -2,8 +2,9 @@
 @use '../../../../styles/mixins' as *;
 
 .adminNav {
-  width: var(--nav-width, var(--width-500));
+  width: var(--width-500);
   height: 100%;
+  box-shadow: var(--box-shadow-400);
   background-color: hsl(var(--primary-color) / 0.2);
   background-image: linear-gradient(
     135deg,
@@ -14,31 +15,48 @@
   overflow: hidden;
   @include gradientBorder;
 
+  @include breakpoint(tab) {
+    width: 100%;
+  }
+  
   &.opened {
-    width: var(--nav-width, var(--width-500));
+    width: 10rem;
+    padding: var(--spacing-400) var(--spacing-100);
 
-}
+    & ul {
 
-  /* Adjust width when closed */
+        & h3 {
+
+            display: block;
+        }
+    }
+  }
+
   &:not(.opened) {
-    width: var(--nav-collapsed-width, 60px);
-}
+    width: var(--spacing-900);
 
-nav {
+    @include breakpoint(tab) {
+      width: 100%;
+    }
+  }
+
+  nav {
     display: flex;
     flex-direction: column;
     height: 100%;
-}
+  }
 
-.toggleButton {
+  .toggleButton {
     background: none;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
     align-self: flex-end;
     margin: var(--spacing-100);
-    
-   
+
+    @include breakpoint(tab) {
+      display: none;
+    }
   }
 
   ul {
@@ -46,43 +64,61 @@ nav {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+    gap: var(--spacing-400);
+
+    & h3 {
+        display: none;
+
+        @include breakpoint(tab) {
+            display: block;
+            padding-top: var(--spacing-400);
+        }
+
+    }
+
     li {
-      display: flex;
-      align-items: center;
-    //   padding: var(--spacing-100);
+      padding: var(--spacing-200) var(--spacing-100);
     }
   }
 
-
   .icon {
-    width: 20%;
-    height: 20%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-}
-
-&:not(.opened) .icon {
+  &:not(.opened) .icon {
     margin-left: var(--spacing-100);
     width: 80%;
     height: 80%;
-}
+
+    @include breakpoint(tab) {
+      margin-left: 0;
+      width: 4rem;
+      height: 4rem;
+    }
+  }
 
   .label {
     margin-left: var(--spacing-100);
-  }
+}
 
-  /* Hide labels when not opened */
-  &:not(.opened) .label {
+
+
+
+&:not(.opened) .label {
     display: none;
-  }
-
-  /* Adjust width at tablet breakpoint */
-  @include breakpoint(tab) {
-    width: calc(33.333%);
-
-    &.opened,
-    &:not(.opened) {
-      width: calc(33.333%);
+    
+    @include breakpoint(tab) {
+        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
     }
   }
+
+ 
 }
