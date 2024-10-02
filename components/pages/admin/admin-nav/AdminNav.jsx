@@ -60,12 +60,12 @@ function AdminNav({ isMenuOpen, handleMenuToggle }) {
           {navigationLinks.map(({ href, label, icon }, index) => (
             <li key={index}>
               <NavLink href={href} onClick={handleLinkClick}>
+                 <span className={styles.label}>{label}</span>
+              </NavLink>
                 <div className={styles.icon}>
                   {icon}
                   
                   </div>
-                 <span className={styles.label}>{label}</span>
-              </NavLink>
             </li>
           ))}
         </ul>
