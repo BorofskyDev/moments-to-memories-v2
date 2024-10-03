@@ -8,8 +8,8 @@ const ClientsList = ({ clients }) => {
     <ul className={styles.clientsList}>
       {clients.map((client) => (
         <li key={client.id} className={styles.clientItem}>
-          <Link href='#'>
-            {/* Placeholder for future client profile path, can change later */}
+          <Link href={`/admin/clients/${client.id}`}>
+            
           
               <p className={styles.clientName} title={client.name}>{client.name}</p>
               <p className={styles.clientEmail} title={client.email}>{client.email || 'N/A'}</p>

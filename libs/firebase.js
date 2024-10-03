@@ -3,7 +3,8 @@
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore' // Import Firestore
+import { getFirestore } from 'firebase/firestore'
+import { getStorage } from 'firebase/storage' // Import Firebase Storage
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -23,9 +24,8 @@ if (typeof window !== 'undefined') {
 }
 
 const auth = getAuth(app)
-
 const googleProvider = new GoogleAuthProvider()
+const db = getFirestore(app)
+const storage = getStorage(app) // Initialize Firebase Storage
 
-const db = getFirestore(app) // Initialize Firestore
-
-export { app, analytics, auth, googleProvider, db } // Export db
+export { app, analytics, auth, googleProvider, db, storage } // Export storage

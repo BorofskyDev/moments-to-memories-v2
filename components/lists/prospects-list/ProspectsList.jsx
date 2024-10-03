@@ -9,8 +9,8 @@ const ProspectsList = ({ prospects }) => {
     <ul className={styles.prospectsList}>
       {prospects.map((prospect) => (
         <li key={prospect.id} className={styles.clientItem}>
-          <Link href='#'>
-            {/* Placeholder for future prospect profile path, can change later */}
+          <Link href={`/admin/clients/${prospect.id}`}>
+            
         
               <p title={prospect.name}>{prospect.name}</p>
               <p title={prospect.email}>{prospect.email || 'N/A'}</p>
