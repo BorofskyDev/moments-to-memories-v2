@@ -20,31 +20,30 @@ const FormInput = ({
 }) => {
   return (
     <FlashWrapper>
-
-    <div className={styles.formInput}>
-      <ParagraphHeading htmlFor={id} className={styles.formInput__label}>
-        {label}
-      </ParagraphHeading>
-      <input
-        type={type}
-        id={id}
-        value={value}
-        onChange={onChange}
-        required={required}
-        placeholder={placeholder}
-        aria-invalid={error ? 'true' : 'false'}
-        aria-describedby={error ? `${id}-error` : undefined}
-        className={`${styles.formInput__input }${
-          error ? styles.formInput__error : styles.formInput__success
-        } `}
-        {...rest}
-      />
-      {error && (
-        <p id={`${id}-error`} className={styles.formInput__errorText}>
-          {error}
-        </p>
-      )}
-    </div>
+      <div className={styles.formInput}>
+        <ParagraphHeading htmlFor={id} className={styles.formInput__label}>
+          {label}
+        </ParagraphHeading>
+        <input
+          type={type}
+          id={id}
+          value={value}
+          onChange={onChange}
+          required={required}
+          placeholder={placeholder}
+          aria-invalid={error ? 'true' : 'false'}
+          aria-describedby={error ? `${id}-error` : undefined}
+          className={`${styles.formInput__input}${
+            error ? styles.formInput__error : styles.formInput__success
+          } `}
+          {...rest}
+        />
+        {error && (
+          <p id={`${id}-error`} className={styles.formInput__errorText}>
+            {error}
+          </p>
+        )}
+      </div>
     </FlashWrapper>
   )
 }
