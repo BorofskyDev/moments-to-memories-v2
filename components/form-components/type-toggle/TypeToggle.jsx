@@ -4,39 +4,44 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
+import styles from './TypeToggle.module.scss'
+import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import FlashWrapper from '@/libs/hoc/FlashWrapper'
 
 const TypeToggle = ({ value, onChange, error }) => {
   return (
-    <div>
-      <label>
-        Type<span style={{ color: 'red' }}>*</span>
-      </label>
-      <div>
-        <label>
-          <input
-            type='radio'
-            name='type'
-            value='client'
-            checked={value === 'client'}
-            onChange={onChange}
-            required
-          />
-          Client
-        </label>
-        <label>
-          <input
-            type='radio'
-            name='type'
-            value='prospect'
-            checked={value === 'prospect'}
-            onChange={onChange}
-            required
-          />
-          Prospect
-        </label>
+    <FlashWrapper>
+      <div className={styles.typeToggle}>
+        <ParagraphHeading>
+          Type<span style={{ color: 'red' }}>*</span>
+        </ParagraphHeading>
+        <div className={styles.options}>
+          <label>
+            <input
+              type='radio'
+              name='type'
+              value='client'
+              checked={value === 'client'}
+              onChange={onChange}
+              required
+            />
+            Client
+          </label>
+          <label>
+            <input
+              type='radio'
+              name='type'
+              value='prospect'
+              checked={value === 'prospect'}
+              onChange={onChange}
+              required
+            />
+            Prospect
+          </label>
+        </div>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </div>
+    </FlashWrapper>
   )
 }
 

@@ -1,8 +1,8 @@
 // components/AnimatedIcon.jsx
 'use client'
 
-import React from 'react'
-import { motion, useAnimation } from 'framer-motion'
+import React, { useEffect, useRef } from 'react'
+import { motion, useAnimation, useInView } from 'framer-motion'
 import PropTypes from 'prop-types'
 
 const AnimatedIcon = ({
@@ -12,30 +12,39 @@ const AnimatedIcon = ({
   viewBox = '0 0 80 80',
   className = '',
   animationDuration = 1.5,
-  id, 
+  id,
   ...props
 }) => {
   const controls = useAnimation()
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: false }) // Adjust 'once' as needed
 
   const pathVariants = {
-    hidden: { pathLength: 0 },
-    visible: { pathLength: 1 },
+    hidden: { pathLength: 0, opacity: 0 },
+    visible: { pathLength: 1, opacity: 1 },
   }
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start('visible')
+    } else {
+      controls.set('hidden')
+    }
+  }, [isInView, controls])
 
   return (
     <motion.svg
+      ref={ref}
       xmlns='http://www.w3.org/2000/svg'
       width={width}
       height={height}
       viewBox={viewBox}
       className={className}
       {...props}
-      onViewportEnter={() => controls.start('visible')}
-      onViewportLeave={() => controls.set('hidden')}
     >
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
-          if (child.type === 'path' || child.type === 'motion.path') {
+          if (child.type === 'path' || child.type === motion.path) {
             return (
               <motion.path
                 {...child.props}
@@ -61,7 +70,7 @@ AnimatedIcon.propTypes = {
   viewBox: PropTypes.string,
   className: PropTypes.string,
   animationDuration: PropTypes.number,
-  id: PropTypes.string, 
+  id: PropTypes.string,
 }
 
 export default AnimatedIcon

@@ -5,6 +5,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './ImportantDateForm.module.scss'
+import FormInput from '../form-input/FormInput'
+import SaveButton from '@/components/buttons/save-button/SaveButton'
+import CancelButton from '@/components/buttons/cancel-button/CancelButton'
 
 const ImportantDateForm = ({
   month,
@@ -68,8 +71,9 @@ const ImportantDateForm = ({
         </select>
       </div>
       <div>
-        <label htmlFor='reason'>Reason</label>
-        <input
+        <FormInput label='Reason for Importance'
+        
+        
           type='text'
           id='reason'
           value={reason}
@@ -78,8 +82,8 @@ const ImportantDateForm = ({
         />
       </div>
       <div>
-        <label htmlFor='tag'>Tag</label>
-        <input
+        <FormInput label='Tag'
+        
           type='text'
           id='tag'
           value={tag}
@@ -88,12 +92,10 @@ const ImportantDateForm = ({
         />
       </div>
       <div className={styles.buttonGroup}>
-        <button type='button' onClick={handleSave}>
-          Save
-        </button>
-        <button type='button' onClick={handleCancel}>
-          Cancel
-        </button>
+        <SaveButton type='button' onClick={handleSave} />
+        <CancelButton type='button' onClick={handleCancel} />
+          
+      
       </div>
     </div>
   )

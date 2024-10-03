@@ -1,0 +1,27 @@
+@use '../../../styles/mixins' as *;
+
+.deleteButton {
+  margin: var(--spacing-200) 0;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    span {
+      color: hsl(var(--primary-color));
+    }
+  }
+
+  & svg {
+    height: var(--fs-800);
+  }
+
+  & span {
+    color: hsl(var(--text-color));
+    transition: var(--transition-main);
+  }
+}

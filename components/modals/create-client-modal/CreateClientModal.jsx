@@ -2,8 +2,8 @@
 
 'use client'
 
-import React, { useState } from 'react'
-import { db, } from '@/libs/firebase' // Ensure this path is correct
+import React from 'react'
+import { db } from '@/libs/firebase'
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import { useAuth } from '@/libs/context/AuthContext'
 import FormInput from '@/components/form-components/form-input/FormInput'
@@ -13,13 +13,21 @@ import TagInput from '@/components/form-components/tag-input/TagInput'
 import TypeToggle from '@/components/form-components/type-toggle/TypeToggle'
 import ImportantDateForm from '@/components/form-components/important-date-form/ImportantDateForm'
 import useClientForm from '@/libs/hooks/form/useClientForm'
+import useAddRelation from '@/libs/hooks/ui/useAddRelation'
+import useAddImportantDate from '@/libs/hooks/ui/useAddImportantDate'
+import PlusSvg from '@/components/layout/svgs/plus-svg/PlusSvg'
 import styles from './CreateClientModal.module.scss'
+import Subheading from '@/components/headings/subheading/Subheading'
+import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import SaveButton from '@/components/buttons/save-button/SaveButton'
+import CancelButton from '@/components/buttons/cancel-button/CancelButton'
+import AddButton from '@/components/buttons/add-button/AddButton'
 
 function CreateClientModal({ isOpen, onClose }) {
-    const { user, isAdmin} = useAuth()
+  const { user, isAdmin } = useAuth()
   const {
     formData,
-    setFormData, // Ensure setFormData is destructured
+    setFormData,
     handleChange,
     handleBirthdayChange,
     relationInput,
@@ -42,9 +50,18 @@ function CreateClientModal({ isOpen, onClose }) {
     resetForm,
   } = useClientForm()
 
-  const [typeError, setTypeError] = useState('')
-  const [isAddingRelation, setIsAddingRelation] = useState(false)
-  const [isAddingImportantDate, setIsAddingImportantDate] = useState(false)
+  const {
+    isAdding: isAddingRelation,
+    handleStart: handleStartAddRelation,
+    handleCancel: handleCancelAddRelation,
+  } = useAddRelation()
+  const {
+    isAdding: isAddingImportantDate,
+    handleStart: handleStartAddImportantDate,
+    handleCancel: handleCancelAddImportantDate,
+  } = useAddImportantDate()
+
+  const [typeError, setTypeError] = React.useState('')
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -62,11 +79,6 @@ function CreateClientModal({ isOpen, onClose }) {
     } else {
       setTypeError('')
     }
-
-    // Log user and formData
-    console.log('User:', user)
-    console.log('Submitting formData:', formData)
-    console.log('Firestore DB instance:', db)
 
     // Ensure user is authenticated
     if (!user) {
@@ -88,47 +100,28 @@ function CreateClientModal({ isOpen, onClose }) {
       alert('Client created successfully')
       onClose()
       resetForm()
-      setIsAddingRelation(false)
-      setIsAddingImportantDate(false)
+      // Reset UI states
+      handleCancelAddRelation()
+      handleCancelAddImportantDate()
     } catch (error) {
       console.error('Error adding document: ', error)
       alert('Failed to create client')
     }
   }
 
-
   if (!isOpen) return null
-
-  // Handlers for adding relations and important dates
-  const handleStartAddRelation = () => {
-    setIsAddingRelation(true)
-  }
-
-  const handleCancelAddRelation = () => {
-    setIsAddingRelation(false)
-    setRelationInput({ name: '', relationshipType: '', age: '' })
-  }
-
-  const handleStartAddImportantDate = () => {
-    setIsAddingImportantDate(true)
-  }
-
-  const handleCancelAddImportantDate = () => {
-    setIsAddingImportantDate(false)
-    setImportantDateInput({ month: '', day: '', reason: '', tag: '' })
-  }
 
   // Handlers for ImportantDateForm
   const handleSaveImportantDate = () => {
     handleAddImportantDate()
-    setIsAddingImportantDate(false)
+    handleCancelAddImportantDate()
   }
 
   return (
-    <div className={styles.modalOverlay}>
+    <div className={styles.createClientModal}>
       <div className={styles.modalContent}>
-        <h2>Create Client</h2>
-        <form onSubmit={handleSubmit}>
+        <Subheading>Create Client</Subheading>
+        <form onSubmit={handleSubmit} className={styles.modalForm}>
           {/* Basic Information */}
           <FormInput
             label='Name'
@@ -188,8 +181,8 @@ function CreateClientModal({ isOpen, onClose }) {
           />
 
           {/* Relations */}
-          <div>
-            <h3>Relations</h3>
+          <div className={styles.relations}>
+            <ParagraphHeading>Relations</ParagraphHeading>
             {formData.relations.map((relation, index) => (
               <RelationForm
                 key={index}
@@ -209,9 +202,9 @@ function CreateClientModal({ isOpen, onClose }) {
 
             {/* Add Relation Button */}
             {!isAddingRelation && (
-              <button type='button' onClick={handleStartAddRelation}>
-                + Add Relation
-              </button>
+              <AddButton type='button' onClick={handleStartAddRelation}>
+                <PlusSvg /> Add Relation
+              </AddButton>
             )}
 
             {/* Relation Input Fields */}
@@ -223,15 +216,15 @@ function CreateClientModal({ isOpen, onClose }) {
                   handleRelationChange={(field, value) => {
                     setRelationInput((prev) => ({ ...prev, [field]: value }))
                   }}
-                  handleRemoveRelation={() => {}} // No removal for the new relation being added
+                  handleRemoveRelation={() => {}} 
                 />
-                <div>
-                  <button type='button' onClick={handleAddRelation}>
+                <div className={styles.relationButtons}>
+                  <SaveButton type='button' onClick={handleAddRelation}>
                     Save Relation
-                  </button>
-                  <button type='button' onClick={handleCancelAddRelation}>
+                  </SaveButton>
+                  <CancelButton type='button' onClick={handleCancelAddRelation}>
                     Cancel
-                  </button>
+                  </CancelButton>
                 </div>
               </div>
             )}
@@ -239,7 +232,7 @@ function CreateClientModal({ isOpen, onClose }) {
 
           {/* Important Dates */}
           <div>
-            <h3>Important Dates</h3>
+            <ParagraphHeading>Important Dates</ParagraphHeading>
             {formData.importantDates.map((date, index) => (
               <div key={index}>
                 <p>
@@ -256,9 +249,9 @@ function CreateClientModal({ isOpen, onClose }) {
 
             {/* Add Important Date Button */}
             {!isAddingImportantDate && (
-              <button type='button' onClick={handleStartAddImportantDate}>
+              <AddButton type='button' onClick={handleStartAddImportantDate}>
                 + Add Important Date
-              </button>
+              </AddButton>
             )}
 
             {/* Important Date Input Fields */}

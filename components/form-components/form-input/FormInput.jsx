@@ -4,6 +4,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './FormInput.module.scss'
+import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import FlashWrapper from '@/libs/hoc/FlashWrapper'
 
 const FormInput = ({
   label,
@@ -17,10 +19,12 @@ const FormInput = ({
   ...rest
 }) => {
   return (
+    <FlashWrapper>
+
     <div className={styles.formInput}>
-      <label htmlFor={id} className={styles.formInput__label}>
+      <ParagraphHeading htmlFor={id} className={styles.formInput__label}>
         {label}
-      </label>
+      </ParagraphHeading>
       <input
         type={type}
         id={id}
@@ -41,6 +45,7 @@ const FormInput = ({
         </p>
       )}
     </div>
+    </FlashWrapper>
   )
 }
 

@@ -1,0 +1,34 @@
+@use '../../../styles/mixins' as *;
+
+.cancelButton {
+    margin: var(--spacing-200) 0;
+  padding: var(--spacing-100) var(--spacing-200);
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  transition: var(--transition-main);
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+
+    span {
+      color: hsl(var(--primary-color));
+    }
+  }
+
+  & svg {
+    height: var(--fs-800);
+
+    & path {
+
+    fill: hsl(var(--secondary-color));
+    }
+  }
+
+  & span {
+    color: hsl(var(--text-color));
+    transition: var(--transition-main);
+  }
+}
