@@ -4,6 +4,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './TagInput.module.scss'
+import AddButton from '@/components/buttons/add-button/AddButton'
+import FormInput from '../form-input/FormInput'
 
 const TagInput = ({
   tagValue,
@@ -14,21 +16,20 @@ const TagInput = ({
 }) => {
   return (
     <div className={styles.tagInputGroup}>
-      <label className={styles.label}>Marketing Tags</label>
+      
       <div className={styles.tagInput}>
-        <input
+        <FormInput
           type='text'
           placeholder='Add a tag'
           value={tagValue}
           onChange={(e) => setTagValue(e.target.value)}
         />
-        <button
+        <AddButton
           type='button'
           onClick={handleAddTag}
-          className={styles.addButton}
         >
           + {/* Placeholder for add tag icon */}
-        </button>
+        </AddButton>
       </div>
       <ul className={styles.tagList}>
         {tags.map((tag, index) => (

@@ -21,9 +21,22 @@
         gap: var(--spacing-300);
     }
 
+    & .photoshootDates {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-200);
+
+        &__calendar {
+            padding: var(--spacing-100);
+            background-color: hsl(var(--background-color));
+            color: hsl(var(--text-color));
+        }
+    }
+
     & .relationButtons {
         display: flex;
         gap: var(--spacing-200);
         flex-wrap: wrap;
     }
+    
 }

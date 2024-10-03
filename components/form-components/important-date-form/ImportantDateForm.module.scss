@@ -1,0 +1,28 @@
+@use '../../../styles/mixins' as *;
+
+.importantDateForm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+
+    & .dateGroup {
+        margin: var(--spacing-200) 0;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-200);
+
+        & select {
+            padding: var(--spacing-100);
+            background-color: hsl(var(--background-color));
+            color: hsl(var(--text-color));
+            cursor: pointer;
+            @include gradientBorder;
+        }
+    }
+
+    & .buttonGroup {
+        display: flex;
+        gap: var(--spacing-200);
+        justify-content: flex-end;
+    }
+}

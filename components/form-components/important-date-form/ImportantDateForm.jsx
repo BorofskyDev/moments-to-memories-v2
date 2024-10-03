@@ -45,7 +45,7 @@ const ImportantDateForm = ({
 
   return (
     <div className={styles.importantDateForm}>
-      <div>
+      <div className={styles.dateGroup}>
         <label htmlFor='month'>
           Month<span style={{ color: 'red' }}>*</span>
         </label>
@@ -57,7 +57,7 @@ const ImportantDateForm = ({
           ))}
         </select>
       </div>
-      <div>
+      <div className={styles.dateGroup}>
         <label htmlFor='day'>
           Day<span style={{ color: 'red' }}>*</span>
         </label>

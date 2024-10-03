@@ -22,6 +22,8 @@ import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphH
 import SaveButton from '@/components/buttons/save-button/SaveButton'
 import CancelButton from '@/components/buttons/cancel-button/CancelButton'
 import AddButton from '@/components/buttons/add-button/AddButton'
+import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
+import SubmitButton from '@/components/buttons/submit-button/SubmitButton'
 
 function CreateClientModal({ isOpen, onClose }) {
   const { user, isAdmin } = useAuth()
@@ -216,7 +218,7 @@ function CreateClientModal({ isOpen, onClose }) {
                   handleRelationChange={(field, value) => {
                     setRelationInput((prev) => ({ ...prev, [field]: value }))
                   }}
-                  handleRemoveRelation={() => {}} 
+                  handleRemoveRelation={() => {}}
                 />
                 <div className={styles.relationButtons}>
                   <SaveButton type='button' onClick={handleAddRelation}>
@@ -292,17 +294,15 @@ function CreateClientModal({ isOpen, onClose }) {
           </div>
 
           {/* Photoshoot Dates */}
-          <div>
-            <h3>Photoshoot Dates</h3>
+          <div className={styles.photoshootDates}>
+            <ParagraphHeading>Photoshoot Dates</ParagraphHeading>
             {formData.photoshootDates.map((date, index) => (
               <div key={index}>
                 <p>{date}</p>
-                <button
+                <DeleteButton
                   type='button'
                   onClick={() => handleRemovePhotoshootDate(index)}
-                >
-                  ✕ {/* Placeholder for delete date icon */}
-                </button>
+                ></DeleteButton>
               </div>
             ))}
             <div>
@@ -311,18 +311,20 @@ function CreateClientModal({ isOpen, onClose }) {
                 value={photoshootDateInput}
                 onChange={(e) => setPhotoshootDateInput(e.target.value)}
                 placeholder='Enter photoshoot date'
+                className={styles.photoshootDates__calendar}
               />
-              <button type='button' onClick={handleAddPhotoshootDate}>
-                + Add Photoshoot Date
-              </button>
+              <AddButton
+                type='button'
+                onClick={handleAddPhotoshootDate}
+              ></AddButton>
             </div>
           </div>
 
           {/* Photoshoot Notes */}
           <div>
-            <h3>Photoshoot Notes</h3>
+            <ParagraphHeading>Photoshoot Notes</ParagraphHeading>
             <FormTextarea
-              label='Photoshoot Notes'
+              label=''
               id='photoshootNotes'
               name='photoshootNotes'
               value={formData.photoshootNotes}
@@ -333,9 +335,9 @@ function CreateClientModal({ isOpen, onClose }) {
 
           {/* General Notes */}
           <div>
-            <h3>Notes</h3>
+            <ParagraphHeading>Notes</ParagraphHeading>
             <FormTextarea
-              label='Notes'
+              label=''
               id='notes'
               name='notes'
               value={formData.notes}
@@ -346,7 +348,7 @@ function CreateClientModal({ isOpen, onClose }) {
 
           {/* Marketing Tags */}
           <div>
-            <h3>Marketing Tags</h3>
+            <ParagraphHeading>Marketing Tags</ParagraphHeading>
             <TagInput
               tagValue={marketingTagInput}
               setTagValue={setMarketingTagInput}
@@ -358,10 +360,10 @@ function CreateClientModal({ isOpen, onClose }) {
 
           {/* Submit and Cancel Buttons */}
           <div>
-            <button type='submit'>Submit</button>
-            <button type='button' onClick={onClose}>
+            <SubmitButton type='submit' text='Submit'></SubmitButton>
+            <CancelButton type='button' onClick={onClose}>
               Cancel
-            </button>
+            </CancelButton>
           </div>
         </form>
       </div>

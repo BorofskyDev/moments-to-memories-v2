@@ -1,0 +1,11 @@
+@use '../../../styles/mixins' as *;
+
+.tagInputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+
+    & .tagInput {
+        
+    }
+}

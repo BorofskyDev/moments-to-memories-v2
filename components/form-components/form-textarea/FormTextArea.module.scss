@@ -1,0 +1,22 @@
+@use '../../../styles/mixins' as *;
+
+.formTextarea {
+    display: grid;
+    gap: var(--spacing-100);
+
+    & label {
+        font-size: var(--fs-300);
+        font-weight: 700;
+    }
+
+    & textarea {
+        padding: var(--spacing-100) var(--spacing-200);
+        box-shadow: var(--box-shadow-400);
+        background-color: hsl(var(--background-color));
+        color: hsl(var(--text-color));
+       @include gradientBorder;
+        
+    }
+
+    
+}

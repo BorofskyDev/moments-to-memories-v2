@@ -1,0 +1,16 @@
+@use '../../../styles/mixins' as *;
+
+.submitButton {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-100);
+    @include actionButton;
+
+    & svg {
+        width: var(--fs-900);
+
+        & path {
+            fill: hsl(var(--background-color))
+        }
+    }
+}
