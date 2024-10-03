@@ -233,27 +233,29 @@ function CreateClientModal({ isOpen, onClose }) {
           </div>
 
           {/* Important Dates */}
-          <div>
+          <div className={styles.importantDates}>
             <ParagraphHeading>Important Dates</ParagraphHeading>
             {formData.importantDates.map((date, index) => (
-              <div key={index}>
-                <p>
-                  {date.month}/{date.day} - {date.reason} - Tag: {date.tag}
-                </p>
-                <button
+              <div key={index} className={styles.importantDates__importantDate} >
+                <div>
+                  <p>
+                    {date.month}/{date.day}
+                  </p>
+                  <p>
+
+                  - {date.reason}
+                  </p>
+                </div>
+                <DeleteButton
                   type='button'
                   onClick={() => handleRemoveImportantDate(index)}
-                >
-                  ✕ {/* Placeholder for delete date icon */}
-                </button>
+                />
               </div>
             ))}
 
             {/* Add Important Date Button */}
             {!isAddingImportantDate && (
-              <AddButton type='button' onClick={handleStartAddImportantDate}>
-                + Add Important Date
-              </AddButton>
+              <AddButton type='button' onClick={handleStartAddImportantDate} />
             )}
 
             {/* Important Date Input Fields */}
@@ -297,7 +299,7 @@ function CreateClientModal({ isOpen, onClose }) {
           <div className={styles.photoshootDates}>
             <ParagraphHeading>Photoshoot Dates</ParagraphHeading>
             {formData.photoshootDates.map((date, index) => (
-              <div key={index}>
+              <div key={index} className={styles.photoshootDates__date}>
                 <p>{date}</p>
                 <DeleteButton
                   type='button'

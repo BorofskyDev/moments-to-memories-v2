@@ -1,0 +1,16 @@
+@use '../../../../styles/mixins' as *;
+
+.clientsPage {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-800);
+
+  & .clientsList,
+  & .prospectsList {
+    display: grid;
+    place-content: center;
+    gap: var(--spacing-300);
+  }
+}

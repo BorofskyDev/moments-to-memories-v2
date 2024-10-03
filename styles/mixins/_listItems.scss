@@ -1,0 +1,54 @@
+@use './gradientBorder' as *;
+
+@mixin listItems {
+     width: 100%;
+
+  & .clientItem {
+    & a {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-100);
+    //   flex-wrap: wrap;
+      transition: var(--transition-main);
+
+      &:hover,
+      &:focus {
+        & p {
+          // padding-inline: 0;
+          box-shadow: var(--box-shadow-500);
+          color: hsl(var(--primary-color));
+          font-weight: 900;
+        }
+      }
+
+      &:active {
+        & p {
+          box-shadow: var(--box-shadow-300);
+        }
+      }
+
+      & p {
+        padding: var(--spacing-100);
+        box-shadow: var(--box-shadow-400);
+        font-size: var(--fs-400);
+        color: hsl(var(--text-color));
+        text-transform: capitalize;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition-main);
+        @include gradientBorder;
+
+        &:first-of-type {
+          font-weight: 700;
+        }
+        &:not(:first-of-type) {
+            font-size: var(--fs-300);
+            // width: 5rem;
+            overflow: hidden;
+            word-wrap: normal;
+        }
+      }
+    }
+  }
+}

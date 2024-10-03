@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import styles from './TagInput.module.scss'
 import AddButton from '@/components/buttons/add-button/AddButton'
 import FormInput from '../form-input/FormInput'
+import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 
 const TagInput = ({
   tagValue,
@@ -34,14 +35,15 @@ const TagInput = ({
       <ul className={styles.tagList}>
         {tags.map((tag, index) => (
           <li key={index} className={styles.tagItem}>
+            <p>
             {tag}
-            <button
+
+            </p>
+            <DeleteButton
               type='button'
               onClick={() => handleRemoveTag(index)}
               className={styles.removeButton}
-            >
-              ✕ {/* Placeholder for delete tag icon */}
-            </button>
+            />
           </li>
         ))}
       </ul>

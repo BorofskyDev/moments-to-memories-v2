@@ -1,42 +1,79 @@
 @use '../../../styles/mixins' as *;
 
 .createClientModal {
-    width: 100%;
-    margin: var(--spacing-400) 0;
+  width: 100%;
+  margin: var(--spacing-400) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-800);
+
+  & .modalContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-600);
+    align-items: center;
+    justify-content: center;
+  }
+
+  & .modalForm {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-400);
+  }
 
-    & .modalContent {
+  & .importantDates {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+
+    &__importantDate {
+      padding: var(--spacing-100) 0;
+      display: flex;
+      align-items: center;
+
+      & div {
+        width: 100%;
         display: flex;
-        flex-direction: column;
-        gap: var(--spacing-400);
         align-items: center;
-        justify-content: center;
-    }
 
-    & .modalForm {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-300);
-    }
-
-    & .photoshootDates {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-200);
-
-        &__calendar {
-            padding: var(--spacing-100);
-            background-color: hsl(var(--background-color));
-            color: hsl(var(--text-color));
+        & p {
+          &:first-of-type {
+            width: 50%;
+            font-weight: 700;
+            color: hsl(var(--primary-color));
+          }
+          width: 100%;
+          font-weight: 600;
+          color: hsl(var(--text-color));
         }
+      }
+    }
+  }
+
+  & .photoshootDates {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+
+    &__date {
+        color: hsl(var(--primary-color));
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
-    & .relationButtons {
-        display: flex;
-        gap: var(--spacing-200);
-        flex-wrap: wrap;
+    &__calendar {
+      padding: var(--spacing-100);
+      background-color: hsl(var(--background-color));
+      color: hsl(var(--text-color));
+      @include gradientBorder;
     }
-    
+  }
+
+  & .relationButtons {
+    display: flex;
+    gap: var(--spacing-200);
+    flex-wrap: wrap;
+  }
 }
