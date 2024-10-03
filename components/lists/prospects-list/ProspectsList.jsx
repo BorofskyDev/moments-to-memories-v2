@@ -12,9 +12,9 @@ const ProspectsList = ({ prospects }) => {
           <Link href='#'>
             {/* Placeholder for future prospect profile path, can change later */}
         
-              <p>{prospect.name}</p>
-              <p>{prospect.email || 'N/A'}</p>
-              <p>{prospect.phone || 'N/A'}</p>
+              <p title={prospect.name}>{prospect.name}</p>
+              <p title={prospect.email}>{prospect.email || 'N/A'}</p>
+              <p title={prospect.phone}>{prospect.phone || 'N/A'}</p>
             
           </Link>
         </li>

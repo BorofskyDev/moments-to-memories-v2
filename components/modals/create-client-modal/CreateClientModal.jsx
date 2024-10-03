@@ -25,7 +25,8 @@ import AddButton from '@/components/buttons/add-button/AddButton'
 import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 import SubmitButton from '@/components/buttons/submit-button/SubmitButton'
 
-function CreateClientModal({ isOpen, onClose }) {
+function CreateClientModal({ isOpen, onClose, onNewEntry }) {
+  // Accept onNewEntry prop
   const { user, isAdmin } = useAuth()
   const {
     formData,
@@ -88,16 +89,27 @@ function CreateClientModal({ isOpen, onClose }) {
       return
     }
 
-    // Proceed with Firestore write
+    // Prepare data (convert age to number)
+    const preparedFormData = {
+      ...formData,
+      age: formData.age ? parseInt(formData.age, 10) : null,
+      createdAt: Timestamp.now(),
+      createdBy: user.uid,
+    }
+
     try {
       const clientsCollectionRef = collection(db, 'clients')
       console.log('Clients Collection Reference:', clientsCollectionRef)
 
-      await addDoc(clientsCollectionRef, {
-        ...formData,
-        createdAt: Timestamp.now(),
-        createdBy: user.uid, // Optionally track who created the document
-      })
+      const docRef = await addDoc(clientsCollectionRef, preparedFormData)
+
+      // Create a new entry object with the Firestore-generated ID
+      const newEntry = { id: docRef.id, ...formData }
+
+      // Invoke the callback to update the parent component's state
+      if (onNewEntry) {
+        onNewEntry(newEntry)
+      }
 
       alert('Client created successfully')
       onClose()
@@ -218,7 +230,7 @@ function CreateClientModal({ isOpen, onClose }) {
                   handleRelationChange={(field, value) => {
                     setRelationInput((prev) => ({ ...prev, [field]: value }))
                   }}
-                  handleRemoveRelation={() => {}}
+                  handleRemoveRelation={() => {}} // No removal for the new relation being added
                 />
                 <div className={styles.relationButtons}>
                   <SaveButton type='button' onClick={handleAddRelation}>
@@ -236,15 +248,12 @@ function CreateClientModal({ isOpen, onClose }) {
           <div className={styles.importantDates}>
             <ParagraphHeading>Important Dates</ParagraphHeading>
             {formData.importantDates.map((date, index) => (
-              <div key={index} className={styles.importantDates__importantDate} >
+              <div key={index} className={styles.importantDates__importantDate}>
                 <div>
                   <p>
                     {date.month}/{date.day}
                   </p>
-                  <p>
-
-                  - {date.reason}
-                  </p>
+                  <p>- {date.reason}</p>
                 </div>
                 <DeleteButton
                   type='button'
@@ -255,7 +264,9 @@ function CreateClientModal({ isOpen, onClose }) {
 
             {/* Add Important Date Button */}
             {!isAddingImportantDate && (
-              <AddButton type='button' onClick={handleStartAddImportantDate} />
+              <AddButton type='button' onClick={handleStartAddImportantDate}>
+                <PlusSvg /> Add Important Date
+              </AddButton>
             )}
 
             {/* Important Date Input Fields */}
@@ -304,7 +315,7 @@ function CreateClientModal({ isOpen, onClose }) {
                 <DeleteButton
                   type='button'
                   onClick={() => handleRemovePhotoshootDate(index)}
-                ></DeleteButton>
+                />
               </div>
             ))}
             <div>
@@ -315,10 +326,9 @@ function CreateClientModal({ isOpen, onClose }) {
                 placeholder='Enter photoshoot date'
                 className={styles.photoshootDates__calendar}
               />
-              <AddButton
-                type='button'
-                onClick={handleAddPhotoshootDate}
-              ></AddButton>
+              <AddButton type='button' onClick={handleAddPhotoshootDate}>
+                <PlusSvg /> Add Photoshoot Date
+              </AddButton>
             </div>
           </div>
 

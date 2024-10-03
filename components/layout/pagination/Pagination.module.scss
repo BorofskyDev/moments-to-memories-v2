@@ -1,0 +1,62 @@
+@use '../../../styles/mixins' as *;
+
+.pagination {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--spacing-400);
+}
+
+.paginationButton {
+  background: none;
+  width: var(--fs-700);
+  border: none;
+  cursor: pointer;
+  color: hsl(var(--primary-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:first-of-type {
+    transform: rotate(180deg);
+  }
+
+  &:disabled {
+    color: hsl(var(--disabled-color));
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled),
+  &:focus:not(:disabled) {
+    color: hsl(
+      var(--primary-color-variant)
+    ); // Optional: Change color on hover/focus
+  }
+}
+
+.pageButton {
+    border: none;
+    min-width: 2rem; 
+  padding: var(--spacing-200);
+  background: none;
+  font-size: var(--fs-600);
+  text-align: center;
+  transition: var(--transition-main);
+  color: hsl(var(--text-color));
+  cursor: pointer;
+
+  &__active {
+    @include gradientText;
+  }
+
+  &:hover:not(.active),
+  &:focus:not(.active) {
+    background-color: hsl(var(--primary-color) / 20%);
+  }
+}
+
+.ellipsis {
+  padding: var(--spacing-100);
+  color: hsl(var(--text-color));
+}
