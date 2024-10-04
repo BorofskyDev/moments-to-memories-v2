@@ -1,14 +1,24 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useAuth } from '@/libs/context/AuthContext'
 import useClientProfile from '@/libs/hooks/client-profile/useClientProfile'
 import useGallery from '@/libs/hooks/client-profile/useGallery'
 import CreateGalleryForm from '@/components/client-profile/create-gallery-form/CreateGalleryForm'
 import GalleryList from '@/components/client-profile/gallery-list/GalleryList'
 import styles from './ClientProfile.module.scss'
 import EditField from '@/components/layout/edit-field/EditField'
+import SectionHeading from '@/components/headings/section-heading/SectionHeading'
 
 const ClientProfile = ({ client }) => {
+  const { user, isAdmin } = useAuth() // Get current user and admin status
+
+  // Log user and admin status for debugging
+  useEffect(() => {
+    console.log('User:', user)
+    console.log('Is Admin:', isAdmin)
+  }, [user, isAdmin])
+
   const {
     clientData,
     editedFields,
@@ -31,7 +41,11 @@ const ClientProfile = ({ client }) => {
     handleDeleteRelation,
   } = useClientProfile(client)
 
-  // Pass clientData?.id to handle undefined cases
+  // Log clientData to ensure it loads correctly
+  useEffect(() => {
+    console.log('Client Data:', clientData)
+  }, [clientData])
+
   const {
     galleries,
     isCreating,
@@ -40,29 +54,48 @@ const ClientProfile = ({ client }) => {
     deleteGallery,
   } = useGallery(clientData?.id)
 
+  // Log gallery data for debugging
+  useEffect(() => {
+    console.log('Galleries:', galleries)
+    if (galleryError) {
+      console.error('Gallery Error:', galleryError)
+    }
+  }, [galleries, galleryError])
+
   const [isCreatingGallery, setIsCreatingGallery] = useState(false)
+
+  // Check if the user is allowed to edit the profile
+  const canEdit = isAdmin || user?.uid === client?.id
+
+  // Log whether the user can edit the profile
+  useEffect(() => {
+    console.log('Can Edit Profile:', canEdit)
+  }, [canEdit])
 
   // Handle creating a new gallery
   const handleCreateGallery = async (name, date, files) => {
-    await createGallery(name, date, files)
-    setIsCreatingGallery(false)
+    try {
+      console.log('Creating gallery with:', { name, date, files })
+      await createGallery(name, date, files)
+      setIsCreatingGallery(false)
+      console.log('Gallery created successfully')
+    } catch (err) {
+      console.error('Error creating gallery:', err)
+    }
   }
 
   // Utility function to format date
   const formatDate = (date) => {
     if (!date) return ''
 
-    // If date is a Firestore Timestamp
     if (date.seconds) {
       return new Date(date.seconds * 1000).toISOString().split('T')[0]
     }
 
-    // If date is a string that can be parsed
     const parsedDate = new Date(date)
     return isNaN(parsedDate) ? '' : parsedDate.toISOString().split('T')[0]
   }
 
-  // Early return if clientData is not yet loaded
   if (!clientData) {
     return <p>Loading client data...</p>
   }
@@ -70,60 +103,91 @@ const ClientProfile = ({ client }) => {
   return (
     <div className={styles.clientProfile}>
       {/* Basic Information Section */}
+        <SectionHeading>{clientData.name}</SectionHeading>
       <section className={styles.basicInfo}>
-        <h2>Basic Information</h2>
-        <EditField
-          label='Name'
-          fieldName='name'
-          type='text'
-          value={editedFields.name ?? clientData.name}
-          onChange={handleInputChange}
-        />
-        <EditField
-          label='Email'
-          fieldName='email'
-          type='email'
-          value={editedFields.email ?? clientData.email}
-          onChange={handleInputChange}
-        />
-        <EditField
-          label='Phone'
-          fieldName='phone'
-          type='text'
-          value={editedFields.phone ?? clientData.phone}
-          onChange={handleInputChange}
-        />
-        <EditField
-          label='Age'
-          fieldName='age'
-          type='number'
-          value={editedFields.age ?? clientData.age}
-          onChange={handleInputChange}
-        />
-        <EditField
-          label='Birthday'
-          fieldName='birthday'
-          type='date'
-          value={
-            editedFields.birthday
-              ? formatDate(editedFields.birthday)
-              : formatDate(clientData.birthday)
-          }
-          onChange={handleInputChange}
-        />
-        <EditField
-          label={
-            clientData.type === 'client' ? 'Client Since' : 'Prospect Since'
-          }
-          fieldName='createdAt'
-          type='date'
-          value={
-            editedFields.createdAt
-              ? formatDate(editedFields.createdAt)
-              : formatDate(clientData.createdAt)
-          }
-          onChange={handleInputChange}
-        />
+        {canEdit ? (
+          <>
+            <EditField
+              label='Name'
+              fieldName='name'
+              type='text'
+              value={editedFields.name ?? clientData.name}
+              onChange={handleInputChange}
+            />
+            <EditField
+              label='Email'
+              fieldName='email'
+              type='email'
+              value={editedFields.email ?? clientData.email}
+              onChange={handleInputChange}
+            />
+            <EditField
+              label='Phone'
+              fieldName='phone'
+              type='text'
+              value={editedFields.phone ?? clientData.phone}
+              onChange={handleInputChange}
+            />
+            <EditField
+              label='Age'
+              fieldName='age'
+              type='number'
+              value={editedFields.age ?? clientData.age}
+              onChange={handleInputChange}
+            />
+            <EditField
+              label='Birthday'
+              fieldName='birthday'
+              type='date'
+              value={
+                editedFields.birthday
+                  ? formatDate(editedFields.birthday)
+                  : formatDate(clientData.birthday)
+              }
+              onChange={handleInputChange}
+            />
+            <EditField
+              label={
+                clientData.type === 'client' ? 'Client Since' : 'Prospect Since'
+              }
+              fieldName='createdAt'
+              type='date'
+              value={
+                editedFields.createdAt
+                  ? formatDate(editedFields.createdAt)
+                  : formatDate(clientData.createdAt)
+              }
+              onChange={handleInputChange}
+            />
+          </>
+        ) : (
+          <>
+            <p>
+              <strong>Name:</strong> {clientData.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {clientData.email}
+            </p>
+            <p>
+              <strong>Phone:</strong> {clientData.phone}
+            </p>
+            <p>
+              <strong>Age:</strong> {clientData.age}
+            </p>
+            <p>
+              <strong>Birthday:</strong> {formatDate(clientData.birthday)}
+            </p>
+            <p>
+              <strong>
+                {clientData.type === 'client'
+                  ? 'Client Since'
+                  : 'Prospect Since'}
+                :
+              </strong>{' '}
+              {formatDate(clientData.createdAt)}
+            </p>
+          </>
+        )}
       </section>
 
       {/* Important Dates Section */}
@@ -133,48 +197,71 @@ const ClientProfile = ({ client }) => {
           <ul>
             {clientData.importantDates.map((date, index) => (
               <li key={index} className={styles.listItem}>
-                <EditField
-                  label='Tag'
-                  fieldName={`importantDate-tag-${index}`}
-                  type='text'
-                  value={editedFields[`importantDate-tag-${index}`] ?? date.tag}
-                  onChange={handleInputChange}
-                />
-                <EditField
-                  label='Reason'
-                  fieldName={`importantDate-reason-${index}`}
-                  type='text'
-                  value={
-                    editedFields[`importantDate-reason-${index}`] ?? date.reason
-                  }
-                  onChange={handleInputChange}
-                />
-                <EditField
-                  label='Date'
-                  fieldName={`importantDate-date-${index}`}
-                  type='date'
-                  value={
-                    editedFields[`importantDate-date-${index}`]
-                      ? formatDate(editedFields[`importantDate-date-${index}`])
-                      : formatDate(date.date)
-                  }
-                  onChange={handleInputChange}
-                />
-                <button
-                  onClick={() => handleDeleteImportantDate(index)}
-                  className={styles.deleteButton}
-                >
-                  Delete
-                </button>
+                {canEdit ? (
+                  <>
+                    <EditField
+                      label='Tag'
+                      fieldName={`importantDate-tag-${index}`}
+                      type='text'
+                      value={
+                        editedFields[`importantDate-tag-${index}`] ?? date.tag
+                      }
+                      onChange={handleInputChange}
+                    />
+                    <EditField
+                      label='Reason'
+                      fieldName={`importantDate-reason-${index}`}
+                      type='text'
+                      value={
+                        editedFields[`importantDate-reason-${index}`] ??
+                        date.reason
+                      }
+                      onChange={handleInputChange}
+                    />
+                    <EditField
+                      label='Date'
+                      fieldName={`importantDate-date-${index}`}
+                      type='date'
+                      value={
+                        editedFields[`importantDate-date-${index}`]
+                          ? formatDate(
+                              editedFields[`importantDate-date-${index}`]
+                            )
+                          : formatDate(date.date)
+                      }
+                      onChange={handleInputChange}
+                    />
+                    <button
+                      onClick={() => handleDeleteImportantDate(index)}
+                      className={styles.deleteButton}
+                    >
+                      Delete
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      <strong>Tag:</strong> {date.tag}
+                    </p>
+                    <p>
+                      <strong>Reason:</strong> {date.reason}
+                    </p>
+                    <p>
+                      <strong>Date:</strong> {formatDate(date.date)}
+                    </p>
+                  </>
+                )}
               </li>
             ))}
           </ul>
         ) : (
           <p>No important dates added.</p>
         )}
-        <button onClick={handleAddImportantDate} className={styles.addButton}>
-          Add Important Date
-        </button>
+        {canEdit && (
+          <button onClick={handleAddImportantDate} className={styles.addButton}>
+            Add Important Date
+          </button>
+        )}
       </section>
 
       {/* Marketing Tags Section */}
@@ -184,28 +271,36 @@ const ClientProfile = ({ client }) => {
           <ul>
             {clientData.marketingTags.map((tag, index) => (
               <li key={index} className={styles.marketingTag}>
-                <EditField
-                  label='Tag'
-                  fieldName={`marketingTag-${index}`}
-                  type='text'
-                  value={editedFields[`marketingTag-${index}`] ?? tag}
-                  onChange={handleInputChange}
-                />
-                <button
-                  onClick={() => handleDeleteMarketingTag(index)}
-                  className={styles.deleteButton}
-                >
-                  Delete
-                </button>
+                {canEdit ? (
+                  <>
+                    <EditField
+                      label='Tag'
+                      fieldName={`marketingTag-${index}`}
+                      type='text'
+                      value={editedFields[`marketingTag-${index}`] ?? tag}
+                      onChange={handleInputChange}
+                    />
+                    <button
+                      onClick={() => handleDeleteMarketingTag(index)}
+                      className={styles.deleteButton}
+                    >
+                      Delete
+                    </button>
+                  </>
+                ) : (
+                  <p>{tag}</p>
+                )}
               </li>
             ))}
           </ul>
         ) : (
           <p>No marketing tags added.</p>
         )}
-        <button onClick={handleAddMarketingTag} className={styles.addButton}>
-          Add Marketing Tag
-        </button>
+        {canEdit && (
+          <button onClick={handleAddMarketingTag} className={styles.addButton}>
+            Add Marketing Tag
+          </button>
+        )}
       </section>
 
       {/* Photoshoots Section */}
@@ -215,51 +310,74 @@ const ClientProfile = ({ client }) => {
           <ul>
             {clientData.photoshootDates.map((date, index) => (
               <li key={index} className={styles.listItem}>
-                <EditField
-                  label='Tag'
-                  fieldName={`photoshootDate-tag-${index}`}
-                  type='text'
-                  value={
-                    editedFields[`photoshootDate-tag-${index}`] ?? date.tag
-                  }
-                  onChange={handleInputChange}
-                />
-                <EditField
-                  label='Reason'
-                  fieldName={`photoshootDate-reason-${index}`}
-                  type='text'
-                  value={
-                    editedFields[`photoshootDate-reason-${index}`] ??
-                    date.reason
-                  }
-                  onChange={handleInputChange}
-                />
-                <EditField
-                  label='Date'
-                  fieldName={`photoshootDate-date-${index}`}
-                  type='date'
-                  value={
-                    editedFields[`photoshootDate-date-${index}`]
-                      ? formatDate(editedFields[`photoshootDate-date-${index}`])
-                      : formatDate(date.date)
-                  }
-                  onChange={handleInputChange}
-                />
-                <button
-                  onClick={() => handleDeletePhotoshootDate(index)}
-                  className={styles.deleteButton}
-                >
-                  Delete
-                </button>
+                {canEdit ? (
+                  <>
+                    <EditField
+                      label='Tag'
+                      fieldName={`photoshootDate-tag-${index}`}
+                      type='text'
+                      value={
+                        editedFields[`photoshootDate-tag-${index}`] ?? date.tag
+                      }
+                      onChange={handleInputChange}
+                    />
+                    <EditField
+                      label='Reason'
+                      fieldName={`photoshootDate-reason-${index}`}
+                      type='text'
+                      value={
+                        editedFields[`photoshootDate-reason-${index}`] ??
+                        date.reason
+                      }
+                      onChange={handleInputChange}
+                    />
+                    <EditField
+                      label='Date'
+                      fieldName={`photoshootDate-date-${index}`}
+                      type='date'
+                      value={
+                        editedFields[`photoshootDate-date-${index}`]
+                          ? formatDate(
+                              editedFields[`photoshootDate-date-${index}`]
+                            )
+                          : formatDate(date.date)
+                      }
+                      onChange={handleInputChange}
+                    />
+                    <button
+                      onClick={() => handleDeletePhotoshootDate(index)}
+                      className={styles.deleteButton}
+                    >
+                      Delete
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      <strong>Tag:</strong> {date.tag}
+                    </p>
+                    <p>
+                      <strong>Reason:</strong> {date.reason}
+                    </p>
+                    <p>
+                      <strong>Date:</strong> {formatDate(date.date)}
+                    </p>
+                  </>
+                )}
               </li>
             ))}
           </ul>
         ) : (
           <p>No photoshoots scheduled.</p>
         )}
-        <button onClick={handleAddPhotoshootDate} className={styles.addButton}>
-          Add Photoshoot Date
-        </button>
+        {canEdit && (
+          <button
+            onClick={handleAddPhotoshootDate}
+            className={styles.addButton}
+          >
+            Add Photoshoot Date
+          </button>
+        )}
       </section>
 
       {/* Relations Section */}
@@ -269,49 +387,71 @@ const ClientProfile = ({ client }) => {
           <ul>
             {clientData.relations.map((relation, index) => (
               <li key={index} className={styles.relationItem}>
-                <EditField
-                  label={`Name (${relation.relationshipType})`}
-                  fieldName={`relationName-${index}`}
-                  type='text'
-                  value={editedFields[`relationName-${index}`] ?? relation.name}
-                  onChange={handleInputChange}
-                />
-                <EditField
-                  label={`Age (${relation.relationshipType})`}
-                  fieldName={`relationAge-${index}`}
-                  type='number'
-                  value={editedFields[`relationAge-${index}`] ?? relation.age}
-                  onChange={handleInputChange}
-                />
-                <EditField
-                  label={`Relationship (${relation.relationshipType})`}
-                  fieldName={`relationshipType-${index}`}
-                  type='text'
-                  value={
-                    editedFields[`relationshipType-${index}`] ??
-                    relation.relationshipType
-                  }
-                  onChange={handleInputChange}
-                />
-                <button
-                  onClick={() => handleDeleteRelation(index)}
-                  className={styles.deleteButton}
-                >
-                  Delete
-                </button>
+                {canEdit ? (
+                  <>
+                    <EditField
+                      label={`Name (${relation.relationshipType})`}
+                      fieldName={`relationName-${index}`}
+                      type='text'
+                      value={
+                        editedFields[`relationName-${index}`] ?? relation.name
+                      }
+                      onChange={handleInputChange}
+                    />
+                    <EditField
+                      label={`Age (${relation.relationshipType})`}
+                      fieldName={`relationAge-${index}`}
+                      type='number'
+                      value={
+                        editedFields[`relationAge-${index}`] ?? relation.age
+                      }
+                      onChange={handleInputChange}
+                    />
+                    <EditField
+                      label={`Relationship (${relation.relationshipType})`}
+                      fieldName={`relationshipType-${index}`}
+                      type='text'
+                      value={
+                        editedFields[`relationshipType-${index}`] ??
+                        relation.relationshipType
+                      }
+                      onChange={handleInputChange}
+                    />
+                    <button
+                      onClick={() => handleDeleteRelation(index)}
+                      className={styles.deleteButton}
+                    >
+                      Delete
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      <strong>Name:</strong> {relation.name}
+                    </p>
+                    <p>
+                      <strong>Age:</strong> {relation.age}
+                    </p>
+                    <p>
+                      <strong>Relationship:</strong> {relation.relationshipType}
+                    </p>
+                  </>
+                )}
               </li>
             ))}
           </ul>
         ) : (
           <p>No relations added.</p>
         )}
-        <button onClick={handleAddRelation} className={styles.addButton}>
-          Add Relation
-        </button>
+        {canEdit && (
+          <button onClick={handleAddRelation} className={styles.addButton}>
+            Add Relation
+          </button>
+        )}
       </section>
 
       {/* Action Buttons */}
-      {hasEdits && (
+      {canEdit && hasEdits && (
         <div className={styles.actionButtons}>
           <button
             onClick={handleSave}
@@ -331,14 +471,16 @@ const ClientProfile = ({ client }) => {
       )}
 
       {/* Delete Profile Button */}
-      <div className={styles.deleteButtonContainer}>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className={styles.deleteButton}
-        >
-          Delete Profile
-        </button>
-      </div>
+      {isAdmin && (
+        <div className={styles.deleteButtonContainer}>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className={styles.deleteButton}
+          >
+            Delete Profile
+          </button>
+        </div>
+      )}
 
       {/* Delete Confirmation Modal */}
       {isModalOpen && (
@@ -372,14 +514,15 @@ const ClientProfile = ({ client }) => {
       {/* Gallery Section */}
       <section className={styles.gallerySection}>
         <h2>Galleries</h2>
-        <button
-          onClick={() => setIsCreatingGallery(true)}
-          className={styles.createGalleryButton}
-        >
-          Create Photoshoot
-        </button>
+        {canEdit && (
+          <button
+            onClick={() => setIsCreatingGallery(true)}
+            className={styles.createGalleryButton}
+          >
+            Create Photoshoot
+          </button>
+        )}
 
-        {/* Create Gallery Form */}
         {isCreatingGallery && (
           <CreateGalleryForm
             onCreate={handleCreateGallery}
@@ -388,14 +531,16 @@ const ClientProfile = ({ client }) => {
           />
         )}
 
-        {/* Gallery List */}
         <GalleryList
           galleries={galleries}
           onDelete={(galleryId) => deleteGallery(galleryId)}
         />
 
-        {/* Display Gallery Errors */}
-        {galleryError && <p className={styles.error}>{galleryError}</p>}
+        {galleryError && (
+          <p className={styles.error}>
+            Gallery Error: {galleryError.message || galleryError}
+          </p>
+        )}
       </section>
     </div>
   )

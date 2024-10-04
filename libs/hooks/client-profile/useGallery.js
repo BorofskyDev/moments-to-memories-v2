@@ -1,6 +1,5 @@
-// libs/hooks/client-profile/useGallery.js
-
 import { useState, useEffect } from 'react'
+import { getAuth } from 'firebase/auth'
 import { db, storage } from '@/libs/firebase' // Ensure correct import
 import {
   collection,
@@ -22,6 +21,8 @@ const useGallery = (clientId) => {
   const [isCreating, setIsCreating] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [error, setError] = useState(null)
+  const auth = getAuth()
+  const user = auth.currentUser
 
   // Fetch galleries from Firestore
   const fetchGalleries = async () => {
@@ -32,6 +33,7 @@ const useGallery = (clientId) => {
     try {
       const galleriesCol = collection(db, 'clients', clientId, 'galleries')
       const galleriesSnapshot = await getDocs(galleriesCol)
+
       const galleriesList = await Promise.all(
         galleriesSnapshot.docs.map(async (docSnap) => {
           const photosSnapshot = await getDocs(
@@ -54,6 +56,7 @@ const useGallery = (clientId) => {
           }
         })
       )
+
       setGalleries(galleriesList)
     } catch (err) {
       console.error('Error fetching galleries:', err)
@@ -68,8 +71,19 @@ const useGallery = (clientId) => {
       return
     }
     setIsCreating(true)
+
     try {
-      // Create a new gallery document
+      if (!user) {
+        throw new Error('User not authenticated')
+      }
+
+      // Check if user is admin
+      const tokenResult = await user.getIdToken(true)
+      if (!tokenResult.claims.admin) {
+        throw new Error('User does not have admin privileges')
+      }
+
+      // Create a new gallery document in Firestore
       const galleriesCol = collection(db, 'clients', clientId, 'galleries')
       const newGalleryRef = await addDoc(galleriesCol, {
         name,
@@ -77,7 +91,7 @@ const useGallery = (clientId) => {
         createdAt: serverTimestamp(),
       })
 
-      // Upload each file to Firebase Storage
+      // Upload each file to Firebase Storage and store download URLs in Firestore
       const uploadPromises = files.map(async (file) => {
         const storageRef = ref(
           storage,
@@ -90,7 +104,7 @@ const useGallery = (clientId) => {
 
       const uploadedPhotos = await Promise.all(uploadPromises)
 
-      // Save photo URLs in Firestore
+      // Save photo URLs in Firestore under the gallery's photos collection
       const photosCol = collection(
         db,
         'clients',
@@ -122,6 +136,16 @@ const useGallery = (clientId) => {
     }
     setIsDeleting(true)
     try {
+      if (!user) {
+        throw new Error('User not authenticated')
+      }
+
+      // Check if user is admin
+      const tokenResult = await user.getIdTokenResult()
+      if (!tokenResult.claims.admin) {
+        throw new Error('User does not have admin privileges')
+      }
+
       // Fetch all photos in the gallery to delete from Storage
       const photosCol = collection(
         db,
@@ -138,7 +162,7 @@ const useGallery = (clientId) => {
           storage,
           `clients/${clientId}/galleries/${galleryId}/${photo.name}`
         )
-        await deleteObject(storageRef)
+        await deleteObject(storageRef) // Delete the photo from Firebase Storage
         return deleteDoc(
           doc(
             db,
@@ -170,7 +194,6 @@ const useGallery = (clientId) => {
   // Initialize by fetching galleries
   useEffect(() => {
     fetchGalleries()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientId])
 
   return {

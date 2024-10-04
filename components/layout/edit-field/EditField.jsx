@@ -32,7 +32,7 @@ const EditField = ({
 
   return (
     <div className={styles.field} ref={ref}>
-      <label htmlFor={fieldName}>{label}:</label>
+      <label className={styles.field__label} htmlFor={fieldName}>{label}</label>
       {isActive ? (
         type === 'textarea' ? (
           <textarea

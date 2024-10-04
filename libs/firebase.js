@@ -24,6 +24,7 @@ if (typeof window !== 'undefined') {
 }
 
 const auth = getAuth(app)
+
 const googleProvider = new GoogleAuthProvider()
 const db = getFirestore(app)
 const storage = getStorage(app) // Initialize Firebase Storage

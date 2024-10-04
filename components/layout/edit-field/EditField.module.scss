@@ -1,0 +1,37 @@
+@use '../../../styles/mixins' as *;
+
+.field {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-400);
+
+  &__label {
+    padding: var(--spacing-100) var(--spacing-200);
+    border: 1px solid hsl(var(--secondary-color));
+    box-shadow: var(--box-shadow-300);
+    font-size: var(--fs-500);
+    font-weight: 700;
+  }
+
+  & .textarea,
+  & .fieldInput,
+  & p {
+    width: 100%;
+    padding: var(--spacing-100) var(--spacing-200);
+    box-shadow: var(--box-shadow-400);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @include gradientBorder;
+  }
+
+  & .textarea,
+  & .fieldInput {
+    background-color: hsl(var(--background-color));
+    outline: none;
+    box-shadow: var(--box-shadow-500);
+    color: hsl(var(--text-color));
+  }
+}
