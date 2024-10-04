@@ -9,6 +9,11 @@ import GalleryList from '@/components/client-profile/gallery-list/GalleryList'
 import styles from './ClientProfile.module.scss'
 import EditField from '@/components/layout/edit-field/EditField'
 import SectionHeading from '@/components/headings/section-heading/SectionHeading'
+import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import AddButton from '@/components/buttons/add-button/AddButton'
+import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
+import SaveButton from '@/components/buttons/save-button/SaveButton'
+import CancelButton from '@/components/buttons/cancel-button/CancelButton'
 
 const ClientProfile = ({ client }) => {
   const { user, isAdmin } = useAuth() // Get current user and admin status
@@ -103,7 +108,7 @@ const ClientProfile = ({ client }) => {
   return (
     <div className={styles.clientProfile}>
       {/* Basic Information Section */}
-        <SectionHeading>{clientData.name}</SectionHeading>
+      <SectionHeading>{clientData.name}</SectionHeading>
       <section className={styles.basicInfo}>
         {canEdit ? (
           <>
@@ -192,7 +197,7 @@ const ClientProfile = ({ client }) => {
 
       {/* Important Dates Section */}
       <section className={styles.importantDates}>
-        <h2>Important Dates</h2>
+        <ParagraphHeading>Important Dates</ParagraphHeading>
         {clientData.importantDates && clientData.importantDates.length > 0 ? (
           <ul>
             {clientData.importantDates.map((date, index) => (
@@ -231,12 +236,10 @@ const ClientProfile = ({ client }) => {
                       }
                       onChange={handleInputChange}
                     />
-                    <button
+                    <DeleteButton
                       onClick={() => handleDeleteImportantDate(index)}
                       className={styles.deleteButton}
-                    >
-                      Delete
-                    </button>
+                    />
                   </>
                 ) : (
                   <>
@@ -258,17 +261,18 @@ const ClientProfile = ({ client }) => {
           <p>No important dates added.</p>
         )}
         {canEdit && (
-          <button onClick={handleAddImportantDate} className={styles.addButton}>
-            Add Important Date
-          </button>
+          <AddButton
+            onClick={handleAddImportantDate}
+            className={styles.addButton}
+          />
         )}
       </section>
 
       {/* Marketing Tags Section */}
       <section className={styles.marketingTags}>
-        <h2>Marketing Tags</h2>
+        <ParagraphHeading>Marketing Tags</ParagraphHeading>
         {clientData.marketingTags && clientData.marketingTags.length > 0 ? (
-          <ul>
+          <ul className={styles.marketingTags__list}>
             {clientData.marketingTags.map((tag, index) => (
               <li key={index} className={styles.marketingTag}>
                 {canEdit ? (
@@ -280,15 +284,14 @@ const ClientProfile = ({ client }) => {
                       value={editedFields[`marketingTag-${index}`] ?? tag}
                       onChange={handleInputChange}
                     />
-                    <button
+                    <DeleteButton
                       onClick={() => handleDeleteMarketingTag(index)}
-                      className={styles.deleteButton}
                     >
                       Delete
-                    </button>
+                    </DeleteButton>
                   </>
                 ) : (
-                  <p>{tag}</p>
+                  <p className={styles.marketingTag__tag}>{tag}</p>
                 )}
               </li>
             ))}
@@ -297,17 +300,18 @@ const ClientProfile = ({ client }) => {
           <p>No marketing tags added.</p>
         )}
         {canEdit && (
-          <button onClick={handleAddMarketingTag} className={styles.addButton}>
-            Add Marketing Tag
-          </button>
+          <AddButton
+            onClick={handleAddMarketingTag}
+            className={styles.addButton}
+          />
         )}
       </section>
 
       {/* Photoshoots Section */}
       <section className={styles.photoshoots}>
-        <h2>Photoshoots</h2>
+        <ParagraphHeading>Photoshoots</ParagraphHeading>
         {clientData.photoshootDates && clientData.photoshootDates.length > 0 ? (
-          <ul>
+          <ul className={styles.photoshoots__list}>
             {clientData.photoshootDates.map((date, index) => (
               <li key={index} className={styles.listItem}>
                 {canEdit ? (
@@ -344,12 +348,10 @@ const ClientProfile = ({ client }) => {
                       }
                       onChange={handleInputChange}
                     />
-                    <button
+                    <DeleteButton
                       onClick={() => handleDeletePhotoshootDate(index)}
                       className={styles.deleteButton}
-                    >
-                      Delete
-                    </button>
+                    />
                   </>
                 ) : (
                   <>
@@ -371,12 +373,10 @@ const ClientProfile = ({ client }) => {
           <p>No photoshoots scheduled.</p>
         )}
         {canEdit && (
-          <button
+          <AddButton
             onClick={handleAddPhotoshootDate}
             className={styles.addButton}
-          >
-            Add Photoshoot Date
-          </button>
+          />
         )}
       </section>
 
@@ -390,7 +390,7 @@ const ClientProfile = ({ client }) => {
                 {canEdit ? (
                   <>
                     <EditField
-                      label={`Name (${relation.relationshipType})`}
+                      label={`Name `}
                       fieldName={`relationName-${index}`}
                       type='text'
                       value={
@@ -399,7 +399,7 @@ const ClientProfile = ({ client }) => {
                       onChange={handleInputChange}
                     />
                     <EditField
-                      label={`Age (${relation.relationshipType})`}
+                      label={`Age `}
                       fieldName={`relationAge-${index}`}
                       type='number'
                       value={
@@ -408,7 +408,7 @@ const ClientProfile = ({ client }) => {
                       onChange={handleInputChange}
                     />
                     <EditField
-                      label={`Relationship (${relation.relationshipType})`}
+                      label={`Relationship `}
                       fieldName={`relationshipType-${index}`}
                       type='text'
                       value={
@@ -417,12 +417,10 @@ const ClientProfile = ({ client }) => {
                       }
                       onChange={handleInputChange}
                     />
-                    <button
+                    <DeleteButton
                       onClick={() => handleDeleteRelation(index)}
                       className={styles.deleteButton}
-                    >
-                      Delete
-                    </button>
+                    />
                   </>
                 ) : (
                   <>
@@ -444,41 +442,33 @@ const ClientProfile = ({ client }) => {
           <p>No relations added.</p>
         )}
         {canEdit && (
-          <button onClick={handleAddRelation} className={styles.addButton}>
-            Add Relation
-          </button>
+          <AddButton onClick={handleAddRelation} className={styles.addButton} />
         )}
       </section>
 
       {/* Action Buttons */}
       {canEdit && hasEdits && (
         <div className={styles.actionButtons}>
-          <button
+          <SaveButton
             onClick={handleSave}
             className={styles.saveButton}
             disabled={isSaving}
-          >
-            {isSaving ? 'Saving...' : 'Save'}
-          </button>
-          <button
+          />
+          <CancelButton
             onClick={handleCancel}
             className={styles.cancelButton}
             disabled={isSaving}
-          >
-            Cancel
-          </button>
+          />
         </div>
       )}
 
       {/* Delete Profile Button */}
       {isAdmin && (
         <div className={styles.deleteButtonContainer}>
-          <button
+          <DeleteButton
             onClick={() => setIsModalOpen(true)}
             className={styles.deleteButton}
-          >
-            Delete Profile
-          </button>
+          />
         </div>
       )}
 
@@ -513,14 +503,12 @@ const ClientProfile = ({ client }) => {
 
       {/* Gallery Section */}
       <section className={styles.gallerySection}>
-        <h2>Galleries</h2>
+        <ParagraphHeading>Galleries</ParagraphHeading>
         {canEdit && (
-          <button
+          <AddButton
             onClick={() => setIsCreatingGallery(true)}
             className={styles.createGalleryButton}
-          >
-            Create Photoshoot
-          </button>
+          />
         )}
 
         {isCreatingGallery && (

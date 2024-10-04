@@ -20,11 +20,15 @@
   & p {
     width: 100%;
     padding: var(--spacing-100) var(--spacing-200);
-    box-shadow: var(--box-shadow-400);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     @include gradientBorder;
+}
+
+& p {
+      box-shadow: var(--box-shadow-300);
+
   }
 
   & .textarea,
@@ -33,5 +37,7 @@
     outline: none;
     box-shadow: var(--box-shadow-500);
     color: hsl(var(--text-color));
+    border: 1px solid hsl(var(--primary-color));
   }
+  
 }
