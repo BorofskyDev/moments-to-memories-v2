@@ -1,3 +1,5 @@
+// libs/hooks/client-profile/useGallery.js
+
 import { useState, useEffect } from 'react'
 import { getAuth } from 'firebase/auth'
 import { db, storage } from '@/libs/firebase' // Ensure correct import
@@ -77,11 +79,7 @@ const useGallery = (clientId) => {
         throw new Error('User not authenticated')
       }
 
-      // Check if user is admin
-      const tokenResult = await user.getIdToken(true)
-      if (!tokenResult.claims.admin) {
-        throw new Error('User does not have admin privileges')
-      }
+      // Removed admin check
 
       // Create a new gallery document in Firestore
       const galleriesCol = collection(db, 'clients', clientId, 'galleries')
@@ -140,11 +138,7 @@ const useGallery = (clientId) => {
         throw new Error('User not authenticated')
       }
 
-      // Check if user is admin
-      const tokenResult = await user.getIdTokenResult()
-      if (!tokenResult.claims.admin) {
-        throw new Error('User does not have admin privileges')
-      }
+      // Removed admin check
 
       // Fetch all photos in the gallery to delete from Storage
       const photosCol = collection(
@@ -191,6 +185,42 @@ const useGallery = (clientId) => {
     }
   }
 
+  // Delete a specific photo
+  const deletePhoto = async (galleryId, photoId, photoName) => {
+    if (!clientId) {
+      setError('Client ID is missing.')
+      return
+    }
+    setIsDeleting(true)
+    try {
+      if (!user) {
+        throw new Error('User not authenticated')
+      }
+
+      // Removed admin check
+
+      // Delete the photo from Firebase Storage
+      const storageRef = ref(
+        storage,
+        `clients/${clientId}/galleries/${galleryId}/${photoName}`
+      )
+      await deleteObject(storageRef)
+
+      // Delete the photo document from Firestore
+      await deleteDoc(
+        doc(db, 'clients', clientId, 'galleries', galleryId, 'photos', photoId)
+      )
+
+      // Refresh galleries list
+      await fetchGalleries()
+    } catch (err) {
+      console.error('Error deleting photo:', err)
+      setError('Failed to delete photo.')
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
   // Initialize by fetching galleries
   useEffect(() => {
     fetchGalleries()
@@ -204,6 +234,7 @@ const useGallery = (clientId) => {
     fetchGalleries,
     createGallery,
     deleteGallery,
+    deletePhoto, // Expose the new deletePhoto function
   }
 }
 

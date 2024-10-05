@@ -48,7 +48,7 @@ const useClientProfile = (client) => {
     }))
   }
 
-  // Handle input change
+  // Handle input change for basic fields
   const handleInputChange = (fieldName, value) => {
     setEditedFields((prev) => ({
       ...prev,
@@ -105,9 +105,10 @@ const useClientProfile = (client) => {
   // Handle adding a new Important Date
   const handleAddImportantDate = async () => {
     const newDate = {
-      tag: 'New Tag',
-      reason: 'Reason',
-      date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD
+      tag: '',
+      reason: '',
+      month: '',
+      day: '',
     }
     try {
       const clientRef = doc(db, 'clients', clientData.id)
@@ -118,8 +119,39 @@ const useClientProfile = (client) => {
         ...prev,
         importantDates: [...prev.importantDates, newDate],
       }))
+      setHasEdits(true)
+      console.log('Added new important date with separate month and day.')
     } catch (error) {
       console.error('Error adding important date:', error)
+    }
+  }
+
+  // Handle updating a specific field of an Important Date
+  const handleUpdateImportantDate = async (index, fieldName, value) => {
+    try {
+      const updatedImportantDates = [...clientData.importantDates]
+      if (updatedImportantDates[index]) {
+        updatedImportantDates[index][fieldName] = value
+      } else {
+        console.error(`No important date found at index ${index}`)
+        return
+      }
+
+      const clientRef = doc(db, 'clients', clientData.id)
+      await updateDoc(clientRef, {
+        importantDates: updatedImportantDates,
+      })
+
+      setClientData((prev) => ({
+        ...prev,
+        importantDates: updatedImportantDates,
+      }))
+      setHasEdits(true)
+      console.log(
+        `Updated important date at index ${index}, field '${fieldName}'.`
+      )
+    } catch (error) {
+      console.error(`Error updating important date at index ${index}:`, error)
     }
   }
 
@@ -152,8 +184,36 @@ const useClientProfile = (client) => {
         ...prev,
         marketingTags: [...prev.marketingTags, newTag],
       }))
+      setHasEdits(true)
     } catch (error) {
       console.error('Error adding marketing tag:', error)
+    }
+  }
+
+  // Handle updating a specific Marketing Tag
+  const handleUpdateMarketingTag = async (index, newTag) => {
+    try {
+      const updatedMarketingTags = [...clientData.marketingTags]
+      if (updatedMarketingTags[index] !== undefined) {
+        updatedMarketingTags[index] = newTag
+      } else {
+        console.error(`No marketing tag found at index ${index}`)
+        return
+      }
+
+      const clientRef = doc(db, 'clients', clientData.id)
+      await updateDoc(clientRef, {
+        marketingTags: updatedMarketingTags,
+      })
+
+      setClientData((prev) => ({
+        ...prev,
+        marketingTags: updatedMarketingTags,
+      }))
+      setHasEdits(true)
+      console.log(`Updated marketing tag at index ${index} to '${newTag}'.`)
+    } catch (error) {
+      console.error(`Error updating marketing tag at index ${index}:`, error)
     }
   }
 
@@ -169,6 +229,7 @@ const useClientProfile = (client) => {
         ...prev,
         marketingTags: prev.marketingTags.filter((_, i) => i !== index),
       }))
+      setHasEdits(true)
     } catch (error) {
       console.error('Error deleting marketing tag:', error)
     }
@@ -190,8 +251,40 @@ const useClientProfile = (client) => {
         ...prev,
         photoshootDates: [...prev.photoshootDates, newDate],
       }))
+      setHasEdits(true)
     } catch (error) {
       console.error('Error adding photoshoot date:', error)
+    }
+  }
+
+  // Handle updating a sepcific field of a Photoshoot Date 
+  const handleUpdatePhotoshootDate = async (index, fieldName, value) => {
+    try {
+      if (!clientData) return
+
+      const updatedPhotoshootDates = [...clientData.photoshootDates]
+      if (updatedPhotoshootDates[index]) {
+        updatedPhotoshootDates[index][fieldName] = value
+      } else {
+        console.error(`No photoshoot date found at index ${index}`)
+        return
+      }
+
+      const clientRef = doc(db, 'clients', clientData.id)
+      await updateDoc(clientRef, {
+        photoshootDates: updatedPhotoshootDates,
+      })
+
+      setClientData((prev) => ({
+        ...prev,
+        photoshootDates: updatedPhotoshootDates,
+      }))
+      setHasEdits(true)
+      console.log(
+        `Updated photoshoot date at index ${index}, field '${fieldName}'.`
+      )
+    } catch (error) {
+      console.error(`Error updating photoshoot date at index ${index}:`, error)
     }
   }
 
@@ -228,8 +321,36 @@ const useClientProfile = (client) => {
         ...prev,
         relations: [...prev.relations, newRelation],
       }))
+      setHasEdits(true)
     } catch (error) {
       console.error('Error adding relation:', error)
+    }
+  }
+
+  // Handle updating a specific Relation
+  const handleUpdateRelation = async (index, fieldName, value) => {
+    try {
+      const updatedRelations = [...clientData.relations]
+      if (updatedRelations[index]) {
+        updatedRelations[index][fieldName] = value
+      } else {
+        console.error(`No relation found at index ${index}`)
+        return
+      }
+
+      const clientRef = doc(db, 'clients', clientData.id)
+      await updateDoc(clientRef, {
+        relations: updatedRelations,
+      })
+
+      setClientData((prev) => ({
+        ...prev,
+        relations: updatedRelations,
+      }))
+      setHasEdits(true)
+      console.log(`Updated relation at index ${index}, field '${fieldName}'.`)
+    } catch (error) {
+      console.error(`Error updating relation at index ${index}:`, error)
     }
   }
 
@@ -245,6 +366,7 @@ const useClientProfile = (client) => {
         ...prev,
         relations: prev.relations.filter((_, i) => i !== index),
       }))
+      setHasEdits(true)
     } catch (error) {
       console.error('Error deleting relation:', error)
     }
@@ -263,12 +385,16 @@ const useClientProfile = (client) => {
     setIsModalOpen,
     hasEdits,
     handleAddImportantDate,
+    handleUpdateImportantDate,
     handleDeleteImportantDate,
     handleAddMarketingTag,
+    handleUpdateMarketingTag, // Expose the new handler
     handleDeleteMarketingTag,
     handleAddPhotoshootDate,
+    handleUpdatePhotoshootDate,
     handleDeletePhotoshootDate,
     handleAddRelation,
+    handleUpdateRelation,
     handleDeleteRelation,
     activeFields, // You can remove this if not used
     handleFieldClick, // You can remove this if not used

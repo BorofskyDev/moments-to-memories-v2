@@ -1,32 +1,51 @@
-// components/client-profile/CreateGalleryForm.jsx
+// components/client-profile/create-gallery-form/CreateGalleryForm.jsx
 
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import styles from './CreateGalleryForm.module.scss'
+import Image from 'next/image'
+import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
+import AddButton from '@/components/buttons/add-button/AddButton'
+import SubmitButton from '@/components/buttons/submit-button/SubmitButton'
 
 const CreateGalleryForm = ({ onCreate, onCancel, isCreating }) => {
   const [name, setName] = useState('')
   const [date, setDate] = useState('')
-  const [files, setFiles] = useState([])
+  const [photos, setPhotos] = useState([]) // Array of { file: File, preview: string }
 
   const handleFileChange = (e) => {
-    setFiles([...e.target.files])
+    const file = e.target.files[0]
+    if (file) {
+      const preview = URL.createObjectURL(file)
+      setPhotos((prev) => [...prev, { file, preview }])
+    }
+  }
+
+  const handleAddPhoto = () => {
+    // Trigger the hidden file input
+    document.getElementById('fileInput').click()
+  }
+
+  const handleRemovePhoto = (index) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== index))
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!name || !date || files.length === 0) {
+    if (!name || !date || photos.length === 0) {
       alert('Please fill in all fields and upload at least one photo.')
       return
     }
+    const files = photos.map((photo) => photo.file)
     onCreate(name, date, files)
   }
 
   return (
     <div className={styles.createGalleryForm}>
-      <h2>Create New Photoshoot</h2>
+      <h2>Create New Gallery</h2>
       <form onSubmit={handleSubmit}>
         <div className={styles.formField}>
-          <label>Photoshoot Name:</label>
+          <label>Gallery Name:</label>
           <input
             type='text'
             value={name}
@@ -47,22 +66,46 @@ const CreateGalleryForm = ({ onCreate, onCancel, isCreating }) => {
         </div>
         <div className={styles.formField}>
           <label>Photos:</label>
-          <input
-            type='file'
-            multiple
-            onChange={handleFileChange}
-            className={styles.input}
-            required
-          />
+          <div className={styles.photosContainer}>
+            {photos.map((photo, index) => (
+              <div key={index} className={styles.photoItem}>
+                <Image
+                  src={photo.preview}
+                  alt={`Photo ${index + 1}`}
+                  className={styles.photoPreview}
+                  width={1900}
+                  height={1600}
+                />
+                <DeleteButton
+                  type='button'
+                  onClick={() => handleRemovePhoto(index)}
+                  className={styles.removeButton}
+                  text='Remove Photo'
+                />
+              </div>
+            ))}
+            <AddButton
+              type='button'
+              onClick={handleAddPhoto}
+              className={styles.addPhotoButton}
+              text='Add Photo'
+            />
+            {/* Hidden file input */}
+            <input
+              type='file'
+              id='fileInput'
+              style={{ display: 'none' }}
+              accept='image/*'
+              onChange={handleFileChange}
+            />
+          </div>
         </div>
         <div className={styles.formActions}>
-          <button
+          <SubmitButton
             type='submit'
             className={styles.saveButton}
             disabled={isCreating}
-          >
-            {isCreating ? 'Creating...' : 'Save'}
-          </button>
+            text={isCreating ? 'Creating...' : 'Save'}/>
           <button
             type='button'
             onClick={onCancel}
@@ -75,6 +118,12 @@ const CreateGalleryForm = ({ onCreate, onCancel, isCreating }) => {
       </form>
     </div>
   )
+}
+
+CreateGalleryForm.propTypes = {
+  onCreate: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  isCreating: PropTypes.bool.isRequired,
 }
 
 export default CreateGalleryForm

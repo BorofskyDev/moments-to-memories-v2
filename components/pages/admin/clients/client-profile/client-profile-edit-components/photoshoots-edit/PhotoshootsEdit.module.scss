@@ -1,0 +1,20 @@
+@use '../../../../../../../styles/mixins' as *;
+
+.photoshoots {
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-400);
+
+    &__list {
+        display: grid;
+        gap: var(--spacing-400);
+
+
+    }
+
+    & .listItem {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-200);
+    }
+}

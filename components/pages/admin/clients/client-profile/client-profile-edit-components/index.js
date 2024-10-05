@@ -1,0 +1,7 @@
+export { ActionButtons} from './action-buttons/ActionButtons'
+export { BasicClientInfoEdit} from './basic-client-info-edit/BasicClientInfoEdit'
+export { GallerySectionEdit } from './gallery-section-edit/GallerySectionEdit'
+export { ImportantDatesEdit } from './important-dates-edit/ImportantDatesEdit'
+export { MarketingTagsEdit } from './marketing-tags-edit/MarketingTagsEdit'
+export { PhotoshootsEdit } from './photoshoots-edit/PhotoshootsEdit'
+export { RelationsEdit } from './relations-edit/RelationsEdit'

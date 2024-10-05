@@ -23,5 +23,8 @@
   & span {
     color: hsl(var(--text-color));
     transition: var(--transition-main);
+    font-size: var(--fs-300);
+
+    
   }
 }

@@ -1,7 +1,7 @@
 import PlusSvg from '@/components/layout/svgs/plus-svg/PlusSvg'
 import styles from './AddButton.module.scss'
 
-const AddButton = ({ type, onClick, className }) => {
+const AddButton = ({ type, onClick, className, text }) => {
   return (
     <button
       type={type}
@@ -9,7 +9,7 @@ const AddButton = ({ type, onClick, className }) => {
       className={`${styles.addButton} ${className}`}
     >
       <PlusSvg />
-      <span>Add</span>
+      <span>{text}</span>
     </button>
   )
 }

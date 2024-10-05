@@ -99,7 +99,6 @@ function CreateClientModal({ isOpen, onClose, onNewEntry }) {
 
     try {
       const clientsCollectionRef = collection(db, 'clients')
-      console.log('Clients Collection Reference:', clientsCollectionRef)
 
       const docRef = await addDoc(clientsCollectionRef, preparedFormData)
 

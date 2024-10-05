@@ -1,0 +1,19 @@
+@use '../../../../../../../styles/mixins' as *;
+
+.marketingTags {
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-400);
+
+    &__list {
+        display: grid;
+        gap: var(--spacing-200);
+
+    }
+
+    & .marketingTag {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-100);
+    }
+}
