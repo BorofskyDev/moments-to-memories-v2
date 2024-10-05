@@ -1,0 +1,41 @@
+@use '../../../styles/mixins' as *;
+
+.createGalleryForm {
+  margin: var(--spacing-600) auto;
+  display: grid;
+  place-content: center;
+  gap: var(--spacing-400);
+
+  & .formField {
+    margin: var(--spacing-400) auto;
+    display: grid;
+    gap: var(--spacing-100);
+
+    & label {
+    }
+
+    & input {
+      width: 100%;
+      padding: var(--spacing-100);
+      background-color: hsl(var(--background-color));
+      color: hsl(var(--text-color));
+      @include gradientBorder;
+    }
+
+    & .photosContainer {
+      display: grid;
+      gap: var(--spacing-200);
+
+      & .photoItem {
+        display: flex;
+      
+        & img {
+          width: 16rem;
+          height: 16rem;
+          object-fit: cover;
+          box-shadow: var(--box-shadow-300);
+        }
+      }
+    }
+  }
+}

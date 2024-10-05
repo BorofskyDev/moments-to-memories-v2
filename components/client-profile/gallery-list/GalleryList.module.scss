@@ -1,0 +1,170 @@
+// components/client-profile/gallery-list/GalleryList.module.scss
+
+@use '../../../styles/mixins' as *;
+
+.galleryList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    max-width: 800px;
+  }
+
+  .galleryItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+
+    .galleryInfo {
+      flex: 1;
+    }
+
+    .galleryActions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .viewButton,
+    .deleteButton {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .viewButton {
+      background-color: #0070f3;
+      color: #fff;
+    }
+
+    .deleteButton {
+      background-color: red;
+      color: #fff;
+    }
+  }
+
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .modalContent {
+    background-color: hsl(var(--background-color));
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 900px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .photosGrid {
+    width: 100%;
+    margin-top: 1rem;
+    /* Removed grid layout as Swiper handles sliding */
+  }
+
+  .photoContainer {
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    height: 500px; /* Adjust as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    img {
+      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #333;
+    }
+  }
+
+  .closeButton {
+    margin-top: 1.5rem;
+    padding: 0.5rem 1.5rem;
+    background-color: gray;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+//   .error {
+//     color: red;
+//     margin-top: 1rem;
+//   }
+
+//   /* Swiper-specific styles */
+//   .swiper {
+//     width: 100%;
+//     height: 500px; /* Adjust height as needed */
+//     margin-top: 1rem;
+//   }
+
+//   .swiper-slide {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//   }
+
+//   /* Navigation arrows styling */
+//   .swiper-button-prev,
+//   .swiper-button-next {
+//     color: #0070f3;
+//   }
+
+//   /* Pagination bullets styling */
+//   .swiper-pagination-bullet {
+//     background: #0070f3;
+//   }
+
+//   .swiper-pagination-bullet-active {
+//     background: #005bb5;
+//   }
+
+//   /* Responsive adjustments */
+//   @media (max-width: 768px) {
+//     .swiper {
+//       height: 300px; /* Adjust for smaller screens */
+//     }
+
+//     .photoContainer {
+//       height: 300px;
+//     }
+
+//     .galleryItem {
+//       flex-direction: column;
+//       align-items: flex-start;
+
+//       .galleryActions {
+//         margin-top: 0.5rem;
+//       }
+//     }
+//   }
+}

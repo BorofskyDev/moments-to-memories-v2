@@ -1,18 +1,21 @@
 // components/client-profile/gallery-list/GalleryList.jsx
 
+'use client' // Ensure this is at the top
+
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { db } from '@/libs/firebase' // Ensure correct import
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
 import styles from './GalleryList.module.scss'
-import Image from 'next/image'
-import DeleteConfirmationModal from '@/components/modals/delete-confirmation-modal/DeleteConfirmationModal' // Import your existing modal
+import CustomGallery from '@/components/galleries/custom-gallery/CustomGallery' // Import the CustomGallery
+import DeleteConfirmationModal from '@/components/modals/delete-confirmation-modal/DeleteConfirmationModal' // Not used now
+import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
+import ViewButton from '@/components/buttons/view-button/ViewButton'
+import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
 
 const GalleryList = ({ galleries, onDelete, clientId, deletePhoto }) => {
   const [selectedGallery, setSelectedGallery] = useState(null)
   const [photos, setPhotos] = useState([])
-  const [photoToDelete, setPhotoToDelete] = useState(null) // State for the photo to delete
-  const [isDeletingPhoto, setIsDeletingPhoto] = useState(false) // State for deleting photo
 
   useEffect(() => {
     if (selectedGallery) {
@@ -32,6 +35,7 @@ const GalleryList = ({ galleries, onDelete, clientId, deletePhoto }) => {
             id: doc.id,
             ...doc.data(),
           }))
+          console.log('Fetched Photos:', photosList) // Debugging
           setPhotos(photosList)
         } catch (err) {
           console.error('Error fetching photos:', err)
@@ -43,31 +47,6 @@ const GalleryList = ({ galleries, onDelete, clientId, deletePhoto }) => {
     }
   }, [selectedGallery, clientId])
 
-  const handlePhotoClick = (photo) => {
-    setPhotoToDelete(photo)
-  }
-
-  const handleConfirmDeletePhoto = async () => {
-    if (!photoToDelete || !selectedGallery) return
-    setIsDeletingPhoto(true)
-    try {
-      await deletePhoto(
-        selectedGallery.id,
-        photoToDelete.id,
-        photoToDelete.name
-      )
-      setPhotoToDelete(null)
-    } catch (err) {
-      console.error('Error deleting photo:', err)
-    } finally {
-      setIsDeletingPhoto(false)
-    }
-  }
-
-  const handleCancelDeletePhoto = () => {
-    setPhotoToDelete(null)
-  }
-
   return (
     <div className={styles.galleryList}>
       {galleries.length > 0 ? (
@@ -75,7 +54,7 @@ const GalleryList = ({ galleries, onDelete, clientId, deletePhoto }) => {
           {galleries.map((gallery) => (
             <li key={gallery.id} className={styles.galleryItem}>
               <div className={styles.galleryInfo}>
-                <h3>{gallery.name}</h3>
+                <ParagraphHeading>{gallery.name}</ParagraphHeading>
                 <p>
                   Date:{' '}
                   {gallery.date.seconds
@@ -86,18 +65,16 @@ const GalleryList = ({ galleries, onDelete, clientId, deletePhoto }) => {
                 </p>
               </div>
               <div className={styles.galleryActions}>
-                <button
+                <ViewButton
                   onClick={() => setSelectedGallery(gallery)}
                   className={styles.viewButton}
-                >
-                  View
-                </button>
-                <button
+                  text='View Gallery'
+                />
+                <DeleteButton
                   onClick={() => onDelete(gallery.id)}
                   className={styles.deleteButton}
-                >
-                  Delete
-                </button>
+                  text='Delete Gallery'
+                />
               </div>
             </li>
           ))}
@@ -106,7 +83,7 @@ const GalleryList = ({ galleries, onDelete, clientId, deletePhoto }) => {
         <p>No galleries available.</p>
       )}
 
-      {/* Gallery Modal */}
+      {/* Custom Gallery Modal */}
       {selectedGallery && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
@@ -119,27 +96,10 @@ const GalleryList = ({ galleries, onDelete, clientId, deletePhoto }) => {
                   ).toLocaleDateString('en-US')
                 : 'Invalid Date'}
             </p>
-            <div className={styles.photosGrid}>
-              {photos.map((photo) => (
-                <div
-                  key={photo.id}
-                  className={styles.photoContainer}
-                  onClick={() => handlePhotoClick(photo)}
-                >
-                  <Image
-                    src={photo.url}
-                    alt={photo.name}
-                    className={styles.photo}
-                    height={1600}
-                    width={1900}
-                    // Optional: Add placeholder and blur for better UX
-                    // placeholder="blur"
-                    // blurDataURL="/placeholder.png"
-                  />
-                  <p>{photo.name}</p>
-                </div>
-              ))}
-            </div>
+            <CustomGallery
+              images={photos}
+              onDelete={deletePhoto} // Pass the deletePhoto function
+            />
             <button
               onClick={() => setSelectedGallery(null)}
               className={styles.closeButton}
@@ -148,17 +108,6 @@ const GalleryList = ({ galleries, onDelete, clientId, deletePhoto }) => {
             </button>
           </div>
         </div>
-      )}
-
-      {/* Delete Photo Confirmation Modal */}
-      {photoToDelete && (
-        <DeleteConfirmationModal
-          isOpen={!!photoToDelete}
-          onConfirmDelete={handleConfirmDeletePhoto}
-          onCancel={handleCancelDeletePhoto}
-          isDeleting={isDeletingPhoto}
-          text={`Are you sure you want to delete "${photoToDelete.name}"? This action cannot be undone.`}
-        />
       )}
     </div>
   )

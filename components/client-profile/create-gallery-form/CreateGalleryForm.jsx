@@ -7,6 +7,7 @@ import Image from 'next/image'
 import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 import AddButton from '@/components/buttons/add-button/AddButton'
 import SubmitButton from '@/components/buttons/submit-button/SubmitButton'
+import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
 
 const CreateGalleryForm = ({ onCreate, onCancel, isCreating }) => {
   const [name, setName] = useState('')
@@ -42,7 +43,7 @@ const CreateGalleryForm = ({ onCreate, onCancel, isCreating }) => {
 
   return (
     <div className={styles.createGalleryForm}>
-      <h2>Create New Gallery</h2>
+      <ParagraphHeading>Create New Gallery</ParagraphHeading>
       <form onSubmit={handleSubmit}>
         <div className={styles.formField}>
           <label>Gallery Name:</label>

@@ -94,6 +94,7 @@ export const PhotoshootsEdit = ({
         <AddButton
           onClick={handleAddPhotoshootDate}
           className={styles.addButton}
+          text='Add Photoshoot'
         />
       )}
     </section>

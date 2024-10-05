@@ -6,6 +6,7 @@ import EditField from '@/components/layout/edit-field/EditField'
 import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 import AddButton from '@/components/buttons/add-button/AddButton'
 import styles from './RelationsEdit.module.scss'
+import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
 
 export const RelationsEdit = ({
   relations,
@@ -18,13 +19,13 @@ export const RelationsEdit = ({
 }) => {
   return (
     <section className={styles.relations}>
-      <h2>Relations</h2>
+      <ParagraphHeading>Relations</ParagraphHeading>
       {relations && relations.length > 0 ? (
         <ul>
           {relations.map((relation, index) => (
-            <li key={index} className={styles.relationItem}>
+            <li key={index} >
               {canEdit ? (
-                <>
+                <div className={styles.relationItem}>
                   <EditField
                     label='Name'
                     fieldName={`relationName-${index}`}
@@ -62,7 +63,7 @@ export const RelationsEdit = ({
                     className={styles.deleteButton}
                     text='Delete Relation'
                   />
-                </>
+                </div>
               ) : (
                 <>
                   <p>
@@ -83,7 +84,7 @@ export const RelationsEdit = ({
         <p>No relations added.</p>
       )}
       {canEdit && (
-        <AddButton onClick={handleAddRelation} className={styles.addButton} />
+        <AddButton onClick={handleAddRelation} className={styles.addButton} text='Add Relation' />
       )}
     </section>
   )

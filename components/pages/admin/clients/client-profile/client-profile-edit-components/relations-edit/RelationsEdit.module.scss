@@ -1,0 +1,12 @@
+@use '../../../../../../../styles/mixins' as *;
+
+.relations {
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-600);
+
+    & .relationItem {
+        display: grid;
+        gap: var(--spacing-200);
+    }
+}
