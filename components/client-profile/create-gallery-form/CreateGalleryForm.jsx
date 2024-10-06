@@ -8,6 +8,7 @@ import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 import AddButton from '@/components/buttons/add-button/AddButton'
 import SubmitButton from '@/components/buttons/submit-button/SubmitButton'
 import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import CancelButton from '@/components/buttons/cancel-button/CancelButton'
 
 const CreateGalleryForm = ({ onCreate, onCancel, isCreating }) => {
   const [name, setName] = useState('')
@@ -107,14 +108,13 @@ const CreateGalleryForm = ({ onCreate, onCancel, isCreating }) => {
             className={styles.saveButton}
             disabled={isCreating}
             text={isCreating ? 'Creating...' : 'Save'}/>
-          <button
+          <CancelButton
             type='button'
             onClick={onCancel}
             className={styles.cancelButton}
             disabled={isCreating}
-          >
-            Cancel
-          </button>
+            text='Cancel'
+          />
         </div>
       </form>
     </div>

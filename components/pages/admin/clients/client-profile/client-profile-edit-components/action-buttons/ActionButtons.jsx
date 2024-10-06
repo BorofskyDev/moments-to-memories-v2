@@ -13,11 +13,13 @@ export const ActionButtons = ({ handleSave, handleCancel, isSaving }) => {
         onClick={handleSave}
         className={styles.saveButton}
         disabled={isSaving}
+        text='Save Profile'
       />
       <CancelButton
         onClick={handleCancel}
         className={styles.cancelButton}
         disabled={isSaving}
+        text='Cancel'
       />
     </div>
   )
