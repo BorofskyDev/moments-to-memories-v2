@@ -28,11 +28,10 @@
         object-fit: cover;
         object-position: top;
         border-radius: 50%;
+        box-shadow: var(--box-shadow-300);
     }
 
-    & .reviewCard__reviewText {
-        width: calc(100% - 4rem);
-    }
+   
 
     & .navigationContainer {
         display: flex;
