@@ -5,7 +5,7 @@ import React from 'react'
 import { useId } from 'react'
 import AnimatedIcon from '../AnimatedIcon'
 
-function NextPrevSvg() {
+function NextPrevSvg({className}) {
   const id = useId() // Generate a unique ID for this instance
 
   return (
@@ -15,6 +15,7 @@ function NextPrevSvg() {
       animate='visible'
       viewport={{ once: false, amount: 0.5 }}
       animationDuration={2.5}
+      className={className}
     >
       <defs>
         <linearGradient id={`icon-gradient-${id}`}>

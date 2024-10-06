@@ -1,0 +1,62 @@
+/* components/pages/home/reviews/ReviewsSection.module.scss */
+
+.reviewsSection {
+    display: grid;
+    place-content: center;
+    gap: var(--spacing-600);
+
+    & .reviewCardContainer {
+        position: relative;
+        width: 100%;
+        max-width: 600px; /* Adjust as needed */
+        height: 400px; /* Adjust based on content */
+        overflow: hidden;
+    }
+
+    & .reviewCard {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-200);
+    }
+
+    & .reviewCard__reviewImage {
+        width: 12rem;
+        height: 12rem;
+        object-fit: cover;
+        object-position: top;
+        border-radius: 50%;
+    }
+
+    & .reviewCard__reviewText {
+        width: calc(100% - 4rem);
+    }
+
+    & .navigationContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-400);
+        position: relative;
+    }
+
+    & .navButton {
+        background: none;
+        border: none;
+        cursor: pointer;
+
+        &__prev {
+            transform: rotate(180deg);
+        }
+    }
+    & .disabled {
+        & svg {
+            & path {
+                stroke: hsl(var(--secondary-color));
+                fill: hsl(var(--secondary-color));
+            }
+        }
+    }
+}

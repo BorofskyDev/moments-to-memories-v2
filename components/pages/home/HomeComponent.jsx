@@ -4,6 +4,7 @@ import styles from './HomeComponent.module.scss';
 import GallerySection from './gallery/GallerySection';
 import ServicesSection from './services/ServicesSection';
 import CTA from './cta/CTA';
+import ReviewsSection from './reviews/ReviewsSection';
 
 function HomeComponent() {
   return (
@@ -13,6 +14,7 @@ function HomeComponent() {
       <ServicesSection />
       <GallerySection />
       <CTA />
+      <ReviewsSection />
     </div>
   )
 }
