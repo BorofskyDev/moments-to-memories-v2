@@ -60,6 +60,7 @@ const ClientProfile = ({ client }) => {
     createGallery,
     deleteGallery,
     deletePhoto,
+    addPhotosToGallery,
   } = useGallery(clientData?.id)
 
   
@@ -184,6 +185,7 @@ const ClientProfile = ({ client }) => {
         isCreating={isCreating}
         clientId={clientData.id}
         deletePhoto={deletePhoto}
+        addPhotosToGallery={addPhotosToGallery}
       />
 
       {/* Action Buttons */}

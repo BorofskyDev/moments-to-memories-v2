@@ -8,14 +8,22 @@ import { db } from '@/libs/firebase' // Ensure correct import
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
 import styles from './GalleryList.module.scss'
 import CustomGallery from '@/components/galleries/custom-gallery/CustomGallery' // Import the CustomGallery
-import DeleteConfirmationModal from '@/components/modals/delete-confirmation-modal/DeleteConfirmationModal' // Not used now
 import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 import ViewButton from '@/components/buttons/view-button/ViewButton'
+import AddButton from '@/components/buttons/add-button/AddButton' // Add this import
 import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
 
-const GalleryList = ({ galleries, onDelete, clientId, deletePhoto }) => {
+const GalleryList = ({
+  galleries,
+  onDelete,
+  clientId,
+  deletePhoto,
+  addPhotosToGallery,
+}) => {
   const [selectedGallery, setSelectedGallery] = useState(null)
   const [photos, setPhotos] = useState([])
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadError, setUploadError] = useState(null)
 
   useEffect(() => {
     if (selectedGallery) {
@@ -46,6 +54,38 @@ const GalleryList = ({ galleries, onDelete, clientId, deletePhoto }) => {
       setPhotos([])
     }
   }, [selectedGallery, clientId])
+
+  // Handle adding photos
+  const handleAddPhotos = async (e) => {
+    const files = e.target.files
+    if (files.length === 0) return
+
+    try {
+      setIsUploading(true)
+      setUploadError(null)
+      await addPhotosToGallery(selectedGallery.id, Array.from(files))
+      // After adding, refresh the photos list
+      const photosCol = collection(
+        db,
+        'clients',
+        clientId,
+        'galleries',
+        selectedGallery.id,
+        'photos'
+      )
+      const photosSnapshot = await getDocs(photosCol)
+      const photosList = photosSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      setPhotos(photosList)
+    } catch (err) {
+      console.error('Error adding photos:', err)
+      setUploadError('Failed to add photos.')
+    } finally {
+      setIsUploading(false)
+    }
+  }
 
   return (
     <div className={styles.galleryList}>
@@ -98,8 +138,27 @@ const GalleryList = ({ galleries, onDelete, clientId, deletePhoto }) => {
             </p>
             <CustomGallery
               images={photos}
-              onDelete={deletePhoto} // Pass the deletePhoto function
+              onDelete={(photoId, photoName) =>
+                deletePhoto(selectedGallery.id, photoId, photoName)
+              } // Pass galleryId along with photoId and photoName
             />
+            {/* Add Photos Button */}
+            <AddButton
+              onClick={() => document.getElementById('addPhotoInput').click()}
+              className={styles.addPhotoButton}
+              text={isUploading ? 'Uploading...' : 'Add Photos'}
+              disabled={isUploading}
+            />
+            {/* Hidden File Input */}
+            <input
+              type='file'
+              id='addPhotoInput'
+              style={{ display: 'none' }}
+              accept='image/*'
+              multiple
+              onChange={handleAddPhotos}
+            />
+            {uploadError && <p className={styles.error}>{uploadError}</p>}
             <button
               onClick={() => setSelectedGallery(null)}
               className={styles.closeButton}
@@ -136,6 +195,7 @@ GalleryList.propTypes = {
   onDelete: PropTypes.func.isRequired,
   clientId: PropTypes.string.isRequired, // New PropType
   deletePhoto: PropTypes.func.isRequired, // New PropType
+  addPhotosToGallery: PropTypes.func.isRequired, // New PropType
 }
 
 export default GalleryList

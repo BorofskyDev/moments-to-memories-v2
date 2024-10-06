@@ -20,6 +20,7 @@ export const GallerySectionEdit = ({
   isCreating,
   clientId, // New prop
   deletePhoto, // New prop
+  addPhotosToGallery, // New prop
 }) => {
   return (
     <section className={styles.gallerySection}>
@@ -45,6 +46,7 @@ export const GallerySectionEdit = ({
         onDelete={(galleryId) => deleteGallery(galleryId)}
         clientId={clientId} // Pass clientId
         deletePhoto={deletePhoto} // Pass deletePhoto
+        addPhotosToGallery={addPhotosToGallery} // Pass addPhotosToGallery
       />
 
       {galleryError && (

@@ -221,6 +221,55 @@ const useGallery = (clientId) => {
     }
   }
 
+  const addPhotosToGallery = async (galleryId, files) => {
+    if (!clientId) {
+      setError('Client ID is missing.')
+      return
+    }
+    setIsCreating(true) // Reuse isCreating for adding photos
+
+    try {
+      if (!user) {
+        throw new Error('User not authenticated')
+      }
+
+      // Upload each file to Firebase Storage and store download URLs in Firestore
+      const uploadPromises = files.map(async (file) => {
+        const storageRef = ref(
+          storage,
+          `clients/${clientId}/galleries/${galleryId}/${file.name}`
+        )
+        const snapshot = await uploadBytes(storageRef, file)
+        const url = await getDownloadURL(snapshot.ref)
+        return { name: file.name, url }
+      })
+
+      const uploadedPhotos = await Promise.all(uploadPromises)
+
+      // Save photo URLs in Firestore under the gallery's photos collection
+      const photosCol = collection(
+        db,
+        'clients',
+        clientId,
+        'galleries',
+        galleryId,
+        'photos'
+      )
+      const addPhotoPromises = uploadedPhotos.map((photo) =>
+        addDoc(photosCol, photo)
+      )
+      await Promise.all(addPhotoPromises)
+
+      // Refresh galleries list
+      await fetchGalleries()
+    } catch (err) {
+      console.error('Error adding photos to gallery:', err)
+      setError('Failed to add photos to gallery.')
+    } finally {
+      setIsCreating(false)
+    }
+  }
+
   // Initialize by fetching galleries
   useEffect(() => {
     fetchGalleries()
@@ -234,7 +283,8 @@ const useGallery = (clientId) => {
     fetchGalleries,
     createGallery,
     deleteGallery,
-    deletePhoto, // Expose the new deletePhoto function
+    deletePhoto, 
+    addPhotosToGallery,
   }
 }
 

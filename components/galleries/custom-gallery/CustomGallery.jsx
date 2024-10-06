@@ -60,7 +60,7 @@ const CustomGallery = ({ images, onDelete }) => {
     if (!photoToDelete) return
     setIsDeleting(true)
     try {
-      await onDelete(photoToDelete.id) // Assuming each image has a unique 'id'
+      await onDelete(photoToDelete.id, photoToDelete.name) // Pass both photoId and photoName
       setPhotoToDelete(null)
     } catch (error) {
       console.error('Error deleting photo:', error)

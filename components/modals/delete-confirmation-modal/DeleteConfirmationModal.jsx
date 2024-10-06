@@ -20,24 +20,19 @@ const DeleteConfirmationModal = ({
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         <Subheading>Confirm Deletion</Subheading>
-        <p>
-          {text}
-        </p>
+        <p>{text}</p>
         <div className={styles.modalButtons}>
           <DeleteButton
             onClick={onConfirmDelete}
             className={styles.confirmDeleteButton}
             disabled={isDeleting}
-          >
-            {isDeleting ? 'Deleting...' : 'Delete'}
-          </DeleteButton>
+            text={isDeleting ? 'Deleting...' : 'Delete Photo?'}/>
           <CancelButton
             onClick={onCancel}
             className={styles.cancelModalButton}
             disabled={isDeleting}
-          >
-            Cancel
-          </CancelButton>
+            text='Cancel'
+          />
         </div>
       </div>
     </div>
