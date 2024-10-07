@@ -1,0 +1,48 @@
+@use '../../../../../styles/mixins' as *;
+
+.messageListContainer {
+  position: relative;
+  display: grid;
+  place-content: center;
+  place-items: center;
+  gap: var(--spacing-400);
+
+  &__messageList {
+    margin-top: var(--spacing-400);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-400);
+    overflow: hidden;
+
+    & .messageItem {
+      padding-bottom: var(--spacing-200);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-200);
+      place-content: center;
+      place-items: center;
+      border-bottom: 1px solid hsl(var(--text-color) / 0.5);
+
+      & .messageName {
+        padding: var(--spacing-100) var(--spacing-200);
+        text-overflow: ellipsis;
+        font-size: var(--fs-400);
+        text-transform: capitalize;
+        @include gradientBorder;
+      }
+
+      & .messageSubject {
+        padding: var(--spacing-100) var(--spacing-200);
+        @include gradientBorder;
+      }
+
+      & .messagePreview {
+        padding: var(--spacing-100) var(--spacing-200);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: var(--fs-400);
+        @include gradientBorder;
+      }
+    }
+  }
+}

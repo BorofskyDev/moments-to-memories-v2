@@ -17,7 +17,7 @@ const DeleteConfirmationModal = ({
   if (!isOpen) return null
 
   return (
-    <div className={styles.modalOverlay}>
+    <div className={styles.deleteConfirmationModal}>
       <div className={styles.modalContent}>
         <Subheading>Confirm Deletion</Subheading>
         <p>{text}</p>
@@ -26,7 +26,7 @@ const DeleteConfirmationModal = ({
             onClick={onConfirmDelete}
             className={styles.confirmDeleteButton}
             disabled={isDeleting}
-            text={isDeleting ? 'Deleting...' : 'Delete Photo?'}/>
+            text={isDeleting ? 'Deleting...' : 'Delete?'}/>
           <CancelButton
             onClick={onCancel}
             className={styles.cancelModalButton}

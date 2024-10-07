@@ -1,0 +1,9 @@
+@use '../../../styles/mixins' as *;
+
+.deleteConfirmationModal {
+    background-color: hsl(var(--background-color));
+    z-index: 500;
+    padding: var(--spacing-400);
+    box-shadow: var(--box-shadow-500);
+    @include gradientBorder;
+}
