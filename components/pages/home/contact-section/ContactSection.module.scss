@@ -1,0 +1,7 @@
+@use '../../../../styles/mixins' as *;
+
+.contactSection {
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-600);
+}
