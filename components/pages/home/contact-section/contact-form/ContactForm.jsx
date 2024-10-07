@@ -6,9 +6,9 @@ import React from 'react'
 import useContactForm from '@/libs/hooks/contact-form/useContactForm'
 import styles from './ContactForm.module.scss'
 import BodyText from '@/components/layout/body-text/BodyText'
-import SectionHeading from '@/components/headings/section-heading/SectionHeading'
 import InputField from '@/components/layout/input-field/InputField' // Import the InputField component
 import SubmitButton from '@/components/buttons/submit-button/SubmitButton'
+import Image from 'next/image'
 
 const ContactForm = () => {
   const {
@@ -41,6 +41,7 @@ const ContactForm = () => {
         onChange={handleChange}
         required
         error={errors.name}
+        className={`${styles.contactForm__col1} ${styles.contactForm__row1}`}
       />
 
       {/* Email Field */}
@@ -52,6 +53,7 @@ const ContactForm = () => {
         onChange={handleChange}
         required
         error={errors.email}
+        className={`${styles.contactForm__col1} ${styles.contactForm__row2}`}
       />
 
       {/* Phone Number Field */}
@@ -63,6 +65,7 @@ const ContactForm = () => {
         onChange={handleChange}
         required
         error={errors.phone}
+        className={`${styles.contactForm__col1} ${styles.contactForm__row3}`}
         // Uncomment the following lines if using react-input-mask
         // as="input"
         // inputComponent={InputMask}
@@ -80,10 +83,13 @@ const ContactForm = () => {
         required
         error={errors.subject}
         maxLength={100}
+        className={`${styles.contactForm__col2} ${styles.contactForm__row1}`}
       />
 
       {/* Preferred Contact Method Field */}
-      <div className={styles.formGroup}>
+      <div
+        className={`${styles.formGroup} ${styles.contactForm__col2} ${styles.contactForm__row2}`}
+      >
         <label htmlFor='contactMethod'>
           Preferred Contact Method<span className={styles.required}>*</span>
         </label>
@@ -118,8 +124,16 @@ const ContactForm = () => {
         required
         error={errors.message}
         maxLength={500}
+        className={`${styles.contactForm__col2} ${styles.contactForm__row3}`}
       />
 
+      <Image
+        src='/page-images/contact/model2.svg'
+        alt='Model laid out on the contact button'
+        height={1200}
+        width={1600}
+        className={`${styles.contactForm__image}`}
+      />
       {/* Submit Button */}
       <SubmitButton
         type='submit'

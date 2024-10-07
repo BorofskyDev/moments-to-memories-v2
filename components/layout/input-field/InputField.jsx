@@ -8,6 +8,7 @@ import styles from './InputField.module.scss'
 import BodyText from '@/components/layout/body-text/BodyText'
 
 const InputField = ({
+    className,
   label,
   name,
   type = 'text',
@@ -19,7 +20,7 @@ const InputField = ({
   ...rest
 }) => {
   return (
-    <div className={styles.formGroup}>
+    <div className={`${styles.formGroup} ${className}`}>
       <label htmlFor={name}>
         {label}
         {required && <span className={styles.required}>*</span>}
