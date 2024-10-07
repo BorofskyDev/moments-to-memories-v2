@@ -2,6 +2,6 @@
 
 .sectionContainer {
     position: relative;
-    margin: var(--spacing-800) auto;
+    margin: var(--section-spacing) auto;
     @include sectionLayout;
 }

@@ -3,7 +3,7 @@
 .svgBackgroundContainer {
     position: absolute;
     width: 100%;
-    height: 80%;
+    height: 70%;
     margin: 0 auto;
     background-size: cover;
     background-repeat: no-repeat;
@@ -11,4 +11,12 @@
     z-index: -1;
     pointer-events: none;
     
+    @include breakpoint(laptop) {
+        height: 100%;
+        transform: translate(40%, 60%)
+    }
+
+    @include breakpoint(desktop) {
+        transform: translate(40%, 65%)
+    }
 }

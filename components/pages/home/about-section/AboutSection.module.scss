@@ -1,7 +1,11 @@
 @use '../../../../styles/mixins' as *;
 
 .aboutSection {
-    margin-top: var(--spacing-900);
+    
+    gap: var(--spacing-400);
+    display: grid;
+    place-content: center;
+
     
     &__content {
         display: flex;
@@ -19,19 +23,26 @@
 
 
     & img {
-        max-width: 12rem;
+        max-width: 11rem;
         max-height: 28rem;
 
         @include breakpoint(tab) {
-            max-width: 16rem;
-            max-height: 32rem;
+            max-width: 15rem;
+            max-height: 40rem;
             margin-left: var(--spacing-600);
         }
 
         @include breakpoint(laptop) {
-            max-width: 18rem;
+            max-width: 16rem;
             max-height: 42rem;
             margin-left: var(--spacing-900);
         }
+    }
+
+    &__learnMore {
+        
+        margin: 0 auto;
+        margin-top: var(--spacing-600);
+       
     }
 }

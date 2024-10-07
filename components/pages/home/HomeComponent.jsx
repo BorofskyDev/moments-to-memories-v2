@@ -5,6 +5,7 @@ import GallerySection from './gallery/GallerySection';
 import ServicesSection from './services/ServicesSection';
 import CTA from './cta/CTA';
 import ReviewsSection from './reviews/ReviewsSection';
+import ContactSection from './contact-section/ContactSection';
 
 function HomeComponent() {
   return (
@@ -15,6 +16,7 @@ function HomeComponent() {
       <GallerySection />
       <CTA />
       <ReviewsSection />
+      <ContactSection />
     </div>
   )
 }

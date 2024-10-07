@@ -3,7 +3,6 @@
 @mixin sectionLayout {
     width: calc(100% - var(--spacing-400));
     max-width: var(--width-max);
-    
 
     @include breakpoint(tab) {
         width: calc(100% - var(--spacing-500));

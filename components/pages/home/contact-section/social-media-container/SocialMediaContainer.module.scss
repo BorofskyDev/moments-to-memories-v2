@@ -1,0 +1,46 @@
+@use '../../../../../styles/mixins' as *;
+
+.socialMediaContainer {
+    margin: var(--spacing-400) auto;
+
+    &__list {
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-400);
+
+
+        & li {
+            & a {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: var(--spacing-200);
+                transition: var(--transition-main);
+
+                &:hover, &:focus {
+                    & label {
+                        opacity: 1;
+                    }
+                }
+
+                & label {
+                    opacity: 0;
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translate(-50%, 100%);
+                    padding: var(--spacing-100) var(--spacing-200);
+                    background-color: hsl(var(--background-color));
+                    color: hsl(var(--text-color));
+                    transition: var(--transition-main);
+
+                    @include gradientBorder;
+                }
+            }
+        }
+    }
+
+}

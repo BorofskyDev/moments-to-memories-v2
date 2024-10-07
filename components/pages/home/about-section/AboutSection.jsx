@@ -3,6 +3,7 @@ import SectionContainer from '@/components/layout/containers/section-container/S
 import styles from './AboutSection.module.scss'
 import BodyText from '@/components/layout/body-text/BodyText'
 import Image from 'next/image'
+import InternalPageLink from '@/components/links/internal-page-link/InternalPageLink'
 
 function AboutSection() {
   return (
@@ -36,6 +37,7 @@ function AboutSection() {
       </BodyText>
 
       </div>
+      <InternalPageLink className={styles.aboutSection__learnMore} href='/about'>Learn more about moments to memories</InternalPageLink>
     </SectionContainer>
   )
 }
