@@ -1,5 +1,7 @@
 @use '../../../styles/mixins' as *;
 
 .gridGallery {
+    position: relative;
+    overflow: hidden;
   @include gridGallery;
 }

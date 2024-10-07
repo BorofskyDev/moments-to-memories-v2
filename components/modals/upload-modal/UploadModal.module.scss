@@ -1,0 +1,24 @@
+@use '../../../styles/mixins' as *;
+
+.modalOverlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    padding: var(--spacing-200);
+    transform: translate(-50%, -50%);
+    background-color: hsl(var(--background-color));
+    
+    & .modalContent {
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-400);
+
+        & form {
+            display: grid;
+            place-content: center;
+            gap: var(--spacing-400);
+        }
+    }
+}
