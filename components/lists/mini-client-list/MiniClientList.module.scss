@@ -1,0 +1,14 @@
+@use '../../../styles/mixins' as *;
+
+.miniClientsList {
+display: grid;
+place-items: center;
+gap: var(--spacing-200);
+
+    & ul {
+        @include listItems;
+
+        
+
+    }
+}

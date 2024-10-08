@@ -1,15 +1,17 @@
+import ParagraphHeading from "@/components/headings/paragraph-heading/ParagraphHeading"
+import MiniClientsList from "@/components/lists/mini-client-list/MiniClientList"
+import styles from './AdminDashboard.module.scss'
 
-'use client'
 
-import SignOutButton from '@/components/buttons/sign-out-button/SignOutButton'
-import React from 'react'
 
-const AdminDashboard = () => {
+
+function AdminDashboard() {
   return (
-    <div>
-      
-      <SignOutButton />
-      {/* Add your admin functionalities here */}
+    <div className={styles.adminDashboard}>
+      <div className={styles.adminDashboard__section}>
+      <ParagraphHeading>Clients</ParagraphHeading>
+      <MiniClientsList />
+      </div>
     </div>
   )
 }

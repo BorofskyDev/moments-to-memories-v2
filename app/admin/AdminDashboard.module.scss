@@ -1,0 +1,13 @@
+@use '../../styles/mixins' as *;
+
+.adminDashboard {
+    display: grid;
+    place-content: center;
+    gap: var(--spacing-600);
+
+    &__section {
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-400);
+    }
+}

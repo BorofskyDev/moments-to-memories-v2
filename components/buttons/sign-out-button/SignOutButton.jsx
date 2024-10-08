@@ -1,24 +1,14 @@
-// components/SignOutButton.jsx
-'use client'
+import styles from './SignOutButton.module.scss'
 
-import React from 'react'
-import { signOut } from 'firebase/auth'
-import { auth } from '@/libs/firebase' // Adjust the import path as necessary
-import { useRouter } from 'next/navigation'
-
-const SignOutButton = () => {
-  const router = useRouter()
-
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth)
-      router.push('/login')
-    } catch (error) {
-      console.error('Error signing out:', error)
-    }
-  }
-
-  return <button onClick={handleSignOut}>Sign Out</button>
+const SignOutButton = ({ onClick, className }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`${styles.signOutButton} ${className}`}
+    >
+      Sign Out
+    </button>
+  )
 }
 
 export default SignOutButton

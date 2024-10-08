@@ -1,0 +1,19 @@
+@use '../../../styles/mixins' as *;
+
+.signOutButton {
+    padding: var(--spacing-100) var(--spacing-200);
+    border-radius: none;
+    outline: none;
+    border: none;
+    box-shadow: var(--box-shadow-300);
+    background-color: hsl(var(--secondary-color));
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-main);
+    @include gradientBorder;
+
+    &:hover {
+     box-shadow: var(--box-shadow-500);
+     font-weight: 900;
+    }
+}

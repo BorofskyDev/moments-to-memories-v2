@@ -7,9 +7,7 @@ import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import { auth, googleProvider } from '@/libs/firebase'
 import FormInput from '@/components/form-components/form-input/FormInput' // Adjust the import path as necessary
 import SectionContainer from '@/components/layout/containers/section-container/SectionContainer'
-import SectionHeading from '@/components/headings/section-heading/SectionHeading'
 import PageHeading from '@/components/headings/page-heading/PageHeading'
-import CtaButton from '@/components/links/cta-button/CtaButton'
 import GoogleSvg from '@/components/layout/svgs/google-svg/GoogleSvg'
 import styles from './LoginComponent.module.scss'
 

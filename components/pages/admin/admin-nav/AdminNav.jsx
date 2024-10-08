@@ -14,9 +14,11 @@ import AnalyticsSvg from '@/components/layout/svgs/analytics-svg/AnalyticsSvg'
 import { motion } from 'framer-motion'
 import styles from './AdminNav.module.scss'
 import RightArrowSvg from '@/components/layout/svgs/right-arrow-svg/RightArrowSvg'
+import useMediaQuery from '@/libs/hooks/useMediaQuery'
 
 function AdminNav({ isMenuOpen, handleMenuToggle }) {
   const menuRef = useRef(null)
+  const isTabOrAbove = useMediaQuery('(min-width: 744px')
 
   useClickOutside(menuRef, () => {
     if (isMenuOpen) {
@@ -25,7 +27,10 @@ function AdminNav({ isMenuOpen, handleMenuToggle }) {
   })
 
   const handleLinkClick = () => {
-    handleMenuToggle()
+    if (!isTabOrAbove){
+      handleMenuToggle()
+
+    }
   }
 
   const navigationLinks = [
@@ -35,6 +40,7 @@ function AdminNav({ isMenuOpen, handleMenuToggle }) {
     { href: '/admin/site-settings', label: 'Settings', icon: <SettingsSvg /> },
     { href: '/admin/analytics', label: 'Analytics', icon: <AnalyticsSvg /> },
   ]
+
 
   return (
     <div

@@ -18,17 +18,21 @@
   @include breakpoint(tab) {
     width: 100%;
   }
-  
+
   &.opened {
     width: 10rem;
     padding: var(--spacing-400) var(--spacing-100);
 
+    @include breakpoint(tab) {
+      width: 100%;
+
+      
+    }
+
     & ul {
-
-        & h3 {
-
-            display: block;
-        }
+      & h3 {
+        display: block;
+      }
     }
   }
 
@@ -37,6 +41,7 @@
 
     @include breakpoint(tab) {
       width: 100%;
+     
     }
   }
 
@@ -67,13 +72,12 @@
     gap: var(--spacing-100);
 
     & h3 {
-        display: none;
+      display: none;
 
-        @include breakpoint(tab) {
-            display: block;
-            padding-top: var(--spacing-400);
-        }
-
+      @include breakpoint(tab) {
+        display: block;
+        padding-top: var(--spacing-400);
+      }
     }
 
     li {
@@ -106,22 +110,17 @@
 
   .label {
     margin-left: var(--spacing-100);
-}
-
-
-
-
-&:not(.opened) .label {
-    display: none;
-    
-    @include breakpoint(tab) {
-        display: block;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 50%;
-    }
   }
 
- 
+  &:not(.opened) .label {
+    display: none;
+
+    @include breakpoint(tab) {
+      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50%;
+    }
+  }
 }
