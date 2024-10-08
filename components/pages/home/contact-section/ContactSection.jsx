@@ -7,7 +7,7 @@ import styles from './ContactSection.module.scss'
 
 function ContactSection() {
   return (
-    <SectionContainer className={styles.contactSection}>
+    <SectionContainer className={styles.contactSection} >
       <SectionHeading>Start your journey</SectionHeading>
       <SectionSubtitle>
         Ready To Capture Your Moments? Fill Out The Form Below And I Will Be In Touch Soon.
