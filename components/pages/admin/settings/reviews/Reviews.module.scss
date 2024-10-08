@@ -1,0 +1,7 @@
+@use '../../../../../styles/mixins' as *;
+
+.reviews {
+    display: grid;
+    place-content: center;
+    gap: var(--spacing-400);
+}

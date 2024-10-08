@@ -11,7 +11,7 @@ import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphH
 const Reviews = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const openModal = () => setIsModalOpen(true)
+ const toggleModal = () => setIsModalOpen((prev) => !prev)
   const closeModal = () => setIsModalOpen(false)
 
   return (
@@ -19,14 +19,12 @@ const Reviews = () => {
       <div className={styles.header}>
         <ParagraphHeading>Site Reviews</ParagraphHeading>
         <AddButton
-          onClick={openModal}
+          onClick={toggleModal}
           className={styles.addButton}
           text='Upload Review'
         />
       </div>
-      {/* Reviews List can be implemented here in the future */}
-
-      {/* Reviews Modal */}
+      
       <ReviewsModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   )

@@ -12,7 +12,7 @@ import AdminGridGallery from '@/components/galleries/admin-grid-gallery/AdminGri
 const HomePageGallery = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const openModal = () => setIsModalOpen(true)
+  const toggleModal = () => setIsModalOpen((prev) => !prev)
   const closeModal = () => setIsModalOpen(false)
 
   return (
@@ -20,7 +20,7 @@ const HomePageGallery = () => {
       <div className={styles.header}>
         <ParagraphHeading>Main Page Gallery</ParagraphHeading>
         <AddButton
-          onClick={openModal}
+          onClick={toggleModal}
           className={styles.addButton}
           text='Edit Gallery'
         />

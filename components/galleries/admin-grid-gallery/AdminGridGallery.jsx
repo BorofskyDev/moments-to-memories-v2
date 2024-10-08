@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 import styles from './AdminGridGallery.module.scss'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { modalVariants } from '@/libs/animations/modalAnimations'
 import useFeaturedImages from '@/libs/hooks/gallery/useFeaturedImages'
 import UploadModal from '@/components/modals/upload-modal/UploadModal'
 import UploadButton from '@/components/buttons/upload-button/UploadButton'
@@ -30,7 +31,13 @@ const AdminGridGallery = () => {
   }
 
   return (
-    <div className={styles.gridGallery}>
+    <motion.div
+      className={styles.gridGallery}
+      variants={modalVariants}
+      initial='hidden'
+      animate='visible'
+      exit='hidden'
+    >
       {gridItems.map((itemId) => {
         const image = images.find((img) => img.id === itemId)
         return (
@@ -70,7 +77,7 @@ const AdminGridGallery = () => {
           uploadImage={uploadImage}
         />
       )}
-    </div>
+    </motion.div>
   )
 }
 

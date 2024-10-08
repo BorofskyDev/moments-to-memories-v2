@@ -1,3 +1,7 @@
 .homePageGallery {
+    display: grid;
+    place-items: center;
+    
+    transition: var(--transition-main);
     overflow: hidden;
 }

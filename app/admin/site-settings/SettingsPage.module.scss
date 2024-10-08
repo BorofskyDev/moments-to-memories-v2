@@ -1,0 +1,7 @@
+@use '../../../styles/mixins' as *;
+
+.settingsPage {
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-800);
+}
