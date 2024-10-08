@@ -1,0 +1,22 @@
+@use '../../../styles/mixins' as *;
+
+.modalOverlay {
+    display: grid;
+    place-items: center;
+    
+}
+
+
+.reviewImage {
+
+    & img {
+        width: 8rem;
+        height: 8rem;
+        object-fit: cover;
+        object-position: top;
+        border-radius: 50%;
+        box-shadow: var(--box-shadow-300);
+        
+
+    }
+}

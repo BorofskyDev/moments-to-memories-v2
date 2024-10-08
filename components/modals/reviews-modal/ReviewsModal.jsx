@@ -25,6 +25,7 @@ import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 import CancelButton from '@/components/buttons/cancel-button/CancelButton'
 import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
 import EditField from '@/components/layout/edit-field/EditField'
+import Image from 'next/image'
 
 const ReviewsModal = ({ isOpen, onClose }) => {
   const [image, setImage] = useState(null)
@@ -235,7 +236,7 @@ const ReviewsModal = ({ isOpen, onClose }) => {
               {reviews.map((review) => (
                 <li key={review.id} className={styles.reviewItem}>
                   <div className={styles.reviewImage}>
-                    <img src={review.imageUrl} alt={review.title} />
+                    <Image src={review.imageUrl} alt={review.title} width={1920} height={1260}/>
                   </div>
                   <div className={styles.reviewDetails}>
                     <EditField
