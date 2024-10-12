@@ -1,0 +1,17 @@
+@use '../../../styles/mixins' as *;
+
+.galleryComponent {
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-900);
+
+}
+
+.gallerySection {
+    margin-bottom: var(--spacing-400);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-200);
+}

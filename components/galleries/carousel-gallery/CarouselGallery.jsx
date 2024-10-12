@@ -1,15 +1,17 @@
 // components/galleries/carousel-gallery/CarouselGallery.jsx
+
 'use client'
 
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import images from '@/libs/data/images'
 import useCarouselOpacity from '@/libs/hooks/carousel/useCarouselOpacity'
 import Modal from '../modal/Modal'
 import styles from './CarouselGallery.module.scss'
+import PropTypes from 'prop-types'
+import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 
-const CarouselGallery = () => {
+const CarouselGallery = ({ images, canDelete = false, onDelete }) => {
   const [selectedImage, setSelectedImage] = useState(null)
   const carouselRef = useRef(null)
   const imageRefs = useRef([])
@@ -24,12 +26,18 @@ const CarouselGallery = () => {
     setSelectedImage(null)
   }
 
+  const handleDelete = (imageUrl) => {
+    if (confirm('Are you sure you want to delete this image?')) {
+      onDelete(imageUrl)
+    }
+  }
+
   return (
     <div className={styles.carouselContainer}>
-      <div className={styles.carouselContainer__carousel} ref={carouselRef}>
+      <div className={styles.carousel} ref={carouselRef}>
         {images.map((image, index) => (
           <motion.div
-            className={styles.carouselContainer__imageWrapper}
+            className={styles.imageWrapper}
             key={index}
             onClick={() => handleImageClick(image)}
             role='button'
@@ -45,11 +53,22 @@ const CarouselGallery = () => {
             <Image
               src={image}
               alt={`Gallery Image ${index + 1}`}
-              className={styles.carouselContainer__image}
+              className={styles.image}
               width={1920}
               height={1680}
               priority={index === 0}
             />
+            {/* Conditionally render the delete button */}
+            {canDelete && onDelete && (
+              <DeleteButton
+                className={styles.deleteButton}
+                onClick={(e) => {
+                  e.stopPropagation() // Prevent triggering the image click
+                  handleDelete(image)
+                }}
+                title='Delete Image'
+             />
+            )}
           </motion.div>
         ))}
       </div>
@@ -57,7 +76,7 @@ const CarouselGallery = () => {
       <Modal isOpen={!!selectedImage} onClose={handleClose}>
         {selectedImage && (
           <motion.div
-            className={styles.carouselContainer__expandedImageWrapper}
+            className={styles.expandedImageWrapper}
             layoutId={`image-${selectedImage}`} // Shared layoutId for smooth animation
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -67,7 +86,7 @@ const CarouselGallery = () => {
             <Image
               src={selectedImage}
               alt='Expanded Gallery'
-              className={styles.carouselContainer__expandedImage}
+              className={styles.expandedImage}
               width={1920}
               height={1680}
               priority
@@ -77,6 +96,12 @@ const CarouselGallery = () => {
       </Modal>
     </div>
   )
+}
+
+CarouselGallery.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.string).isRequired,
+  canDelete: PropTypes.bool,
+  onDelete: PropTypes.func,
 }
 
 export default CarouselGallery

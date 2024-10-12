@@ -1,0 +1,13 @@
+@use '../../../../../styles/mixins' as *;
+
+.galleryPage {
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-400);
+
+    & .header {
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-200);
+    }
+}

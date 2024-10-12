@@ -9,11 +9,13 @@ import CancelButton from '@/components/buttons/cancel-button/CancelButton'
 import SubmitButton from '@/components/buttons/submit-button/SubmitButton'
 import BodyText from '@/components/layout/body-text/BodyText'
 import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import Image from 'next/image'
 
-const UploadModal = ({ imageId, onClose, uploadImage }) => {
+const UploadModal = ({ onClose, uploadImage }) => {
   const [imageFile, setImageFile] = useState(null)
   const [error, setError] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
+  const [successMessage, setSuccessMessage] = useState('')
 
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0])
@@ -27,9 +29,12 @@ const UploadModal = ({ imageId, onClose, uploadImage }) => {
     }
     setIsUploading(true)
     setError(null)
+    setSuccessMessage('')
     try {
-      await uploadImage(imageFile, imageId)
-      onClose()
+      await uploadImage(imageFile)
+      setSuccessMessage('Image uploaded successfully!')
+      setImageFile(null)
+      // Allow user to upload another image
     } catch (err) {
       setError('Failed to upload image. Please try again.')
     } finally {
@@ -55,16 +60,28 @@ const UploadModal = ({ imageId, onClose, uploadImage }) => {
             onChange={handleFileChange}
             disabled={isUploading}
           />
+          {imageFile && (
+            <div className={styles.imagePreview}>
+              <Image
+                src={URL.createObjectURL(imageFile)}
+                alt='Preview'
+                className={styles.previewImage}
+              />
+            </div>
+          )}
           {error && <BodyText className={styles.errorText}>{error}</BodyText>}
+          {successMessage && (
+            <BodyText className={styles.successText}>{successMessage}</BodyText>
+          )}
           <div className={styles.modalButtons}>
             <SubmitButton
               type='submit'
               text={isUploading ? 'Uploading...' : 'Upload'}
-              disabled={isUploading}
+              disabled={isUploading || !imageFile}
             />
             <CancelButton
               onClick={onClose}
-              text='Cancel'
+              text='Done'
               disabled={isUploading}
             />
           </div>
@@ -75,7 +92,6 @@ const UploadModal = ({ imageId, onClose, uploadImage }) => {
 }
 
 UploadModal.propTypes = {
-  imageId: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
   uploadImage: PropTypes.func.isRequired,
 }

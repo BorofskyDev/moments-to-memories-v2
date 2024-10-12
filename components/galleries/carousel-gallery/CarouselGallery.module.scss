@@ -18,7 +18,7 @@
     padding: var(--spacing-800) 0;
   }
 
-  &__carousel {
+  & .carousel {
     display: flex;
     gap: var(--spacing-400);
     padding-inline: 50%;
@@ -41,7 +41,7 @@
     }
   }
 
-  &__imageWrapper {
+  & .imageWrapper {
     flex: 0 0 auto;
     width: 200px;
     height: 300px;
@@ -75,7 +75,7 @@
     }
   }
 
-  &__image {
+  & .image {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -83,7 +83,7 @@
     transition: var(--transition-main);
   }
 
-  &__expandedImage {
+  & .expandedImage {
     width: 100%;
     height: 100%;
     object-fit: contain;
