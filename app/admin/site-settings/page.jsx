@@ -3,6 +3,7 @@ import HomePageGallery from "@/components/pages/admin/settings/home-page-gallery
 import Reviews from "@/components/pages/admin/settings/reviews/Reviews"
 import styles from './SettingsPage.module.scss'
 import GallerySettingsPage from "@/components/pages/admin/settings/gallery-settings-page/GallerySettingsPage"
+import ServicesComponent from "@/components/pages/admin/settings/services/ServiceComponent"
 
 
 function SettingsPage() {
@@ -12,6 +13,7 @@ function SettingsPage() {
       <HomePageGallery />
       <Reviews />
       <GallerySettingsPage />
+      <ServicesComponent />
     </div>
   )
 }

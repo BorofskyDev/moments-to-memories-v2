@@ -6,7 +6,7 @@ import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import styles from './GridGallery.module.scss'
-import Modal from '../modal/Modal'
+import Modal from '../../modals/modal/Modal'
 import useFeaturedImages from '@/libs/hooks/gallery/useFeaturedImages'
 
 const GridGallery = () => {

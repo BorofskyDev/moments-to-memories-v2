@@ -2,9 +2,9 @@ import SectionContainer from '@/components/layout/containers/section-container/S
 import SectionHeading from '@/components/headings/section-heading/SectionHeading'
 import SectionSubtitle from '@/components/headings/section-subtitle/SectionSubtitle'
 import ServiceItem from './service-item/ServiceItem'
-import image1 from '@/public/profile-photos/baby1.png'
-import image2 from '@/public/profile-photos/jets1.png'
-import image3 from '@/public/profile-photos/model1.png'
+import image1 from '@/public/profile-photos/baby1.jpg'
+import image2 from '@/public/profile-photos/jets1.jpg'
+import image3 from '@/public/profile-photos/model1.jpg'
 import styles from './ServicesSection.module.scss'
 
 function ServicesSection() {
@@ -21,7 +21,7 @@ function ServicesSection() {
         <ServiceItem
           title='People'
           imageSrc={image1}
-          imageAlt='Baby wrapped in a towell and a headbow asleep on a comfortable blanket'
+          imageAlt='Baby wrapped in a towel and a headbow asleep on a comfortable blanket'
           description='Capturing the essence of who you are, whether it&apos;s a personal portrait or the personality of a beloved pet. These sessions are designed to tell your unique story with grace and authenticity.'
           features={[
             {

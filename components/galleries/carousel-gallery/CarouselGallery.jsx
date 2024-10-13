@@ -6,7 +6,7 @@ import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import useCarouselOpacity from '@/libs/hooks/carousel/useCarouselOpacity'
-import Modal from '../modal/Modal'
+import Modal from '../../modals/modal/Modal'
 import styles from './CarouselGallery.module.scss'
 import PropTypes from 'prop-types'
 import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
@@ -67,7 +67,7 @@ const CarouselGallery = ({ images, canDelete = false, onDelete }) => {
                   handleDelete(image)
                 }}
                 title='Delete Image'
-             />
+              />
             )}
           </motion.div>
         ))}
