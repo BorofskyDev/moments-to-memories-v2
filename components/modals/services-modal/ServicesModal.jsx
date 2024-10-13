@@ -9,6 +9,10 @@ import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphH
 import BodyText from '@/components/layout/body-text/BodyText'
 import { v4 as uuidv4 } from 'uuid'
 import Image from 'next/image'
+import AddButton from '@/components/buttons/add-button/AddButton'
+import SubmitButton from '@/components/buttons/submit-button/SubmitButton'
+import CancelButton from '@/components/buttons/cancel-button/CancelButton'
+import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 
 const ServicesModal = ({ service, onSubmit, onClose }) => {
   const [title, setTitle] = useState(service ? service.title : '')
@@ -187,7 +191,7 @@ const ServicesModal = ({ service, onSubmit, onClose }) => {
         </div>
 
         {/* Features */}
-        <div className={styles.formGroup}>
+        <div className={`${styles.formGroup} ${styles.featureFormGroup}`}>
           <label>Features</label>
           {features.map((feature, index) => (
             <div key={feature.id} className={styles.featureItem}>
@@ -209,37 +213,36 @@ const ServicesModal = ({ service, onSubmit, onClose }) => {
                 required
               />
               {features.length > 1 && (
-                <button
+                <DeleteButton
                   type='button'
                   onClick={() => removeFeature(feature.id)}
                   className={styles.removeFeatureButton}
-                >
-                  Remove
-                </button>
+                  text='Remove Feature'
+                />
               )}
             </div>
           ))}
-          <button
+          <AddButton
             type='button'
             onClick={addFeature}
             className={styles.addFeatureButton}
-          >
-            Add Feature
-          </button>
+            text='Add Feature'
+          />
         </div>
 
         {/* Action Buttons */}
         <div className={styles.actionButtons}>
-          <button type='submit' className={styles.saveButton}>
-            {service ? 'Update Service' : 'Add Service'}
-          </button>
-          <button
+          <SubmitButton
+            type='submit'
+            className={styles.saveButton}
+            text={service ? 'Update Service' : 'Add Service'}
+          />
+          <CancelButton
             type='button'
             onClick={onClose}
             className={styles.cancelButton}
-          >
-            Cancel
-          </button>
+            text='Cancel'
+          />
         </div>
       </form>
     </div>

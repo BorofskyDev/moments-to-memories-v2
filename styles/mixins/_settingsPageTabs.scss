@@ -1,0 +1,11 @@
+@mixin settingsPageTabs {
+  display: grid;
+  place-items: center;
+  gap: var(--spacing-900);
+
+  & .header {
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-200);
+  }
+}

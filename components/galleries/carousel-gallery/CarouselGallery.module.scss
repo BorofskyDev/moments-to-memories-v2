@@ -2,7 +2,7 @@
 
 .carouselContainer {
   position: relative;
-  width: 100%;
+  width: 50dvw;
   overflow: hidden;
   padding: var(--spacing-500) 0;
 
@@ -86,7 +86,7 @@
   & .expandedImage {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     cursor: zoom-out;

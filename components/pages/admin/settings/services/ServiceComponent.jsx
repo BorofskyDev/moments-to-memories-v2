@@ -4,7 +4,6 @@
 
 import React, { useState } from 'react'
 import styles from './ServicesComponent.module.scss'
-import Modal from '@/components/modals/modal/Modal'
 import ServicesModal from '@/components/modals/services-modal/ServicesModal'
 import DeleteConfirmationModal from '@/components/modals/delete-confirmation-modal/DeleteConfirmationModal'
 import AddButton from '@/components/buttons/add-button/AddButton'
@@ -12,6 +11,8 @@ import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphH
 import useServices from '@/libs/hooks/services/useServices'
 import BodyText from '@/components/layout/body-text/BodyText'
 import ServiceItem from '@/components/pages/home/services/service-item/ServiceItem'
+import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
+import EditButton from '@/components/buttons/edit-button/EditButton'
 
 const ServicesComponent = () => {
   const { services, loading, error, addService, editService, deleteService } =
@@ -96,72 +97,72 @@ const ServicesComponent = () => {
         />
       </div>
 
-      {/* Manage Services Modal */}
-      <div
-        isOpen={isManageServicesModalOpen}
-        onClose={closeManageServicesModal}
-      >
-        <div className={styles.modalContent}>
-          <div className={styles.modalHeader}>
-            <ParagraphHeading>Manage Services</ParagraphHeading>
-            <AddButton
-              onClick={() => {
-                setCurrentService(null) // Set to null to indicate adding new service
-              }}
-              className={styles.addButton}
-              text='Add New Service'
+      {isManageServicesModalOpen && (
+        <div className={styles.modalOverlay} onClick={closeManageServicesModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+          >
+            <ServicesModal
+              service={currentService}
+              onSubmit={handleServiceSubmit}
+              onClose={closeManageServicesModal}
             />
           </div>
+        </div>
+      )}
 
-          {loading && <BodyText>Loading services...</BodyText>}
-          {error && <BodyText className={styles.error}>{error}</BodyText>}
+      {/* Manage Services Modal */}
+      {isManageServicesModalOpen && (
+        <div className={styles.modalOverlay} onClick={closeManageServicesModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+          >
+            <div className={styles.modalHeader}>
+              <ParagraphHeading>Manage Services</ParagraphHeading>
+              <AddButton
+                onClick={() => {
+                  setCurrentService(null) // Set to null to indicate adding new service
+                }}
+                className={styles.addButton}
+                text='Add New Service'
+              />
+            </div>
 
-          <div className={styles.servicesList}>
-            {services.map((service) => (
-              <div key={service.id} className={styles.serviceItemWrapper}>
-                <ServiceItem
-                  title={service.title}
-                  imageSrc={service.imageSrc}
-                  imageAlt={service.imageAlt}
-                  description={service.description}
-                  features={service.features}
-                />
-                <div className={styles.serviceActions}>
-                  <button
-                    className={styles.editButton}
-                    onClick={() => openEditServiceModal(service)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className={styles.deleteButton}
-                    onClick={() => openDeleteModal(service)}
-                  >
-                    Delete
-                  </button>
+            {loading && <BodyText>Loading services...</BodyText>}
+            {error && <BodyText className={styles.error}>{error}</BodyText>}
+
+            <div className={styles.servicesList}>
+              {services.map((service) => (
+                <div key={service.id} className={styles.serviceItemWrapper}>
+                  <ServiceItem
+                    title={service.title}
+                    imageSrc={service.imageSrc}
+                    imageAlt={service.imageAlt}
+                    description={service.description}
+                    features={service.features}
+                  />
+                  <div className={styles.serviceActions}>
+                    <EditButton
+                      className={styles.editButton}
+                      onClick={() => openEditServiceModal(service)}
+                        text='Edit'
+                    />
+                    <DeleteButton
+                      className={styles.deleteButton}
+                      onClick={() => openDeleteModal(service)}
+                        text='Delete'
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Add/Edit Services Modal */}
-      <div
-        isOpen={
-          currentService !== null ||
-          (isManageServicesModalOpen && !currentService)
-        }
-        onClose={closeManageServicesModal}
-      >
-        {currentService !== null ? (
-          <ServicesModal
-            service={currentService}
-            onSubmit={handleServiceSubmit}
-            onClose={closeManageServicesModal}
-          />
-        ) : null}
-      </div>
 
       {/* Delete Confirmation Modal */}
       <DeleteConfirmationModal

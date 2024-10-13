@@ -1,0 +1,32 @@
+@use '../../../styles/mixins' as *;
+
+.editButton {
+    margin: var(--spacing-200) 0;
+  padding: var(--spacing-100) var(--spacing-200);
+  border: 1px dotted hsl(var(--primary-color));
+  box-shadow: var(--box-shadow-400);
+  background: none;
+  display: flex;
+  align-items: center;
+  transition: var(--transition-main);
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    border: 1px solid hsl(var(--primary-color));
+    transform: translateY(-1px);
+
+    span {
+      color: hsl(var(--primary-color));
+    }
+  }
+
+  & svg {
+    height: var(--fs-800);
+  }
+
+  & span {
+    color: hsl(var(--text-color));
+    transition: var(--transition-main);
+  }
+}

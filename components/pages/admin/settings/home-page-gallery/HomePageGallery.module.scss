@@ -1,7 +1,6 @@
+@use '../../../../../styles/mixins/' as *;
+
 .homePageGallery {
-    display: grid;
-    place-items: center;
-    
-    transition: var(--transition-main);
-    overflow: hidden;
+    @include settingsPageTabs;
+
 }

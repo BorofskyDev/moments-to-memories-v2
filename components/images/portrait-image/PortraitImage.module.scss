@@ -3,7 +3,7 @@
 .portraitImage {
     max-height: 20rem;
     object-fit: cover;
-    
+    object-position: 80% 0%;
     box-shadow: var(--box-shadow-400);
     @include gradientBorder;
 
