@@ -2,6 +2,7 @@ import { bebasNeue, montserrat, lato } from './fonts'
 import '../styles/globals.scss'
 import Header from '@/components/layout/header/Header'
 import { AuthProvider } from '@/libs/context/AuthContext'
+import Footer from '@/components/layout/footer/Footer'
 
 export const metadata = {
   title: 'Moments to Memories',
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <Header />
           {children}
+          <Footer />
         </AuthProvider>
       </body>
     </html>

@@ -1,0 +1,7 @@
+@use '../../../../styles/mixins' as *;
+
+.smallBodyText {
+     max-width: var(--width-body);
+    margin: var(--spacing-400) auto;
+    font-size: var(--fs-300);
+}

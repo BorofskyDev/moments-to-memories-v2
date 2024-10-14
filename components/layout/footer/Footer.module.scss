@@ -1,0 +1,27 @@
+@use '../../../styles/mixins' as *;
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-400);
+
+    @include breakpoint(tab){
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    & .footerNav {
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-300);
+    }
+
+    & .footerLegal {
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-300);
+    }
+}

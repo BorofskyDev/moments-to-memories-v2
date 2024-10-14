@@ -1,0 +1,19 @@
+@use '../../styles/mixins' as *;
+
+.coppaPage {
+    display: grid;
+    gap: var(--spacing-600);
+
+    & .header {
+        text-align: center;
+
+        & p {
+            font-style: italic;
+        }
+    }
+
+    & .bodyText {
+        max-width: var(--width-body);
+        // margin: 0 auto;
+    }
+}

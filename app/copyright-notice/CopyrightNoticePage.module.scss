@@ -1,0 +1,13 @@
+@use '../../styles/mixins' as *;
+
+.copyrightNoticePage {
+    display: grid;
+    gap: var(--spacing-600);
+
+    
+
+    & .bodyText {
+        max-width: var(--width-body);
+        // margin: 0 auto;
+    }
+}
