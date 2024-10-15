@@ -1,0 +1,114 @@
+@use '../../styles/mixins' as *;
+
+@import 'react-big-calendar/lib/sass/styles';
+$event-bg: #3174ad !default;
+$event-color: #ffffff !default;
+$event-border-radius: 5px !default;
+
+$out-of-range-color: hsl(46, 65%, 52%) !default; // Use your primary color
+$out-of-range-bg-color: lighten(#333, 70%) !default;
+
+$today-highlight-bg: #D4AF37 !default; // Use your desired color
+
+$calendar-border: #ddd !default;
+$cell-border: #ddd !default;
+
+$btn-color: #373a3c !default;
+$btn-bg: #fff !default;
+$btn-border: #ccc !default;
+
+$current-time-color: #74ad31 !default;
+
+// Fonts
+$rbc-font-family: 'Arial, sans-serif' !default;
+
+
+
+:root {
+  --background-color: 0 0% 11%; /* #1C1C1C */
+  --text-color: 0 0% 88%; /* #E0E0E0 */
+  --primary-color: 46, 65%, 52%; /* #D4AF37 */
+  --secondary-color: 0, 0%, 75%; /* #C0C0C0 */
+
+  /* Other variables */
+  --border-color: blue;
+  --toolbar-background-color: hsl(var(--background-color));
+  --toolbar-text-color: hsl(var(--text-color));
+  --button-background-color: #ffffff;
+  --button-text-color: #333333;
+  --button-hover-background-color: #e0e0e0;
+  --event-background-color: #3174ad;
+  --event-text-color: #ffffff;
+  --today-background-color: #D4AF37;
+}
+
+/* Calendar styles */
+
+/* Target classes directly without :global */
+.rbc-calendar {
+  background-color: var(--background-color);
+  font-family: var(--font-body);
+}
+
+/* Toolbar styles */
+.rbc-toolbar {
+  background-color: var(--toolbar-background-color);
+  color: var(--toolbar-text-color);
+  padding: 1rem;
+}
+
+.rbc-toolbar button {
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.rbc-toolbar button:hover {
+  background-color: var(--button-hover-background-color);
+}
+
+/* Event styles */
+.rbc-event {
+  background-color: var(--event-background-color);
+  color: var(--event-text-color);
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+
+/* Today cell */
+.rbc-today {
+  background-color: hsl(var(--primary-color) / 0.5);
+}
+
+/* Off-range dates */
+.rbc-off-range {
+    background-color: hsl(var(--secondary-color) / 0.75);
+    color: hsl(var(--background-color));
+    
+}
+
+.rbc-day-bg {
+    @include gradientBorder;
+}
+
+.rbc-month-view {
+    @include gradientBorder;
+}
+
+.rbc-off-range-bg {
+  background-color: hsl(var(--secondary-color));
+
+}
+/* Selected cell */
+.rbc-selected-cell {
+  background-color: hsl(var(--primary-color));
+}
+
+.rbc-event {
+    background-color: hsl(var(--primary-color));
+    color: hsl(var(--background-color));
+    
+}

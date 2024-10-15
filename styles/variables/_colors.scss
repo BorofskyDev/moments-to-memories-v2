@@ -22,109 +22,113 @@
     hsl(var(--secondary-color) / 0.1) 100%
   );
   
+
+  
+
+
 }
 
-[data-theme='light'] {
-  --background-color: 0 0% 98%; // #F7F7F7
-  --text-color: 0 0% 10%; // #1A1A1A
-  --primary-color: 46 65% 52%; // #D4AF37
-  --secondary-color: 0 0%  60%; // #999999
-}
+// [data-theme='light'] {
+//   --background-color: 0 0% 98%; // #F7F7F7
+//   --text-color: 0 0% 10%; // #1A1A1A
+//   --primary-color: 46 65% 52%; // #D4AF37
+//   --secondary-color: 0 0%  60%; // #999999
+// }
 
-[data-theme='rose-gold'] {
-  --background-color: 340 20% 95%; // #FFF5F8
-  --text-color: 0 0% 15%; // #262626
-  --primary-color: 340 60% 70%; // #FFB6C1
-  --secondary-color: 0 0% 50%; // #808080
-}
+// [data-theme='rose-gold'] {
+//   --background-color: 340 20% 95%; // #FFF5F8
+//   --text-color: 0 0% 15%; // #262626
+//   --primary-color: 340 60% 70%; // #FFB6C1
+//   --secondary-color: 0 0% 50%; // #808080
+// }
 
-[data-theme='sapphire'] {
-  --background-color: 220 20% 95%; // #F0F4F8
-  --text-color: 210 15% 20%; // #334E68
-  --primary-color: 220 60% 50%; // #1E3A8A
-  --secondary-color: 220 20% 60%; // #6B7280
-}
+// [data-theme='sapphire'] {
+//   --background-color: 220 20% 95%; // #F0F4F8
+//   --text-color: 210 15% 20%; // #334E68
+//   --primary-color: 220 60% 50%; // #1E3A8A
+//   --secondary-color: 220 20% 60%; // #6B7280
+// }
 
-[data-theme='miami-nights'] {
-  --background-color: 220 15% 10%; // #1A1A1A
-  --text-color: 0 0% 95%; // #F2F2F2
-  --primary-color: 300 80% 60%; // #FF69B4
-  --secondary-color: 60 100% 50%; // #FFD700
-}
+// [data-theme='miami-nights'] {
+//   --background-color: 220 15% 10%; // #1A1A1A
+//   --text-color: 0 0% 95%; // #F2F2F2
+//   --primary-color: 300 80% 60%; // #FF69B4
+//   --secondary-color: 60 100% 50%; // #FFD700
+// }
 
-[data-theme='emerald'] {
-  --background-color: 120 25% 95%; // #F0FFF0
-  --text-color: 120 30% 20%; // #20603D
-  --primary-color: 120 60% 40%; // #2E8B57
-  --secondary-color: 120 20% 60%; // #6B8E23
-}
+// [data-theme='emerald'] {
+//   --background-color: 120 25% 95%; // #F0FFF0
+//   --text-color: 120 30% 20%; // #20603D
+//   --primary-color: 120 60% 40%; // #2E8B57
+//   --secondary-color: 120 20% 60%; // #6B8E23
+// }
 
-[data-theme='platinum']{
-  --background-color: 0 0% 98%; // #F8F8F8
-  --text-color: 0 0% 15%; // #262626
-  --primary-color: 0 0% 75%; // #C0C0C0
-  --secondary-color: 0 0% 50%; // #808080
-}
+// [data-theme='platinum']{
+//   --background-color: 0 0% 98%; // #F8F8F8
+//   --text-color: 0 0% 15%; // #262626
+//   --primary-color: 0 0% 75%; // #C0C0C0
+//   --secondary-color: 0 0% 50%; // #808080
+// }
 
-[data-theme='champagne'] {
-  --background-color: 40 10% 95%; // #FFF8E1
-  --text-color: 40 15% 20%; // #332B1D
-  --primary-color: 45 70% 60%; // #FFD700
-  --secondary-color: 45 40% 50%; // #B8860B
-}
+// [data-theme='champagne'] {
+//   --background-color: 40 10% 95%; // #FFF8E1
+//   --text-color: 40 15% 20%; // #332B1D
+//   --primary-color: 45 70% 60%; // #FFD700
+//   --secondary-color: 45 40% 50%; // #B8860B
+// }
 
-[data-theme='noir-chic'] {
-  --background-color: 0 0% 10%; // #1C1C1C
-  --text-color: 0 0% 90%; // #E6E6E6
-  --primary-color: 45 80% 50%; // #FFBF00
-  --secondary-color: 0 0% 60%; // #999999
-}
+// [data-theme='noir-chic'] {
+//   --background-color: 0 0% 10%; // #1C1C1C
+//   --text-color: 0 0% 90%; // #E6E6E6
+//   --primary-color: 45 80% 50%; // #FFBF00
+//   --secondary-color: 0 0% 60%; // #999999
+// }
 
-[data-theme='pearl-elegant'] {
-  --background-color: 60 5% 95%; // #FFFDF5
-  --text-color: 60 10% 20%; // #33332D
-  --primary-color: 45 70% 55%; // #FFC125
-  --secondary-color: 45 40% 45%; // #B8860B
-}
+// [data-theme='pearl-elegant'] {
+//   --background-color: 60 5% 95%; // #FFFDF5
+//   --text-color: 60 10% 20%; // #33332D
+//   --primary-color: 45 70% 55%; // #FFC125
+//   --secondary-color: 45 40% 45%; // #B8860B
+// }
 
-[data-theme='midnight-glamour'] {
-  --background-color: 240 15% 10%; // #0B0C10
-  --text-color: 240 10% 95%; // #F5F5F5
-  --primary-color: 180 100% 50%; // #00FFFF
-  --secondary-color: 0 0% 70%; // #B3B3B3
-}
+// [data-theme='midnight-glamour'] {
+//   --background-color: 240 15% 10%; // #0B0C10
+//   --text-color: 240 10% 95%; // #F5F5F5
+//   --primary-color: 180 100% 50%; // #00FFFF
+//   --secondary-color: 0 0% 70%; // #B3B3B3
+// }
 
-[data-theme='ruby'] {
-  --background-color: 0 0% 10%; // #1A1A1A
-  --text-color: 0 0% 95%; // #F2F2F2
-  --primary-color: 0 80% 50%; // #CC0000
-  --secondary-color: 0 0% 60%; // #999999
-}
+// [data-theme='ruby'] {
+//   --background-color: 0 0% 10%; // #1A1A1A
+//   --text-color: 0 0% 95%; // #F2F2F2
+//   --primary-color: 0 80% 50%; // #CC0000
+//   --secondary-color: 0 0% 60%; // #999999
+// }
 
-[data-theme='beach'] {
-  --background-color: 60 30% 95%; // #FFF5E6
-  --text-color: 180 100% 15%; // #004D6E
-  --primary-color: 200 100% 40%; // #0077BE
-  --secondary-color: 60 60% 50%; // #FFD700
-}
+// [data-theme='beach'] {
+//   --background-color: 60 30% 95%; // #FFF5E6
+//   --text-color: 180 100% 15%; // #004D6E
+//   --primary-color: 200 100% 40%; // #0077BE
+//   --secondary-color: 60 60% 50%; // #FFD700
+// }
 
-[data-theme='ivory-luxe'] {
-  --background-color: 60 5% 95%; // #FFFDF5
-  --text-color: 0 0% 15%; // #262626
-  --primary-color: 0 0% 75%; // #C0C0C0
-  --secondary-color: 45 70% 60%; // #FFD700
-}
+// [data-theme='ivory-luxe'] {
+//   --background-color: 60 5% 95%; // #FFFDF5
+//   --text-color: 0 0% 15%; // #262626
+//   --primary-color: 0 0% 75%; // #C0C0C0
+//   --secondary-color: 45 70% 60%; // #FFD700
+// }
 
-[data-theme='opal-radiance'] {
-  --background-color: 180 30% 95%; // #E6F7FF
-  --text-color: 180 20% 20%; // #004E7C
-  --primary-color: 180 100% 40%; // #00BFFF
-  --secondary-color: 0 0% 50%; // #808080
-}
+// [data-theme='opal-radiance'] {
+//   --background-color: 180 30% 95%; // #E6F7FF
+//   --text-color: 180 20% 20%; // #004E7C
+//   --primary-color: 180 100% 40%; // #00BFFF
+//   --secondary-color: 0 0% 50%; // #808080
+// }
 
-[data-theme='pearl-white'] {
-  --background-color: 0 0% 98%; // #F8F8FF
-  --text-color: 0 0% 15%; // #262626
-  --primary-color: 0 0% 75%; // #C0C0C0
-  --secondary-color: 45 70% 60%; // #FFD700
-}
+// [data-theme='pearl-white'] {
+//   --background-color: 0 0% 98%; // #F8F8FF
+//   --text-color: 0 0% 15%; // #262626
+//   --primary-color: 0 0% 75%; // #C0C0C0
+//   --secondary-color: 45 70% 60%; // #FFD700
+// }
