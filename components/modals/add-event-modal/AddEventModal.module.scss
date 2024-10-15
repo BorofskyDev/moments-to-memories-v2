@@ -1,4 +1,4 @@
-/* components/AddEventModal/AddEventModal.module.css */
+@use '../../../styles/mixins' as *;
 
 .modalOverlay {
   position: fixed;
@@ -11,33 +11,50 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  overflow-y: auto;
+  padding: var(--spacing-800) 0;
+  
+  & .modalContent {
+    max-height: calc(100vh - (2 * var(--spacing-800)));
+      background-color: hsl(var(--background-color));
+      padding: var(--spacing-200);
+      width: 400px;
+      max-width: 90%;
+      box-shadow: var(--box-shadow-300);
+      overflow-y: auto;
+      @include gradientBorder;
+     
+      & label {
+        display: block;
+        margin-bottom: var(--spacing-200);
+      }
+      & input, & textarea {
+          width: 100%;
+          margin-top: var(--spacing-100);
+        padding: var(--spacing-100);
+        background-color: hsl(var(--background-color));
+        color: hsl(var(--text-color));
+        box-shadow: var(--box-shadow-300);
+        @include gradientBorder;
+      }
+
+      & select {
+        margin-left: var(--spacing-400);
+        padding: var(--spacing-100) var(--spacing-200);
+        background-color: hsl(var(--background-color));
+        color: hsl(var(--text-color));
+        cursor: pointer;
+        transition: var(--transition-main);
+      }
+    }
+    & .buttonGroup {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--spacing-200);
+    }
 }
 
-.modalContent {
-  background-color: hsl(var(--background-color));
-  padding: 2rem;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 90%;
-}
 
-.modalContent h2 {
-  margin-top: 0;
-}
 
-.modalContent label {
-  display: block;
-  margin-bottom: 1rem;
-}
 
-.modalContent input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-}
 
-.buttonGroup {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}

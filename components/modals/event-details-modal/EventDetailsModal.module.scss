@@ -1,0 +1,20 @@
+@use '../../../styles/mixins' as *;
+
+.modalOverlay {
+    margin: var(--spacing-400) auto;
+    display: grid;
+    place-content: center;
+    
+    & .modalContent {
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-200);
+
+        & p {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-100);
+        }
+    }
+}

@@ -12,7 +12,7 @@
     hsl(var(--secondary-color) / 0.1) 100%
   );
   transition: var(--transition-main);
-  overflow: hidden;
+  overflow: auto;
   @include gradientBorder;
 
   @include breakpoint(tab) {

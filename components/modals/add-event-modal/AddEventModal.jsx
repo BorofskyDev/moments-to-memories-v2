@@ -1,54 +1,44 @@
+import React from 'react'
+import styles from './AddEventModal.module.scss'
+import useEventForm from '@/libs/hooks/calendar/useEventForm'
+import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import AddButton from '@/components/buttons/add-button/AddButton'
+import CancelButton from '@/components/buttons/cancel-button/CancelButton'
 
+const eventTypes = ['Contact', 'Engagement', 'Meeting', 'Other']
 
-import React, { useState, useEffect } from 'react';
-import { collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc} from 'firebase/firestore'
-import styles from './AddEventModal.module.scss';
-
-const eventTypes = ['Contact', 'Engagement', 'Meeting', 'Other'];
-
-const AddEventModal = ({ isOpen, onClose, onEventAdd, slotInfo, existingEvent }) => {
-  const [title, setTitle] = useState('');
-  const [clientName, setClientName] = useState('');
-  const [contactPhone, setContactPhone] = useState('');
-  const [contactEmail, setContactEmail] = useState('');
-  const [eventType, setEventType] = useState('');
-  const [location, setLocation] = useState('');
-  const [notes, setNotes] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [customEventType, setCustomEventType] = useState('');
-
-  useEffect(() => {
-    if (existingEvent) {
-      // Editing an existing event
-      setTitle(existingEvent.title || '');
-      setClientName(existingEvent.clientName || '');
-      setContactPhone(existingEvent.contactPhone || '');
-      setContactEmail(existingEvent.contactEmail || '');
-      setEventType(existingEvent.eventType || '');
-      setLocation(existingEvent.location || '');
-      setNotes(existingEvent.notes || '');
-      setStartTime(
-        existingEvent.start ? existingEvent.start.toISOString().slice(0, 16) : ''
-      );
-      setEndTime(
-        existingEvent.end ? existingEvent.end.toISOString().slice(0, 16) : ''
-      );
-    } else if (slotInfo) {
-      // Adding a new event using slotInfo
-      setStartTime(slotInfo.start.toISOString().slice(0, 16));
-      setEndTime(slotInfo.end.toISOString().slice(0, 16));
-    } else {
-      // Default to current time
-      const now = new Date();
-      const later = new Date(now.getTime() + 60 * 60 * 1000); // One hour later
-      setStartTime(now.toISOString().slice(0, 16));
-      setEndTime(later.toISOString().slice(0, 16));
-    }
-  }, [existingEvent, slotInfo]);
+const AddEventModal = ({
+  isOpen,
+  onClose,
+  onEventAdd,
+  slotInfo,
+  existingEvent,
+}) => {
+  const {
+    title,
+    setTitle,
+    clientName,
+    setClientName,
+    contactPhone,
+    setContactPhone,
+    contactEmail,
+    setContactEmail,
+    eventType,
+    setEventType,
+    location,
+    setLocation,
+    notes,
+    setNotes,
+    startTime,
+    setStartTime,
+    endTime,
+    setEndTime,
+    customEventType,
+    setCustomEventType,
+  } = useEventForm(existingEvent, slotInfo)
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     const newEvent = {
       title,
@@ -60,20 +50,20 @@ const AddEventModal = ({ isOpen, onClose, onEventAdd, slotInfo, existingEvent })
       notes,
       start: new Date(startTime),
       end: new Date(endTime),
-    };
+    }
 
-    onEventAdd(newEvent);
-    onClose();
-  };
+    onEventAdd(newEvent)
+    onClose()
+  }
 
-
-  
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-        <h2>{existingEvent ? 'Edit Event' : 'Add Event'}</h2>
+        <ParagraphHeading>
+          {existingEvent ? 'Edit Event' : 'Add Event'}
+        </ParagraphHeading>
         <form onSubmit={handleSubmit}>
           <label>
             Event Title:
@@ -178,17 +168,17 @@ const AddEventModal = ({ isOpen, onClose, onEventAdd, slotInfo, existingEvent })
             />
           </label>
           <div className={styles.buttonGroup}>
-            <button type='submit'>
-              {existingEvent ? 'Update Event' : 'Add Event'}
-            </button>
-            <button type='button' onClick={onClose}>
-              Cancel
-            </button>
+            <AddButton
+              type='submit'
+              text={existingEvent ? 'Update Event' : 'Add Event'}
+            />
+
+            <CancelButton type='button' onClick={onClose} text='Cancel' />
           </div>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddEventModal;
+export default AddEventModal

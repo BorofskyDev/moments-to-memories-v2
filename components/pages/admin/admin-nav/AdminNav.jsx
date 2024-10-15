@@ -16,6 +16,7 @@ import styles from './AdminNav.module.scss'
 import RightArrowSvg from '@/components/layout/svgs/right-arrow-svg/RightArrowSvg'
 import useMediaQuery from '@/libs/hooks/useMediaQuery'
 import CalendarSvg from '@/components/layout/svgs/calendar-svg/CalendarSvg'
+import AdminSvg from '@/components/layout/svgs/admin-svg/AdminSvg'
 
 
 function AdminNav({ isMenuOpen, handleMenuToggle }) {
@@ -36,6 +37,7 @@ function AdminNav({ isMenuOpen, handleMenuToggle }) {
   }
 
   const navigationLinks = [
+    { href: '/admin', label: 'Admin', icon: <AdminSvg /> },
     { href: '/admin/clients', label: 'Clients', icon: <ClientsSvg /> },
     { href: '/admin/messages', label: 'Messages', icon: <MessagesSvg /> },
     { href: '/admin/calendar', label: 'Calendar', icon: <CalendarSvg />},

@@ -8,11 +8,12 @@
     flex-direction: column;
     
     & .stableMobileContainer {
+        height: 100%;
         display: grid;
         grid-template-rows: auto;
         grid-template-columns: auto 1fr;
         grid-auto-flow: column;
-        overflow: hidden;
+        // overflow: hidden;
         
 
         @include breakpoint(tab) {
