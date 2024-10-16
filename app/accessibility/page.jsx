@@ -92,7 +92,7 @@ function AccessibilityPage() {
         <div className={styles.bodyText}>
           <ParagraphHeading>6. Future Enhancements</ParagraphHeading>
           <BodyText>
-            We are committed to continually improving our site's accessibility
+            We are committed to continually improving our site&apos;s accessibility
             and ensuring it evolves alongside technological advancements. We are
             dedicated to maintaining a site that everyone can enjoy, regardless
             of their abilities.

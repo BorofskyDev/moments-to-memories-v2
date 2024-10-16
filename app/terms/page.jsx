@@ -17,7 +17,7 @@ function TermsPage() {
       <div className={styles.bodyText}>
         <ParagraphHeading>Introduction</ParagraphHeading>
         <BodyText>
-          Welcome to Moments to Memories. These Terms and Conditions ("Terms")
+          Welcome to Moments to Memories. These Terms and Conditions (&quot;Terms&quot;)
           govern your access to and use of our website, services, and content.
           By accessing or using the site, you agree to be bound by these Terms.
           Please read them carefully, as they outline your rights, obligations,

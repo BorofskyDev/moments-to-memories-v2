@@ -11,7 +11,7 @@ function CoppaPage() {
           <PageHeading>Coppa compliance</PageHeading>
           <BodyText>
             Moments to Memories is committed to protecting the privacy of
-            children who use our website. We comply with the Children's Online
+            children who use our website. We comply with the Children&apos;s Online
             Privacy Protection Act (COPPA) and its regulations, which are
             designed to protect the personal information of children under 13
             years old.
@@ -36,26 +36,26 @@ function CoppaPage() {
             child under 13, we will first obtain verifiable parental consent.
             Parents will be informed of the type of information being collected,
             how it will be used, and the measures we will take to protect their
-            child's privacy.
+            child&apos;s privacy.
           </BodyText>
         </div>
         <div className={styles.bodyText}>
           <ParagraphHeading>3. Rights of Parents</ParagraphHeading>
           <BodyText>
             Parents or legal guardians have the following rights regarding their
-            child's personal information:
+            child&apos;s personal information:
             <br />
             <br />
             Review Information: Parents can review the personal information we
             have collected about their child.
             <br />
             <br />
-            Request Deletion: Parents can request the deletion of their child's
+            Request Deletion: Parents can request the deletion of their child&apos;s
             personal information from our records.
             <br />
             <br />
             Withdraw Consent: Parents may withdraw consent at any time,
-            preventing any further collection or use of their child's personal
+            preventing any further collection or use of their child&apos;s personal
             information.
             <br />
             <br />
@@ -94,7 +94,7 @@ function CoppaPage() {
           <ParagraphHeading>7. Contact Information</ParagraphHeading>
           <BodyText>
             If you have any questions or concerns about our COPPA compliance or
-            the handling of children's personal information, please contact us
+            the handling of children&apos;s personal information, please contact us
             at: 
             <br />
             Email: admin@momentstomemories.com

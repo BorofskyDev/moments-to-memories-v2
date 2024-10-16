@@ -80,7 +80,7 @@ function PrivacyPage() {
           purposes, such as improving its own services. For more information,
           you can visit{' '}
           <ExternalPageLink href='https://policies.google.com/privacy?hl=en-US'>
-            Google's Privacy Policy
+            Google&apos;s Privacy Policy
           </ExternalPageLink>
           .
         </BodyText>
@@ -148,7 +148,7 @@ function PrivacyPage() {
         </BodyText>
       </div>
       <div className={styles.bodyText}>
-        <ParagraphHeading>8. Children's Privacy</ParagraphHeading>
+        <ParagraphHeading>8. Children&apos;s Privacy</ParagraphHeading>
         <BodyText>
           Our website is not directed at children under the age of 13, and we do
           not knowingly collect personal information from children. If we become

@@ -65,7 +65,7 @@ function CookiesPage() {
           settings.
           <br />
           <br />
-          Analyze user behavior to improve our website's functionality and
+          Analyze user behavior to improve our website&apos;s functionality and
           performance.
           <br />
           <br />
