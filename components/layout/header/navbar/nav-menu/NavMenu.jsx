@@ -46,7 +46,7 @@ function NavMenu({ isMenuOpen, handleMenuToggle }) {
     { href: '/gallery', label: 'Gallery' },
     { href: '/services', label: 'Services' },
     { href: '/blog', label: 'Blog' },
-    { href: '#contact', label: 'Contact' }, // Keep '#contact' for internal scrolling
+    { href: '/contact', label: 'Contact' }, // Keep '#contact' for internal scrolling
   ]
 
   if (isAdmin) {

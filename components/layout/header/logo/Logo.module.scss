@@ -1,7 +1,9 @@
 @use '../../../../styles/mixins' as *;
 
 .logo {
+  & span {
     font-family: var(--font-display);
     font-size: var(--fs-600);
     @include gradientText;
+  }
 }
