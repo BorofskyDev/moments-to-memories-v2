@@ -3,6 +3,7 @@
 
 import EditField from '@/components/layout/edit-field/EditField'
 import styles from './BasicClientInfoEdit.module.scss'
+import InternalPageLink from '@/components/links/internal-page-link/InternalPageLink'
 
 export const BasicClientInfoEdit = ({
   clientData,
@@ -15,6 +16,7 @@ export const BasicClientInfoEdit = ({
     <section className={styles.basicInfo}>
       {canEdit ? (
         <>
+        <InternalPageLink href={`/clients/${clientData.id}`}>{clientData.name}'s profile.</InternalPageLink>
           <EditField
             label='Name'
             fieldName='name'

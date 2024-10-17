@@ -26,6 +26,7 @@ import CancelButton from '@/components/buttons/cancel-button/CancelButton'
 import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
 import EditField from '@/components/layout/edit-field/EditField'
 import Image from 'next/image'
+import SubmitButton from '@/components/buttons/submit-button/SubmitButton'
 
 const ReviewsModal = ({ isOpen, onClose }) => {
   const [image, setImage] = useState(null)
@@ -213,7 +214,7 @@ const ReviewsModal = ({ isOpen, onClose }) => {
           </div>
           {error && <p className={styles.error}>{error}</p>}
           <div className={styles.buttonGroup}>
-            <DeleteButton
+            <SubmitButton
               type='submit'
               className={styles.submitButton}
               disabled={isUploading}

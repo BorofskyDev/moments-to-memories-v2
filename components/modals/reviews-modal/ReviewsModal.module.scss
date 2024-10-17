@@ -3,20 +3,65 @@
 .modalOverlay {
     display: grid;
     place-items: center;
+    max-width: 100%;
+
+    & .reviewForm {
+        margin-top: var(--spacing-400);
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-400);
+
+        & .formGroup {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-200);
+
+            & input, & textarea {
+                padding: var(--spacing-100) var(--spacing-200);
+                box-shadow: var(--box-shadow-300);
+                background-color: hsl(var(--background-color),);
+                color: hsl(var(--text-color));
+                @include gradientBorder;
+            }
+        }
+    }
+
+    & .existingReviews {
+        max-width: 18rem;
+        
+        margin-top: var(--spacing-400);
+
+        & .reviewItem {
+            margin-top: var(--spacing-400);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-300);
+
+            & .reviewDetails {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: var(--spacing-200);
+            }
+            .reviewImage {
+            
+                & img {
+                    width: 8rem;
+                    height: 8rem;
+                    object-fit: cover;
+                    object-position: top;
+                    border-radius: 50%;
+                    box-shadow: var(--box-shadow-300);
+                    
+            
+                }
+            }
+        }
+    }
+
+
     
 }
 
-
-.reviewImage {
-
-    & img {
-        width: 8rem;
-        height: 8rem;
-        object-fit: cover;
-        object-position: top;
-        border-radius: 50%;
-        box-shadow: var(--box-shadow-300);
-        
-
-    }
-}
