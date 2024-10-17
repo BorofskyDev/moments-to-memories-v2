@@ -11,6 +11,7 @@ import styles from './ClientProfileComponent.module.scss'
 import PageHeading from '@/components/headings/page-heading/PageHeading'
 import Subheading from '@/components/headings/subheading/Subheading'
 import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import SectionContainer from '@/components/layout/containers/section-container/SectionContainer'
 
 const ClientProfileComponent = ({ clientId }) => {
   const {
@@ -49,7 +50,7 @@ const ClientProfileComponent = ({ clientId }) => {
   }
 
   return (
-    <div className={styles.clientProfile}>
+    <SectionContainer className={styles.clientProfile}>
       <PageHeading className={styles.clientName}>{clientData.name}</PageHeading>
 
       <section className={styles.galleriesSection}>
@@ -68,7 +69,7 @@ const ClientProfileComponent = ({ clientId }) => {
           ))
         )}
       </section>
-    </div>
+    </SectionContainer>
   )
 }
 
