@@ -1,4 +1,4 @@
-// components/pages/admin/clients/client-profile/folder-upload-component/FolderUploadComponent.jsx
+// components/admin/clients/client-profile/folder-upload-component/FolderUploadComponent.jsx
 
 'use client'
 
@@ -16,8 +16,10 @@ const FolderUploadComponent = ({ clientId }) => {
   const [selectedGalleryId, setSelectedGalleryId] = useState('')
   const [isCreateGalleryOpen, setIsCreateGalleryOpen] = useState(false)
   const [newGalleryName, setNewGalleryName] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
-  const { galleries, createGallery, addPhotosToGallery } = useGallery(clientId)
+  const { galleries, addPhotosToGallery } = useGallery(clientId)
 
   // Handle folder selection and file validation
   const handleFolderSelect = (event) => {
@@ -77,24 +79,48 @@ const FolderUploadComponent = ({ clientId }) => {
     }
   }
 
-  // Handle creating a new gallery
+  // Handle creating a new gallery with password
   const handleCreateGallery = async () => {
     if (!newGalleryName.trim()) {
       toast.warn('Gallery name cannot be empty.')
       return
     }
 
-    try {
-      // Create a new gallery and get its ID
-      const newGalleryId = await createGallery(newGalleryName)
+    if (!password || !confirmPassword) {
+      toast.warn('Please enter and confirm the password.')
+      return
+    }
 
-      if (newGalleryId) {
-        setSelectedGalleryId(newGalleryId)
+    if (password !== confirmPassword) {
+      toast.warn('Passwords do not match.')
+      return
+    }
+
+    try {
+      // Call the API to create a new gallery with password
+      const response = await fetch('/api/createGallery', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          clientId,
+          galleryName: newGalleryName,
+          password,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSelectedGalleryId(data.galleryId)
         toast.success(`Gallery "${newGalleryName}" created successfully!`)
         setIsCreateGalleryOpen(false)
         setNewGalleryName('')
+        setPassword('')
+        setConfirmPassword('')
       } else {
-        throw new Error('Failed to create gallery.')
+        throw new Error(data.message || 'Failed to create gallery.')
       }
     } catch (error) {
       console.error('Error creating gallery:', error)
@@ -141,6 +167,20 @@ const FolderUploadComponent = ({ clientId }) => {
               onChange={(e) => setNewGalleryName(e.target.value)}
               placeholder='Gallery Name'
               className={styles.galleryNameInput}
+            />
+            <input
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder='Password'
+              className={styles.passwordInput}
+            />
+            <input
+              type='password'
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder='Confirm Password'
+              className={styles.confirmPasswordInput}
             />
             <div className={styles.modalActions}>
               <MainActionButton onClick={handleCreateGallery} text='Create' />
