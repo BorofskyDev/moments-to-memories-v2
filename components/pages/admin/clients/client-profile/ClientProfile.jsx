@@ -19,6 +19,7 @@ import {
   RelationsEdit,
 } from './client-profile-edit-components/'
 import DeleteConfirmationModal from '@/components/modals/delete-confirmation-modal/DeleteConfirmationModal'
+import FolderUploadComponent from './folder-upload-component/FolderUploadComponent'
 
 const ClientProfile = ({ client }) => {
   const { user, isAdmin } = useAuth() // Get current user and admin status
@@ -171,6 +172,10 @@ const ClientProfile = ({ client }) => {
         handleDeleteRelation={handleDeleteRelation}
         handleAddRelation={handleAddRelation}
       />
+
+      {/* Gallery Selection Upload */}
+
+      <FolderUploadComponent clientId={client.id} />
 
       {/* Gallery Section */}
       <GallerySectionEdit

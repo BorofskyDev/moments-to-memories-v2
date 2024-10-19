@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { getAuth } from 'firebase/auth'
-import { db, storage } from '@/libs/firebase' // Ensure correct import
+import { db, storage } from '@/libs/firebase' // Ensure correct import paths
 import {
   collection,
   addDoc,
@@ -13,7 +13,7 @@ import {
 } from 'firebase/firestore'
 import {
   ref,
-  uploadBytes,
+  uploadBytesResumable,
   getDownloadURL,
   deleteObject,
 } from 'firebase/storage'
@@ -66,11 +66,11 @@ const useGallery = (clientId) => {
     }
   }
 
-  // Create a new gallery
-  const createGallery = async (name, date, files) => {
+  // Create a new gallery and return its ID
+  const createGallery = async (name) => {
     if (!clientId) {
       setError('Client ID is missing.')
-      return
+      return null
     }
     setIsCreating(true)
 
@@ -79,48 +79,119 @@ const useGallery = (clientId) => {
         throw new Error('User not authenticated')
       }
 
-      // Removed admin check
-
       // Create a new gallery document in Firestore
       const galleriesCol = collection(db, 'clients', clientId, 'galleries')
       const newGalleryRef = await addDoc(galleriesCol, {
         name,
-        date: new Date(date), // Ensure date is stored as Firestore Timestamp
         createdAt: serverTimestamp(),
       })
 
-      // Upload each file to Firebase Storage and store download URLs in Firestore
-      const uploadPromises = files.map(async (file) => {
-        const storageRef = ref(
-          storage,
-          `clients/${clientId}/galleries/${newGalleryRef.id}/${file.name}`
-        )
-        const snapshot = await uploadBytes(storageRef, file)
-        const url = await getDownloadURL(snapshot.ref)
-        return { name: file.name, url }
-      })
+      const newGallery = { id: newGalleryRef.id, name }
 
-      const uploadedPhotos = await Promise.all(uploadPromises)
+      setGalleries((prevGalleries) => [...prevGalleries, newGallery])
 
-      // Save photo URLs in Firestore under the gallery's photos collection
+      return newGalleryRef.id
+    } catch (err) {
+      console.error('Error creating gallery:', err)
+      setError('Failed to create gallery.')
+      return null
+    } finally {
+      setIsCreating(false)
+    }
+  }
+
+  // Add photos to a gallery with progress tracking
+  const addPhotosToGallery = async (galleryId, files, onProgress) => {
+    if (!clientId) {
+      setError('Client ID is missing.')
+      throw new Error('Client ID is missing.')
+    }
+    if (!galleryId) {
+      setError('Gallery ID is missing.')
+      throw new Error('Gallery ID is missing.')
+    }
+    if (!files || !Array.isArray(files)) {
+      setError('Files must be an array.')
+      throw new Error('Files must be an array.')
+    }
+
+    setIsCreating(true) // Reuse isCreating for adding photos
+
+    try {
+      if (!user) {
+        throw new Error('User not authenticated')
+      }
+
       const photosCol = collection(
         db,
         'clients',
         clientId,
         'galleries',
-        newGalleryRef.id,
+        galleryId,
         'photos'
       )
-      const addPhotoPromises = uploadedPhotos.map((photo) =>
-        addDoc(photosCol, photo)
-      )
-      await Promise.all(addPhotoPromises)
+
+      const totalFiles = files.length
+      let uploadedFiles = 0
+
+      for (const file of files) {
+        const storageRef = ref(
+          storage,
+          `clients/${clientId}/galleries/${galleryId}/${file.name}`
+        )
+        const uploadTask = uploadBytesResumable(storageRef, file)
+
+        await new Promise((resolve, reject) => {
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+              if (onProgress) {
+                const progress =
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                const overallProgress = Math.round(
+                  ((uploadedFiles + progress / 100) / totalFiles) * 100
+                )
+                onProgress(overallProgress)
+              }
+            },
+            (error) => {
+              console.error('Upload error:', error)
+              reject(error)
+            },
+            async () => {
+              try {
+                const downloadURL = await getDownloadURL(
+                  uploadTask.snapshot.ref
+                )
+                await addDoc(photosCol, {
+                  name: file.name,
+                  url: downloadURL,
+                  uploadDate: serverTimestamp(),
+                  selectionStatus: false,
+                })
+                uploadedFiles += 1
+                if (onProgress) {
+                  const overallProgress = Math.round(
+                    (uploadedFiles / totalFiles) * 100
+                  )
+                  onProgress(overallProgress)
+                }
+                resolve()
+              } catch (err) {
+                console.error('Error adding photo to Firestore:', err)
+                reject(err)
+              }
+            }
+          )
+        })
+      }
 
       // Refresh galleries list
       await fetchGalleries()
-    } catch (err) {
-      console.error('Error creating gallery:', err)
-      setError('Failed to create gallery.')
+    } catch (error) {
+      console.error('Error adding photos to gallery:', error)
+      setError('Failed to add photos to gallery.')
+      throw error
     } finally {
       setIsCreating(false)
     }
@@ -137,8 +208,6 @@ const useGallery = (clientId) => {
       if (!user) {
         throw new Error('User not authenticated')
       }
-
-      // Removed admin check
 
       // Fetch all photos in the gallery to delete from Storage
       const photosCol = collection(
@@ -197,8 +266,6 @@ const useGallery = (clientId) => {
         throw new Error('User not authenticated')
       }
 
-      // Removed admin check
-
       // Delete the photo from Firebase Storage
       const storageRef = ref(
         storage,
@@ -210,9 +277,6 @@ const useGallery = (clientId) => {
       await deleteDoc(
         doc(db, 'clients', clientId, 'galleries', galleryId, 'photos', photoId)
       )
-
-      // Refresh galleries list
-      await fetchGalleries()
     } catch (err) {
       console.error('Error deleting photo:', err)
       setError('Failed to delete photo.')
@@ -221,58 +285,10 @@ const useGallery = (clientId) => {
     }
   }
 
-  const addPhotosToGallery = async (galleryId, files) => {
-    if (!clientId) {
-      setError('Client ID is missing.')
-      return
-    }
-    setIsCreating(true) // Reuse isCreating for adding photos
-
-    try {
-      if (!user) {
-        throw new Error('User not authenticated')
-      }
-
-      // Upload each file to Firebase Storage and store download URLs in Firestore
-      const uploadPromises = files.map(async (file) => {
-        const storageRef = ref(
-          storage,
-          `clients/${clientId}/galleries/${galleryId}/${file.name}`
-        )
-        const snapshot = await uploadBytes(storageRef, file)
-        const url = await getDownloadURL(snapshot.ref)
-        return { name: file.name, url }
-      })
-
-      const uploadedPhotos = await Promise.all(uploadPromises)
-
-      // Save photo URLs in Firestore under the gallery's photos collection
-      const photosCol = collection(
-        db,
-        'clients',
-        clientId,
-        'galleries',
-        galleryId,
-        'photos'
-      )
-      const addPhotoPromises = uploadedPhotos.map((photo) =>
-        addDoc(photosCol, photo)
-      )
-      await Promise.all(addPhotoPromises)
-
-      // Refresh galleries list
-      await fetchGalleries()
-    } catch (err) {
-      console.error('Error adding photos to gallery:', err)
-      setError('Failed to add photos to gallery.')
-    } finally {
-      setIsCreating(false)
-    }
-  }
-
   // Initialize by fetching galleries
   useEffect(() => {
     fetchGalleries()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientId])
 
   return {
@@ -283,7 +299,7 @@ const useGallery = (clientId) => {
     fetchGalleries,
     createGallery,
     deleteGallery,
-    deletePhoto, 
+    deletePhoto,
     addPhotosToGallery,
   }
 }

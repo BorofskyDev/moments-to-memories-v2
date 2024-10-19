@@ -16,7 +16,7 @@ export const BasicClientInfoEdit = ({
     <section className={styles.basicInfo}>
       {canEdit ? (
         <>
-        <InternalPageLink href={`/clients/${clientData.id}`}>{clientData.name}'s profile.</InternalPageLink>
+        <InternalPageLink href={`/clients/${clientData.id}`}>{clientData.name}&apos;s profile.</InternalPageLink>
           <EditField
             label='Name'
             fieldName='name'

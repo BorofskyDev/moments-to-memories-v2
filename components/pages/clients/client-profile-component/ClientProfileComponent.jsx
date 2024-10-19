@@ -53,7 +53,7 @@ const ClientProfileComponent = ({ clientId }) => {
     <SectionContainer className={styles.clientProfile}>
       <PageHeading className={styles.clientName}>{clientData.name}</PageHeading>
 
-      <section className={styles.galleriesSection}>
+      <div className={styles.galleriesSection}>
         <Subheading>Galleries</Subheading>
         {galleries.length === 0 ? (
           <p>No galleries available for this client.</p>
@@ -68,7 +68,7 @@ const ClientProfileComponent = ({ clientId }) => {
             </div>
           ))
         )}
-      </section>
+      </div>
     </SectionContainer>
   )
 }

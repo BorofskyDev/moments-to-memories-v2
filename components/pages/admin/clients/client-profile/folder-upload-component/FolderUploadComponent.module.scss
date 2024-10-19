@@ -1,0 +1,122 @@
+/* components/pages/admin/clients/client-profile/folder-upload-component/FolderUploadComponent.module.scss */
+
+.folderUpload {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 24px;
+  background-color: #f9f9f9;
+
+  h3 {
+    margin-bottom: 12px;
+  }
+
+  .gallerySelection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+
+    label {
+      margin-right: 8px;
+      font-weight: bold;
+    }
+
+    .gallerySelect {
+      flex: 1;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      margin-right: 12px;
+    }
+
+    .createGalleryButton {
+      padding: 8px 16px;
+      border: none;
+      background-color: #0070f3;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #005bb5;
+      }
+    }
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .modalContent {
+      background: white;
+      padding: 24px;
+      border-radius: 8px;
+      width: 400px;
+      max-width: 90%;
+
+      h4 {
+        margin-bottom: 12px;
+      }
+
+      .galleryNameInput {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        margin-bottom: 12px;
+      }
+
+      .modalActions {
+        display: flex;
+        justify-content: flex-end;
+
+        .cancelButton {
+          padding: 8px 16px;
+          border: none;
+          background-color: #ccc;
+          color: white;
+          border-radius: 4px;
+          cursor: pointer;
+          margin-left: 8px;
+
+          &:hover {
+            background-color: #999;
+          }
+        }
+      }
+    }
+  }
+
+  .fileInput {
+    margin-bottom: 12px;
+  }
+
+  .selectedFiles {
+    margin-bottom: 12px;
+
+    p {
+      margin: 0 0 8px 0;
+      font-weight: bold;
+    }
+
+    ul {
+      list-style: disc inside;
+      padding-left: 16px;
+
+      li {
+        margin-bottom: 4px;
+      }
+    }
+  }
+
+  .uploadButton {
+    margin-top: 12px;
+  }
+}

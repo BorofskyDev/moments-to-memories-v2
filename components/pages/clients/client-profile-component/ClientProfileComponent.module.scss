@@ -1,0 +1,16 @@
+.clientProfile {
+  display: grid;
+  place-content: center;
+  place-items: center;
+  gap: var(--spacing-400);
+
+  & .galleriesSection {
+    display: grid;
+    place-items: center;
+
+    & .gallery {
+      margin-top: var(--spacing-400);
+      text-align: center;
+    }
+  }
+}
