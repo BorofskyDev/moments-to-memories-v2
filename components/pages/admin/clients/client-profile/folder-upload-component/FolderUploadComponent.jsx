@@ -4,9 +4,12 @@
 
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import styles from './FolderUploadComponent.module.scss'
+
 import MainActionButton from '@/components/buttons/main-action-button/MainActionButton'
 import { toast } from 'react-toastify'
+import Link from 'next/link'
+import InternalPageLink from '@/components/links/internal-page-link/InternalPageLink'
+import styles from './FolderUploadComponent.module.scss'
 
 const FolderUploadComponent = ({
   clientId,
@@ -194,6 +197,25 @@ const FolderUploadComponent = ({
         className={styles.fileInput}
         accept='image/png, image/jpeg, image/jpg, image/gif'
       />
+
+      {galleries.length > 0 && (
+        <div className={styles.galleryList}>
+          <h3>Available Galleries</h3>
+          <ul className={styles.galleryUl}>
+            {galleries.map((gallery) => (
+              <li key={gallery.id} className={styles.galleryItem}>
+                <span className={styles.galleryName}>{gallery.name}</span>
+                <InternalPageLink
+                  href={`/clients/${clientId}/${gallery.id}`}
+                  className={styles.viewGalleryLink}
+                >
+                  View Gallery
+                </InternalPageLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Selected Files Preview */}
       {selectedFiles.length > 0 && (

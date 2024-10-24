@@ -1,68 +1,29 @@
-// app/clients/[clientId]/[galleryId]/page.jsx
+'use client'
 
-'use client' // Ensure client-side functionality
-
-import React, { useState, useEffect } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
-import PropTypes from 'prop-types'
-
-import styles from './GalleryPage.module.scss'
+import React, { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { toast } from 'react-toastify'
-import CustomGallery from '@/components/galleries/custom-gallery/CustomGallery'
-import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
+import useSelectionGallery from '@/libs/hooks/client-profile/useSelectionGallery'
 import AddButton from '@/components/buttons/add-button/AddButton'
 import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import ImageCard from '@/components/galleries/image-card/ImageCard'
+import styles from './GalleryPage.module.scss'
 
-const GalleryPage = ({ deletePhoto, addPhotosToGallery }) => {
-  const router = useRouter()
+const GalleryPage = () => {
   const pathname = usePathname()
   const pathSegments = pathname.split('/')
   const clientId = pathSegments[2]
   const galleryId = pathSegments[3]
-
+  const [selectedImages, setSelectedImages] = useState([])
   const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [galleryData, setGalleryData] = useState(null)
-  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // Fetch gallery data if authenticated
-  useEffect(() => {
-    const fetchGalleryData = async () => {
-      try {
-        const response = await fetch(`/api/fetchGalleryData`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ clientId, galleryId }),
-        })
+  const { galleries, addPhotosToGallery } = useSelectionGallery(clientId)
+  const gallery = galleries.find((g) => g.id === galleryId)
 
-        if (response.ok) {
-          const data = await response.json()
-          console.log('Fetched Gallery Data:', data.gallery)
-          setGalleryData(data.gallery)
-        } else {
-          const errorData = await response.json()
-          console.error('Error Fetching Gallery Data:', errorData.message)
-          setError(errorData.message || 'Failed to fetch gallery data.')
-        }
-      } catch (err) {
-        console.error('Error Fetching Gallery Data:', err)
-        setError('Failed to fetch gallery data.')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    if (isAuthenticated) {
-      fetchGalleryData()
-    } else {
-      setLoading(false)
-    }
-  }, [isAuthenticated, clientId, galleryId])
-
+  // Handle password submission
   const handlePasswordSubmit = async (e) => {
     e.preventDefault()
 
@@ -102,52 +63,6 @@ const GalleryPage = ({ deletePhoto, addPhotosToGallery }) => {
     }
   }
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch('/api/logout', {
-        method: 'POST',
-      })
-
-      if (response.ok) {
-        setIsAuthenticated(false)
-        setGalleryData(null)
-        setPassword('')
-        toast.success('Logged out successfully.')
-      } else {
-        throw new Error('Logout failed.')
-      }
-    } catch (error) {
-      console.error('Error Logging Out:', error)
-      toast.error('Failed to log out. Please try again.')
-    }
-  }
-
-  const handleDeletePhoto = async (photoId, photoName) => {
-    try {
-      await deletePhoto(clientId, galleryId, photoId, photoName)
-      // Refresh the gallery data after deletion
-      const response = await fetch(`/api/fetchGalleryData`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ clientId, galleryId }),
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        setGalleryData(data.gallery)
-        toast.success('Photo deleted successfully.')
-      } else {
-        const errorData = await response.json()
-        toast.error(errorData.message || 'Failed to delete photo.')
-      }
-    } catch (error) {
-      console.error('Error Deleting Photo:', error)
-      toast.error('Failed to delete photo.')
-    }
-  }
-
   const handleAddPhotos = async (e) => {
     const files = e.target.files
     if (files.length === 0) return
@@ -155,24 +70,8 @@ const GalleryPage = ({ deletePhoto, addPhotosToGallery }) => {
     try {
       setIsSubmitting(true)
       setError(null)
-      await addPhotosToGallery(clientId, galleryId, Array.from(files))
-      // After adding, refresh the gallery data
-      const response = await fetch(`/api/fetchGalleryData`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ clientId, galleryId }),
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        setGalleryData(data.gallery)
-        toast.success('Photos added successfully!')
-      } else {
-        const errorData = await response.json()
-        throw new Error(errorData.message || 'Failed to add photos.')
-      }
+      await addPhotosToGallery(galleryId, Array.from(files))
+      toast.success('Photos added successfully!')
     } catch (err) {
       console.error('Error Adding Photos:', err)
       setError('Failed to add photos.')
@@ -182,12 +81,16 @@ const GalleryPage = ({ deletePhoto, addPhotosToGallery }) => {
     }
   }
 
-  // Prevent rendering when loading
-  if (loading) {
-    return <p>Loading...</p>
+  const handleToggleImage = (photoId) => {
+    setSelectedImages((prevSelected) => {
+      if (prevSelected.includes(photoId)) {
+        return prevSelected.filter((id) => id !== photoId)
+      } else {
+        return [...prevSelected, photoId]
+      }
+    })
   }
 
-  // Password Prompt
   if (!isAuthenticated) {
     return (
       <div className={styles.passwordPrompt}>
@@ -213,30 +116,14 @@ const GalleryPage = ({ deletePhoto, addPhotosToGallery }) => {
     )
   }
 
-  // Error Display
-  if (error) {
-    return (
-      <div className={styles.errorContainer}>
-        <p className={styles.error}>{error}</p>
-        <button onClick={() => router.refresh()} className={styles.retryButton}>
-          Retry
-        </button>
-      </div>
-    )
-  }
-
-  // Ensure galleryData is available before rendering
-  if (!galleryData) {
-    return <p>No gallery data available.</p>
+  if (!gallery) {
+    return <p>Gallery not found.</p>
   }
 
   return (
     <div className={styles.galleryContainer}>
       <div className={styles.header}>
-        <ParagraphHeading>{galleryData.name}</ParagraphHeading>
-        <button onClick={handleLogout} className={styles.logoutButton}>
-          Logout
-        </button>
+        <ParagraphHeading>{gallery.name}</ParagraphHeading>
       </div>
       <AddButton
         onClick={() => document.getElementById('addPhotoInput').click()}
@@ -253,29 +140,18 @@ const GalleryPage = ({ deletePhoto, addPhotosToGallery }) => {
         onChange={handleAddPhotos}
       />
       <div className={styles.imageGrid}>
-        {galleryData.images && galleryData.images.length > 0 ? (
-          galleryData.images.map((image) => (
-            <div key={image.id} className={styles.imageWrapper}>
-              <img src={image.url} alt={image.name} className={styles.image} />
-              <DeleteButton
-                onClick={() => handleDeletePhoto(image.id, image.name)}
-                className={styles.deleteButton}
-                text='Delete'
-              />
-            </div>
-          ))
-        ) : (
-          <p>No photos in this gallery.</p>
-        )}
+        {gallery.photos.map((photo) => (
+          <ImageCard
+            key={photo.id}
+            photo={photo}
+            selected={selectedImages.includes(photo.id)}
+            onToggle={() => handleToggleImage(photo.id)}
+          />
+        ))}
       </div>
       {error && <p className={styles.error}>{error}</p>}
     </div>
   )
-}
-
-GalleryPage.propTypes = {
-  deletePhoto: PropTypes.func.isRequired,
-  addPhotosToGallery: PropTypes.func.isRequired,
 }
 
 export default GalleryPage
