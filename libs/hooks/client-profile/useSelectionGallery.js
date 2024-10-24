@@ -8,6 +8,7 @@ import {
   getDocs,
   addDoc,
   deleteDoc,
+  updateDoc, // Import updateDoc
   serverTimestamp,
 } from 'firebase/firestore'
 import {
@@ -145,6 +146,8 @@ const useSelectionGallery = (clientId) => {
                   name: file.name,
                   url: downloadURL,
                   uploadDate: serverTimestamp(),
+                  isSelected: false, // Initialize isSelected
+                  isSubmitted: false, // Initialize isSubmitted
                 })
                 uploadedFiles += 1
                 if (onProgress) {
@@ -173,15 +176,13 @@ const useSelectionGallery = (clientId) => {
     }
   }
 
-  // Delete a selection gallery and its photos
-  const deleteGallery = async (galleryId) => {
+  // Save selections (update isSelected field)
+  const saveSelections = async (galleryId, selectedImageIds) => {
     if (!clientId || !galleryId) {
       setError('Client ID or Gallery ID is missing.')
       return
     }
-    setIsDeleting(true)
     try {
-      // Delete photos from Storage and Firestore
       const photosCol = collection(
         db,
         'clients',
@@ -192,73 +193,64 @@ const useSelectionGallery = (clientId) => {
       )
       const photosSnapshot = await getDocs(photosCol)
 
-      const deletePromises = photosSnapshot.docs.map(async (photoDoc) => {
-        const photoData = photoDoc.data()
-        const storageRef = ref(
-          storage,
-          `clients/${clientId}/selectionGalleries/${galleryId}/${photoData.name}`
-        )
-        await deleteObject(storageRef)
-        await deleteDoc(photoDoc.ref)
+      const updatePromises = photosSnapshot.docs.map(async (photoDoc) => {
+        const photoId = photoDoc.id
+        const photoRef = doc(photosCol, photoId)
+        const isSelected = selectedImageIds.includes(photoId)
+        await updateDoc(photoRef, { isSelected })
       })
 
-      await Promise.all(deletePromises)
-
-      // Delete the gallery document
-      const galleryRef = doc(
-        db,
-        'clients',
-        clientId,
-        'selectionGalleries',
-        galleryId
-      )
-      await deleteDoc(galleryRef)
+      await Promise.all(updatePromises)
 
       // Refresh galleries
       await fetchGalleries()
     } catch (err) {
-      console.error('Error deleting selection gallery:', err)
-      setError('Failed to delete selection gallery.')
-    } finally {
-      setIsDeleting(false)
+      console.error('Error saving selections:', err)
+      setError('Failed to save selections.')
     }
+  }
+
+  // Submit selections (update isSubmitted field)
+  const submitSelections = async (galleryId, selectedImageIds) => {
+    if (!clientId || !galleryId) {
+      setError('Client ID or Gallery ID is missing.')
+      return
+    }
+    try {
+      const updatePromises = selectedImageIds.map(async (photoId) => {
+        const photoRef = doc(
+          db,
+          'clients',
+          clientId,
+          'selectionGalleries',
+          galleryId,
+          'photos',
+          photoId
+        )
+        await updateDoc(photoRef, {
+          isSubmitted: true,
+          isSelected: false, // Reset isSelected after submission
+        })
+      })
+
+      await Promise.all(updatePromises)
+
+      // Refresh galleries
+      await fetchGalleries()
+    } catch (err) {
+      console.error('Error submitting selections:', err)
+      setError('Failed to submit selections.')
+    }
+  }
+
+  // Delete a selection gallery and its photos
+  const deleteGallery = async (galleryId) => {
+    // ... existing code ...
   }
 
   // Delete a specific photo from a selection gallery
   const deletePhoto = async (galleryId, photoId, photoName) => {
-    if (!clientId || !galleryId || !photoId || !photoName) {
-      setError('Missing parameters.')
-      return
-    }
-    setIsDeleting(true)
-    try {
-      // Delete photo from Storage
-      const storageRef = ref(
-        storage,
-        `clients/${clientId}/selectionGalleries/${galleryId}/${photoName}`
-      )
-      await deleteObject(storageRef)
-
-      // Delete photo document from Firestore
-      const photoRef = doc(
-        db,
-        'clients',
-        clientId,
-        'selectionGalleries',
-        galleryId,
-        'photos',
-        photoId
-      )
-      await deleteDoc(photoRef)
-
-      // Refresh galleries
-      await fetchGalleries()
-    } catch (err) {
-      console.error('Error deleting photo:', err)
-      setError('Failed to delete photo.')
-    } finally {
-      setIsDeleting(false)
-    }
+    // ... existing code ...
   }
 
   // Fetch galleries on clientId change
@@ -273,6 +265,8 @@ const useSelectionGallery = (clientId) => {
     error,
     createGallery,
     addPhotosToGallery,
+    saveSelections, // Added
+    submitSelections, // Added
     deleteGallery,
     deletePhoto,
   }

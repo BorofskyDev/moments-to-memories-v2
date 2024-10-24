@@ -1,0 +1,51 @@
+@use '../../../../styles/mixins' as *;
+
+.passwordPrompt {
+    margin: 0 auto;
+    display: grid;
+    place-content: center;
+    gap: var(--spacing-600);
+    @include sectionLayout;
+
+    & .passwordForm {
+        display: grid;
+        place-items: center;
+        gap: var(--spacing-400);
+
+        & .passwordInput {
+            padding: var(--spacing-100) var(--spacing-200);
+            background-color: hsl(var(--background-color));
+            color: hsl(var(--text-color));
+            box-shadow: var(--box-shadow-300);
+            @include gradientBorder;
+        }
+    }
+}
+
+.galleryContainer {
+    margin: 0 auto;
+    display: grid;
+    place-content: center;
+    gap: var(--spacing-600);
+    @include sectionLayout;
+
+    & .header {
+        display: grid;
+        place-items: center;
+    }
+
+    & .imageGrid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-400);
+
+    }
+    & .actionButtons {
+        width: 100%;
+        margin-top: var(--spacing-600);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-800);
+    }
+}

@@ -1,0 +1,37 @@
+@use '../../../styles/mixins' as *;
+
+.imageCard {
+    width: 16rem;
+    height: 20rem;
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-200);
+    transition: var(--transition-main);
+
+    & img {
+        height: 14rem;
+        width: 14rem;
+        object-fit: cover;
+    }
+
+    &.selected {
+        box-shadow: var(--box-shadow-500);
+        @include gradientBorder;
+
+        & .toggleButton {
+            font-weight: 700;
+            @include gradientBorder
+        }
+    }
+
+    & .toggleButton {
+        padding: var(--spacing-100) var(--spacing-200);
+        background-color: hsl(var(--background-color));
+        color: hsl(var(--text-color));
+        border: 1px solid hsl(var(--text-color));
+        box-shadow: var(--box-shadow-300);
+        cursor: pointer;
+
+    }
+
+}
