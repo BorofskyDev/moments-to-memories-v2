@@ -2,10 +2,9 @@
 
 'use client'
 
-import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import useClientProfile from '@/libs/hooks/client-profile/useClientProfile'
-import useGallery from '@/libs/hooks/client-profile/useGallery'
+import usePublicGallery from '@/libs/hooks/client-profile/usePublicGallery'
 import CarouselGallery from '@/components/galleries/carousel-gallery/CarouselGallery'
 import styles from './ClientProfileComponent.module.scss'
 import PageHeading from '@/components/headings/page-heading/PageHeading'
@@ -19,11 +18,12 @@ const ClientProfileComponent = ({ clientId }) => {
     loading: clientLoading,
     error: clientError,
   } = useClientProfile({ id: clientId })
+
   const {
     galleries,
     loading: galleriesLoading,
     error: galleriesError,
-  } = useGallery(clientId)
+  } = usePublicGallery(clientId) // Use usePublicGallery instead of useGallery
 
   if (clientLoading || galleriesLoading) {
     return <div className={styles.loading}>Loading...</div>
@@ -40,7 +40,7 @@ const ClientProfileComponent = ({ clientId }) => {
   if (galleriesError) {
     return (
       <div className={styles.error}>
-        Error fetching galleries: {galleriesError.message}
+        Error fetching galleries: {galleriesError}
       </div>
     )
   }
@@ -60,7 +60,9 @@ const ClientProfileComponent = ({ clientId }) => {
         ) : (
           galleries.map((gallery) => (
             <div key={gallery.id} className={styles.gallery}>
-              <ParagraphHeading className={styles.galleryName}>{gallery.name}</ParagraphHeading>
+              <ParagraphHeading className={styles.galleryName}>
+                {gallery.name}
+              </ParagraphHeading>
               <CarouselGallery
                 images={gallery.photos.map((photo) => photo.url)}
                 canDelete={false} // Set to true if deletion is allowed

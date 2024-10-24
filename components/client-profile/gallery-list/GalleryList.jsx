@@ -1,16 +1,27 @@
 // components/client-profile/gallery-list/GalleryList.jsx
 
-'use client' // Ensure this is at the top
+'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import Link from 'next/link' // Import Link from Next.js
 import styles from './GalleryList.module.scss'
 import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 import ViewButton from '@/components/buttons/view-button/ViewButton'
 import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import CarouselGallery from '@/components/galleries/carousel-gallery/CarouselGallery'
 
-const GalleryList = ({ galleries, onDelete, clientId }) => {
+const GalleryList = ({ galleries, onDelete, deletePhoto }) => {
+  const [selectedGalleryId, setSelectedGalleryId] = useState(null)
+
+  const handleViewGallery = (galleryId) => {
+    if (selectedGalleryId === galleryId) {
+      // If the gallery is already selected, close it
+      setSelectedGalleryId(null)
+    } else {
+      setSelectedGalleryId(galleryId)
+    }
+  }
+
   return (
     <div className={styles.galleryList}>
       {galleries.length > 0 ? (
@@ -29,19 +40,43 @@ const GalleryList = ({ galleries, onDelete, clientId }) => {
                 </p>
               </div>
               <div className={styles.galleryActions}>
-                {/* Link to the dedicated gallery page */}
-                <Link href={`/clients/${clientId}/${gallery.id}`}>
-                  <ViewButton
-                    className={styles.viewButton}
-                    text='View Gallery'
-                  />
-                </Link>
+                <ViewButton
+                  className={styles.viewButton}
+                  text={
+                    selectedGalleryId === gallery.id
+                      ? 'Hide Gallery'
+                      : 'View Gallery'
+                  }
+                  onClick={() => handleViewGallery(gallery.id)}
+                />
                 <DeleteButton
                   onClick={() => onDelete(gallery.id)}
                   className={styles.deleteButton}
                   text='Delete Gallery'
                 />
               </div>
+              {/* Render CarouselGallery if this gallery is selected */}
+              {selectedGalleryId === gallery.id && (
+                <div className={styles.carouselContainer}>
+                  <CarouselGallery
+                    images={gallery.photos.map((photo) => photo.url)}
+                    canDelete={true}
+                    onDelete={(imageUrl) => {
+                      // Find the photoId and photoName based on imageUrl
+                      const photoToDelete = gallery.photos.find(
+                        (photo) => photo.url === imageUrl
+                      )
+                      if (photoToDelete) {
+                        deletePhoto(
+                          gallery.id,
+                          photoToDelete.id,
+                          photoToDelete.name
+                        )
+                      }
+                    }}
+                  />
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -60,11 +95,17 @@ GalleryList.propTypes = {
       createdAt: PropTypes.shape({
         seconds: PropTypes.number.isRequired,
       }),
-      // Removed 'photos' prop as it's handled in the dedicated gallery page
+      photos: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          url: PropTypes.string.isRequired,
+        })
+      ),
     })
   ).isRequired,
   onDelete: PropTypes.func.isRequired,
-  clientId: PropTypes.string.isRequired, // New PropType
+  deletePhoto: PropTypes.func.isRequired,
 }
 
 export default GalleryList

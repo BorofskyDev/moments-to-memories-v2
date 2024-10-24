@@ -5,21 +5,24 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import styles from './FolderUploadComponent.module.scss'
-import useGallery from '@/libs/hooks/client-profile/useGallery'
 import MainActionButton from '@/components/buttons/main-action-button/MainActionButton'
 import { toast } from 'react-toastify'
 
-const FolderUploadComponent = ({ clientId }) => {
+const FolderUploadComponent = ({
+  clientId,
+  galleries,
+  createGallery,
+  addPhotosToGallery,
+  isUploading,
+  error,
+}) => {
   const [selectedFiles, setSelectedFiles] = useState([])
-  const [isUploading, setIsUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [selectedGalleryId, setSelectedGalleryId] = useState('')
   const [isCreateGalleryOpen, setIsCreateGalleryOpen] = useState(false)
   const [newGalleryName, setNewGalleryName] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-
-  const { galleries, addPhotosToGallery } = useGallery(clientId)
 
   // Handle folder selection and file validation
   const handleFolderSelect = (event) => {
@@ -59,7 +62,6 @@ const FolderUploadComponent = ({ clientId }) => {
       return
     }
 
-    setIsUploading(true)
     setUploadProgress(0)
 
     try {
@@ -74,7 +76,6 @@ const FolderUploadComponent = ({ clientId }) => {
       console.error('Error uploading folder:', error)
       toast.error('Failed to upload folder. Please try again.')
     } finally {
-      setIsUploading(false)
       setUploadProgress(0)
     }
   }
@@ -97,31 +98,18 @@ const FolderUploadComponent = ({ clientId }) => {
     }
 
     try {
-      // Call the API to create a new gallery with password
-      const response = await fetch('/api/createGallery', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          clientId,
-          galleryName: newGalleryName,
-          password,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        setSelectedGalleryId(data.galleryId)
-        toast.success(`Gallery "${newGalleryName}" created successfully!`)
-        setIsCreateGalleryOpen(false)
-        setNewGalleryName('')
-        setPassword('')
-        setConfirmPassword('')
-      } else {
-        throw new Error(data.message || 'Failed to create gallery.')
+      // Use the createGallery function passed via props
+      await createGallery(newGalleryName, password)
+      // Find the new gallery ID
+      const newGallery = galleries.find((g) => g.name === newGalleryName)
+      if (newGallery) {
+        setSelectedGalleryId(newGallery.id)
       }
+      toast.success(`Gallery "${newGalleryName}" created successfully!`)
+      setIsCreateGalleryOpen(false)
+      setNewGalleryName('')
+      setPassword('')
+      setConfirmPassword('')
     } catch (error) {
       console.error('Error creating gallery:', error)
       toast.error('Failed to create gallery. Please try again.')
@@ -237,6 +225,11 @@ const FolderUploadComponent = ({ clientId }) => {
 
 FolderUploadComponent.propTypes = {
   clientId: PropTypes.string.isRequired,
+  galleries: PropTypes.array.isRequired,
+  createGallery: PropTypes.func.isRequired,
+  addPhotosToGallery: PropTypes.func.isRequired,
+  isUploading: PropTypes.bool.isRequired,
+  error: PropTypes.any,
 }
 
 export default FolderUploadComponent

@@ -5,8 +5,8 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '@/libs/context/AuthContext'
 import useClientProfile from '@/libs/hooks/client-profile/useClientProfile'
-import useGallery from '@/libs/hooks/client-profile/useGallery'
-import styles from './ClientProfile.module.scss'
+import usePublicGallery from '@/libs/hooks/client-profile/usePublicGallery'
+import useSelectionGallery from '@/libs/hooks/client-profile/useSelectionGallery'
 import SectionHeading from '@/components/headings/section-heading/SectionHeading'
 import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 import {
@@ -20,6 +20,7 @@ import {
 } from './client-profile-edit-components/'
 import DeleteConfirmationModal from '@/components/modals/delete-confirmation-modal/DeleteConfirmationModal'
 import FolderUploadComponent from './folder-upload-component/FolderUploadComponent'
+import styles from './ClientProfile.module.scss'
 
 const ClientProfile = ({ client }) => {
   const { user, isAdmin } = useAuth() // Get current user and admin status
@@ -55,14 +56,24 @@ const ClientProfile = ({ client }) => {
   
 
   const {
-    galleries,
-    isCreating,
-    error: galleryError,
-    createGallery,
-    deleteGallery,
-    deletePhoto,
-    addPhotosToGallery,
-  } = useGallery(clientData?.id)
+    galleries: publicGalleries,
+    isCreating: isCreatingPublicGallery,
+    error: publicGalleryError,
+    createGallery: createPublicGallery,
+    deleteGallery: deletePublicGallery,
+    deletePhoto: deletePublicPhoto,
+    addPhotosToGallery: addPhotosToPublicGallery,
+  } = usePublicGallery(clientData?.id)
+
+  const {
+    galleries: selectionGalleries,
+    isUploading: isUploadingSelectionGallery,
+    error: selectionGalleryError,
+    createGallery: createSelectionGallery,
+    deleteGallery: deleteSelectionGallery,
+    deletePhoto: deleteSelectionPhoto,
+    addPhotosToGallery: addPhotosToSelectionGallery,
+  } = useSelectionGallery(clientData?.id)
 
   
 
@@ -75,12 +86,12 @@ const ClientProfile = ({ client }) => {
   
 
   // Handle creating a new gallery
-  const handleCreateGallery = async (name, date, files) => {
+  const handleCreatePublicGallery = async (name, date, files) => {
     try {
-      await createGallery(name, date, files)
+      await createPublicGallery(name, date, files)
       setIsCreatingGallery(false)
     } catch (err) {
-      console.error('Error creating gallery:', err)
+      console.error('Error creating public gallery:', err)
     }
   }
 
@@ -175,22 +186,29 @@ const ClientProfile = ({ client }) => {
 
       {/* Gallery Selection Upload */}
 
-      <FolderUploadComponent clientId={client.id} />
+      <FolderUploadComponent
+        clientId={clientData.id}
+        galleries={selectionGalleries}
+        createGallery={createSelectionGallery}
+        addPhotosToGallery={addPhotosToSelectionGallery}
+        isUploading={isUploadingSelectionGallery}
+        error={selectionGalleryError}
+      />
 
-      {/* Gallery Section */}
+      {/* Gallery Section for Public Galleries */}
       <GallerySectionEdit
         canEdit={canEdit}
         isCreatingGallery={isCreatingGallery}
-        handleCreateGallery={handleCreateGallery}
+        handleCreateGallery={handleCreatePublicGallery}
         handleCancelCreateGallery={() => setIsCreatingGallery(false)}
         handleAddGallery={() => setIsCreatingGallery(true)}
-        galleries={galleries}
-        deleteGallery={deleteGallery}
-        galleryError={galleryError}
-        isCreating={isCreating}
+        galleries={publicGalleries}
+        deleteGallery={deletePublicGallery}
+        galleryError={publicGalleryError}
+        isCreating={isCreatingPublicGallery}
         clientId={clientData.id}
-        deletePhoto={deletePhoto}
-        addPhotosToGallery={addPhotosToGallery}
+        deletePhoto={deletePublicPhoto}
+        addPhotosToGallery={addPhotosToPublicGallery}
       />
 
       {/* Action Buttons */}
