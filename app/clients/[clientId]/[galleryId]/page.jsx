@@ -130,7 +130,6 @@ const GalleryPage = () => {
 
   // Handle submitting selections
   const handleSubmit = async () => {
-    console.log('Submit')
     if (selectedImages.length < 10) {
       toast.warn('Please select at least 10 images before submitting.')
       return
@@ -144,7 +143,6 @@ const GalleryPage = () => {
     }
     setIsSubmitting(true)
     try {
-      // Update isSubmitted field of selected images
       const promises = selectedImages.map(async (photoId) => {
         const photoRef = doc(
           db,
@@ -157,11 +155,10 @@ const GalleryPage = () => {
         )
         await updateDoc(photoRef, {
           isSubmitted: true,
-          isSelected: false, // Reset isSelected after submission
+          isSelected: false, 
         })
       })
       await Promise.all(promises)
-      // Update submittedImages state
       setSubmittedImages((prev) => [...prev, ...selectedImages])
       setSelectedImages([])
       toast.success('Selections submitted.')
@@ -208,7 +205,7 @@ const GalleryPage = () => {
         <ParagraphHeading>{gallery.name}</ParagraphHeading>
         <BodyText>
           Please select at least 10 photos before submitting. Once submitted,
-          decisions are final. If you're unsure or trying to decide, save your
+          decisions are final. If you&apos;re unsure or trying to decide, save your
           progress and come back to it later. If you decide you want to order
           more photos later, you can come back, select the photo, and submit.
         </BodyText>
