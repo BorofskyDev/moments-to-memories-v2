@@ -16,12 +16,21 @@
 
     & .messageItem {
       padding-bottom: var(--spacing-200);
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--spacing-200);
-      place-content: center;
-      place-items: center;
       border-bottom: 1px solid hsl(var(--text-color) / 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-200);
+
+      @include breakpoint(tab) {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-200);
+        place-content: center;
+        place-items: center;
+
+      }
 
       & .messageName {
         padding: var(--spacing-100) var(--spacing-200);

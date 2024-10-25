@@ -5,6 +5,7 @@ import { getAnalytics } from 'firebase/analytics'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage' // Import Firebase Storage
+import { getFunctions } from 'firebase/functions'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -28,5 +29,6 @@ const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
 const db = getFirestore(app)
 const storage = getStorage(app) // Initialize Firebase Storage
+const functions = getFunctions(app)
 
-export { app, analytics, auth, googleProvider, db, storage } // Export storage
+export { app, analytics, auth, googleProvider, db, storage, functions } // Export storage

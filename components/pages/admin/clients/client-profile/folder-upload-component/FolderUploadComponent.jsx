@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import Link from 'next/link'
 import InternalPageLink from '@/components/links/internal-page-link/InternalPageLink'
 import styles from './FolderUploadComponent.module.scss'
+import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
 
 const FolderUploadComponent = ({
   clientId,
@@ -121,7 +122,7 @@ const FolderUploadComponent = ({
 
   return (
     <div className={styles.folderUpload}>
-      <h3>Upload Image Folder</h3>
+      <ParagraphHeading>Client Selection Gallery</ParagraphHeading>
 
       {/* Gallery Selection */}
       <div className={styles.gallerySelection}>

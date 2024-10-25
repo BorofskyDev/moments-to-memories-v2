@@ -18,6 +18,7 @@ const MessageModal = ({ message, onClose }) => {
     subject,
     contactMethod,
     message: content,
+    imageUrls,
     createdAt,
     id, // Ensure you pass the id of the message
   } = message
@@ -127,6 +128,18 @@ const MessageModal = ({ message, onClose }) => {
               <strong>Message:</strong>
               <BodyText>{content}</BodyText>
             </div>
+            {imageUrls && imageUrls.length > 0 && (
+              <div className={styles.imageContainer}>
+                {imageUrls.map((url, index) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`Submitted Image ${index + 1}`}
+                    className={styles.messageImage}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -15,6 +15,8 @@ import SaveButton from '@/components/buttons/save-button/SaveButton'
 import BodyText from '@/components/layout/body-text/BodyText'
 import { db } from '@/libs/firebase'
 import { doc, updateDoc } from 'firebase/firestore'
+import { functions } from '@/libs/firebase'
+import { httpsCallable } from 'firebase/functions'
 
 const GalleryPage = () => {
   const pathname = usePathname()
@@ -130,6 +132,7 @@ const GalleryPage = () => {
 
   // Handle submitting selections
   const handleSubmit = async () => {
+    console.log('Submit')
     if (selectedImages.length < 10) {
       toast.warn('Please select at least 10 images before submitting.')
       return
@@ -143,6 +146,7 @@ const GalleryPage = () => {
     }
     setIsSubmitting(true)
     try {
+      // Update isSubmitted field of selected images
       const promises = selectedImages.map(async (photoId) => {
         const photoRef = doc(
           db,
@@ -155,10 +159,23 @@ const GalleryPage = () => {
         )
         await updateDoc(photoRef, {
           isSubmitted: true,
-          isSelected: false, 
+          isSelected: false, // Reset isSelected after submission
         })
       })
       await Promise.all(promises)
+
+      // Send selection message to admins
+      const sendSelectionMessage = httpsCallable(
+        functions,
+        'sendSelectionMessage'
+      )
+      await sendSelectionMessage({
+        clientId,
+        galleryId,
+        submittedImageIds: selectedImages,
+      })
+
+      // Update submittedImages state
       setSubmittedImages((prev) => [...prev, ...selectedImages])
       setSelectedImages([])
       toast.success('Selections submitted.')
@@ -169,6 +186,7 @@ const GalleryPage = () => {
       setIsSubmitting(false)
     }
   }
+
 
   if (!isAuthenticated) {
     return (
