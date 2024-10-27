@@ -1,26 +1,43 @@
 @use '../../../styles/mixins' as *;
 
 .messageModal {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-background-color: hsl(var(--background-color));
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: hsl(var(--background-color));
 
-    & .modalBody {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-200);
+  & .modalBody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
 
-        &__contentContainer {
-            display: flex;
-            gap: var(--spacing-400);
-            align-items: center;
+    &__contentContainer {
+      display: flex;
+      gap: var(--spacing-400);
+      align-items: center;
 
-            & .contactLink {
-                color: hsl(var(--primary-color));
-                font-weight: 700;
-            }
-        }
+      & .contactLink {
+        color: hsl(var(--primary-color));
+        font-weight: 700;
+      }
     }
+  }
+
+  & .imageContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-400);
+
+    & .messageImage {
+      width: 12rem;
+      height: 12rem;
+      object-fit: cover;
+      box-shadow: var(--box-shadow-400);
+    }
+  }
 }

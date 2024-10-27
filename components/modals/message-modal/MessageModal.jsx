@@ -9,6 +9,7 @@ import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 import DeleteConfirmationModal from '@/components/modals/delete-confirmation-modal/DeleteConfirmationModal'
 import useMessageList from '@/libs/hooks/messages/useMessageList'
 import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import Image from 'next/image'
 
 const MessageModal = ({ message, onClose }) => {
   const {
@@ -131,11 +132,13 @@ const MessageModal = ({ message, onClose }) => {
             {imageUrls && imageUrls.length > 0 && (
               <div className={styles.imageContainer}>
                 {imageUrls.map((url, index) => (
-                  <img
+                  <Image
                     key={index}
                     src={url}
                     alt={`Submitted Image ${index + 1}`}
                     className={styles.messageImage}
+                    width={1800}
+                    height={1600}
                   />
                 ))}
               </div>
