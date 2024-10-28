@@ -74,24 +74,46 @@ const useSelectionGallery = (clientId) => {
   }
 
   // Create a new selection gallery via API
-  const createGallery = async (name, password) => {
-    try {
-      const response = await fetch('/api/createSelectionGallery', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clientId, galleryName: name, password }),
-      })
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.message || 'Failed to create gallery')
-      }
-      // Refresh galleries
-      await fetchGalleries()
-    } catch (err) {
-      console.error('Error creating selection gallery:', err)
-      setError(err.message)
-    }
-  }
+
+ 
+
+ const createGallery = async (name, password) => {
+   try {
+     const response = await fetch('/api/createSelectionGallery', {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({ clientId, galleryName: name, password }),
+     })
+
+     // Parse the JSON response once
+     const responseData = await response.json()
+
+     if (!response.ok) {
+       throw new Error(responseData.message || 'Failed to create gallery')
+     }
+
+     // Get the new gallery data from the response
+     const newGalleryId = responseData.id
+
+     // Create the new gallery object
+     const newGallery = {
+       id: newGalleryId,
+       name,
+       photos: [],
+       // Include any other necessary fields from responseData
+     }
+
+     // Update the galleries state immediately
+     setGalleries((prevGalleries) => [...prevGalleries, newGallery])
+
+     // Optionally, fetch the galleries to ensure synchronization
+     // await fetchGalleries();
+   } catch (err) {
+     console.error('Error creating selection gallery:', err)
+     setError(err.message)
+     throw err // Re-throw to handle in the calling function
+   }
+ }
 
   // Add photos to a selection gallery with progress tracking
   const addPhotosToGallery = async (galleryId, files, onProgress) => {

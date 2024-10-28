@@ -188,11 +188,7 @@ const ClientProfile = ({ client }) => {
 
       <FolderUploadComponent
         clientId={clientData.id}
-        galleries={selectionGalleries}
-        createGallery={createSelectionGallery}
-        addPhotosToGallery={addPhotosToSelectionGallery}
-        isUploading={isUploadingSelectionGallery}
-        error={selectionGalleryError}
+       
       />
 
       {/* Gallery Section for Public Galleries */}

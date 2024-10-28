@@ -25,14 +25,14 @@ function ServicesSection() {
           description='Capturing the essence of who you are, whether it&apos;s a personal portrait or the personality of a beloved pet. These sessions are designed to tell your unique story with grace and authenticity.'
           features={[
             {
-              title: 'People',
+              title: 'Families',
               description:
                 'From individual portraits to family gatherings, celebrate the moments that define you and your loved ones.',
             },
             {
-              title: 'Pets',
+              title: "Life's Moments",
               description:
-                'Because our furry friends are family too. Capture their spirit and charm with a session that showcases their unique personality.',
+                'Newborns, graduations, engagements; capture the moments you celebrate the most.',
             },
           ]}
         />
@@ -40,7 +40,7 @@ function ServicesSection() {
           title='Commercial'
           imageSrc={image2}
           imageAlt='F-18 Blue Angel against the sky'
-          description='Bring poise and creativity to your spaces. Whether it&apos;s for a home, office, or a gallery, these aret pieces are shot to inspire and elevate.'
+          description='Bring poise and creativity to your spaces. Whether it&apos;s for a home, office, or a gallery, these art pieces are shot to inspire and elevate.'
           features={[
             {
               title: 'Art for Home',

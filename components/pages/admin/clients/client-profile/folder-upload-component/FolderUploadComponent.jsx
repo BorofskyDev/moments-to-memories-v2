@@ -1,124 +1,35 @@
-// components/admin/clients/client-profile/folder-upload-component/FolderUploadComponent.jsx
+// FolderUploadComponent.jsx
 
 'use client'
 
-import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-
 import MainActionButton from '@/components/buttons/main-action-button/MainActionButton'
-import { toast } from 'react-toastify'
-import Link from 'next/link'
 import InternalPageLink from '@/components/links/internal-page-link/InternalPageLink'
 import styles from './FolderUploadComponent.module.scss'
 import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
+import useGalleryManagement from '@/libs/hooks/ui/useGalleryManagement'
 
-const FolderUploadComponent = ({
-  clientId,
-  galleries,
-  createGallery,
-  addPhotosToGallery,
-  isUploading,
-  error,
-}) => {
-  const [selectedFiles, setSelectedFiles] = useState([])
-  const [uploadProgress, setUploadProgress] = useState(0)
-  const [selectedGalleryId, setSelectedGalleryId] = useState('')
-  const [isCreateGalleryOpen, setIsCreateGalleryOpen] = useState(false)
-  const [newGalleryName, setNewGalleryName] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-
-  // Handle folder selection and file validation
-  const handleFolderSelect = (event) => {
-    const files = Array.from(event.target.files)
-
-    // Validate file types
-    const supportedFormats = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/gif',
-    ]
-    const invalidFiles = files.filter(
-      (file) => !supportedFormats.includes(file.type)
-    )
-
-    if (invalidFiles.length > 0) {
-      toast.error('Some files have unsupported formats and will be ignored.')
-      const validFiles = files.filter((file) =>
-        supportedFormats.includes(file.type)
-      )
-      setSelectedFiles(validFiles)
-    } else {
-      setSelectedFiles(files)
-    }
-  }
-
-  // Handle the upload process
-  const handleUpload = async () => {
-    if (selectedFiles.length === 0) {
-      toast.warn('No files selected for upload.')
-      return
-    }
-
-    if (!selectedGalleryId) {
-      toast.warn('Please select a gallery to upload to.')
-      return
-    }
-
-    setUploadProgress(0)
-
-    try {
-      // Call addPhotosToGallery with galleryId and files
-      await addPhotosToGallery(selectedGalleryId, selectedFiles, (progress) => {
-        setUploadProgress(progress)
-      })
-
-      toast.success('Folder uploaded successfully!')
-      setSelectedFiles([])
-    } catch (error) {
-      console.error('Error uploading folder:', error)
-      toast.error('Failed to upload folder. Please try again.')
-    } finally {
-      setUploadProgress(0)
-    }
-  }
-
-  // Handle creating a new gallery with password
-  const handleCreateGallery = async () => {
-    if (!newGalleryName.trim()) {
-      toast.warn('Gallery name cannot be empty.')
-      return
-    }
-
-    if (!password || !confirmPassword) {
-      toast.warn('Please enter and confirm the password.')
-      return
-    }
-
-    if (password !== confirmPassword) {
-      toast.warn('Passwords do not match.')
-      return
-    }
-
-    try {
-      // Use the createGallery function passed via props
-      await createGallery(newGalleryName, password)
-      // Find the new gallery ID
-      const newGallery = galleries.find((g) => g.name === newGalleryName)
-      if (newGallery) {
-        setSelectedGalleryId(newGallery.id)
-      }
-      toast.success(`Gallery "${newGalleryName}" created successfully!`)
-      setIsCreateGalleryOpen(false)
-      setNewGalleryName('')
-      setPassword('')
-      setConfirmPassword('')
-    } catch (error) {
-      console.error('Error creating gallery:', error)
-      toast.error('Failed to create gallery. Please try again.')
-    }
-  }
+const FolderUploadComponent = ({ clientId }) => {
+  const {
+    galleries,
+    selectedFiles,
+    uploadProgress,
+    selectedGalleryId,
+    isCreateGalleryOpen,
+    newGalleryName,
+    password,
+    confirmPassword,
+    isUploading,
+    error,
+    handleFolderSelect,
+    handleUpload,
+    handleCreateGallery,
+    setIsCreateGalleryOpen,
+    setNewGalleryName,
+    setPassword,
+    setConfirmPassword,
+    setSelectedGalleryId,
+  } = useGalleryManagement(clientId)
 
   return (
     <div className={styles.folderUpload}>
@@ -248,11 +159,6 @@ const FolderUploadComponent = ({
 
 FolderUploadComponent.propTypes = {
   clientId: PropTypes.string.isRequired,
-  galleries: PropTypes.array.isRequired,
-  createGallery: PropTypes.func.isRequired,
-  addPhotosToGallery: PropTypes.func.isRequired,
-  isUploading: PropTypes.bool.isRequired,
-  error: PropTypes.any,
 }
 
 export default FolderUploadComponent
