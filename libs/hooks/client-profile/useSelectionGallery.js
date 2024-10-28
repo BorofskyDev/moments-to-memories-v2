@@ -17,6 +17,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from 'firebase/storage'
+import pLimit from 'p-limit'
 
 const useSelectionGallery = (clientId) => {
   const [galleries, setGalleries] = useState([])
@@ -135,58 +136,72 @@ const useSelectionGallery = (clientId) => {
       const totalFiles = files.length
       let uploadedFiles = 0
 
-      for (const file of files) {
-        const storageRef = ref(
-          storage,
-          `clients/${clientId}/selectionGalleries/${galleryId}/${file.name}`
-        )
-        const uploadTask = uploadBytesResumable(storageRef, file)
+      // Initialize progress tracking
+      const progressPerFile = new Array(totalFiles).fill(0)
 
-        await new Promise((resolve, reject) => {
-          uploadTask.on(
-            'state_changed',
-            (snapshot) => {
-              if (onProgress) {
-                const progress =
-                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                const overallProgress = Math.round(
-                  ((uploadedFiles + progress / 100) / totalFiles) * 100
-                )
-                onProgress(overallProgress)
-              }
-            },
-            (error) => {
-              console.error('Upload error:', error)
-              reject(error)
-            },
-            async () => {
-              try {
-                const downloadURL = await getDownloadURL(
-                  uploadTask.snapshot.ref
-                )
-                await addDoc(photosCol, {
-                  name: file.name,
-                  url: downloadURL,
-                  uploadDate: serverTimestamp(),
-                  isSelected: false, // Initialize isSelected
-                  isSubmitted: false, // Initialize isSubmitted
-                })
-                uploadedFiles += 1
+      // Set the concurrency limit
+      const limit = pLimit(5) // Adjust the number as needed
+
+      const uploadPromises = files.map((file, index) =>
+        limit(() => {
+          return new Promise((resolve, reject) => {
+            const storageRef = ref(
+              storage,
+              `clients/${clientId}/selectionGalleries/${galleryId}/${file.name}`
+            )
+            const uploadTask = uploadBytesResumable(storageRef, file)
+
+            uploadTask.on(
+              'state_changed',
+              (snapshot) => {
                 if (onProgress) {
+                  const progress =
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                  progressPerFile[index] = progress
+
                   const overallProgress = Math.round(
-                    (uploadedFiles / totalFiles) * 100
+                    progressPerFile.reduce((acc, curr) => acc + curr, 0) /
+                      totalFiles
                   )
                   onProgress(overallProgress)
                 }
-                resolve()
-              } catch (err) {
-                console.error('Error adding photo to Firestore:', err)
-                reject(err)
+              },
+              (error) => {
+                console.error('Upload error:', error)
+                reject(error)
+              },
+              async () => {
+                try {
+                  const downloadURL = await getDownloadURL(
+                    uploadTask.snapshot.ref
+                  )
+                  await addDoc(photosCol, {
+                    name: file.name,
+                    url: downloadURL,
+                    uploadDate: serverTimestamp(),
+                    isSelected: false,
+                    isSubmitted: false,
+                  })
+                  uploadedFiles += 1
+                  if (onProgress) {
+                    const overallProgress = Math.round(
+                      (uploadedFiles / totalFiles) * 100
+                    )
+                    onProgress(overallProgress)
+                  }
+                  resolve()
+                } catch (err) {
+                  console.error('Error adding photo to Firestore:', err)
+                  reject(err)
+                }
               }
-            }
-          )
+            )
+          })
         })
-      }
+      )
+
+      // Wait for all uploads to complete
+      await Promise.all(uploadPromises)
 
       // Refresh galleries
       await fetchGalleries()
