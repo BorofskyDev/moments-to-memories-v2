@@ -7,11 +7,12 @@
     place-items: center;
     gap: var(--spacing-200);
     transition: var(--transition-main);
-
+    
     & img {
         height: 14rem;
         width: 14rem;
         object-fit: cover;
+        cursor: pointer;
     }
 
     &.selected {

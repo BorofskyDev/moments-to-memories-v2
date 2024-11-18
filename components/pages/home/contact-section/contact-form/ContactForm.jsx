@@ -126,10 +126,10 @@ const ContactForm = () => {
         maxLength={500}
         className={`${styles.contactForm__col2} ${styles.contactForm__row3}`}
       />
-
+  <div className={styles.imageBtnContainer}>
       <Image
         src='/page-images/contact/model2.svg'
-        alt='Model laid out on the contact button'
+        alt='Model with sunflower and khaki knit hat looking into the camera'
         height={1200}
         width={1600}
         className={`${styles.contactForm__image}`}
@@ -141,6 +141,8 @@ const ContactForm = () => {
         disabled={loading}
         text={loading ? 'Submitting...' : 'Submit Message'}
       />
+
+  </div>
     </form>
   )
 }

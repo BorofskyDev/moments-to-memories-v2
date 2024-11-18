@@ -10,7 +10,7 @@ function AboutSection() {
     <SectionContainer className={styles.aboutSection}>
       <SectionHeading>capturing the art in every moment</SectionHeading>
       <div className={styles.aboutSection__content}>
-      <Image src='/page-images/about/about-image.png' width='1600' height='1096' alt='image of model' />
+      <Image src='/page-images/about/about-image.svg' width='1600' height='1096' alt='image of model' />
       <BodyText>
         Time is a fleeting artist, painting our lives with vibrant movements
         that, like brushstrokes, gradually fade. As days turn into years, our

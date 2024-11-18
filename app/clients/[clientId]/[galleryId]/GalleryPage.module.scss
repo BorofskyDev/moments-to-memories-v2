@@ -37,6 +37,7 @@
     & .imageGrid {
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
         gap: var(--spacing-400);
 
     }
@@ -48,4 +49,11 @@
         justify-content: center;
         gap: var(--spacing-800);
     }
+}
+
+.expandedImage {
+    margin: 0 auto;
+    width: 75%;
+    height:75%;
+    border-radius: 8px;
 }
