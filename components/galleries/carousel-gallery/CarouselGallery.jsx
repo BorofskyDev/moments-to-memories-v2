@@ -2,21 +2,24 @@
 
 'use client'
 
-import { useState, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { useState } from 'react'
 import Image from 'next/image'
-import useCarouselOpacity from '@/libs/hooks/carousel/useCarouselOpacity'
 import Modal from '../../modals/modal/Modal'
 import styles from './CarouselGallery.module.scss'
 import PropTypes from 'prop-types'
 import DeleteButton from '@/components/buttons/delete-button/DeleteButton'
 
+// Import Swiper React components and styles
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+
+// Import Swiper modules
+import { Navigation, Pagination, A11y } from 'swiper/modules'
+
 const CarouselGallery = ({ images, canDelete = false, onDelete }) => {
   const [selectedImage, setSelectedImage] = useState(null)
-  const carouselRef = useRef(null)
-  const imageRefs = useRef([])
-
-  useCarouselOpacity(carouselRef, imageRefs)
 
   const handleImageClick = (image) => {
     setSelectedImage(image)
@@ -34,66 +37,55 @@ const CarouselGallery = ({ images, canDelete = false, onDelete }) => {
 
   return (
     <div className={styles.carouselContainer}>
-      <div className={styles.carousel} ref={carouselRef}>
+      <Swiper
+        modules={[Navigation, Pagination, A11y]}
+        navigation
+        pagination={{ clickable: true }}
+        spaceBetween={10}
+        slidesPerView={1}
+        loop={true}
+      >
         {images.map((image, index) => (
-          <motion.div
-            className={styles.imageWrapper}
-            key={index}
-            onClick={() => handleImageClick(image)}
-            role='button'
-            aria-label={`View Image ${index + 1}`}
-            tabIndex='0'
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') handleImageClick(image)
-            }}
-            ref={(el) => (imageRefs.current[index] = el)}
-            whileHover={{ scale: 1.05 }}
-            layoutId={`image-${image}`} // Shared layoutId for smooth animation
-          >
-            <Image
-              src={image}
-              alt={`Gallery Image ${index + 1}`}
-              className={styles.image}
-              width={1920}
-              height={1680}
-              priority={index === 0}
-            />
-            {/* Conditionally render the delete button */}
-            {canDelete && onDelete && (
-              <DeleteButton
-                className={styles.deleteButton}
-                onClick={(e) => {
-                  e.stopPropagation() // Prevent triggering the image click
-                  handleDelete(image)
-                }}
-                title='Delete Image'
+          <SwiperSlide key={index}>
+            <div className={styles.imageWrapper}>
+              <Image
+                src={image}
+                alt={`Gallery Image ${index + 1}`}
+                className={styles.image}
+                width={1920}
+                height={1080}
+                onClick={() => handleImageClick(image)}
               />
-            )}
-          </motion.div>
+              {/* Conditionally render the delete button */}
+              {canDelete && onDelete && (
+                <DeleteButton
+                  className={styles.deleteButton}
+                  onClick={(e) => {
+                    e.stopPropagation() // Prevent triggering the image click
+                    handleDelete(image)
+                  }}
+                  title='Delete Image'
+                />
+              )}
+            </div>
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
 
-      <Modal isOpen={!!selectedImage} onClose={handleClose}>
-        {selectedImage && (
-          <motion.div
-            className={styles.expandedImageWrapper}
-            layoutId={`image-${selectedImage}`} // Shared layoutId for smooth animation
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-          >
+      {/* Modal for Enlarged Image */}
+      {selectedImage && (
+        <Modal isOpen={!!selectedImage} onClose={handleClose}>
+          <div className={styles.modalContent}>
             <Image
               src={selectedImage}
-              alt='Expanded Gallery'
-              className={styles.expandedImage}
+              alt='Enlarged Image'
+              className={styles.enlargedImage}
               width={1920}
-              height={1680}
-              priority
+              height={1080}
             />
-          </motion.div>
-        )}
-      </Modal>
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }

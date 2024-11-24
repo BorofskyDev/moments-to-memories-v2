@@ -9,7 +9,6 @@ import useUserGalleries from '@/libs/hooks/gallery/useUserGalleries'
 import { useAuth } from '@/libs/context/AuthContext'
 import BodyText from '@/components/layout/body-text/BodyText'
 import UploadModal from '@/components/modals/upload-modal/UploadModal'
-import CarouselGallery from '../carousel-gallery/CarouselGallery'
 import ParagraphHeading from '@/components/headings/paragraph-heading/ParagraphHeading'
 import CreateNewButton from '@/components/buttons/create-new/CreateNewButton'
 import AddButton from '@/components/buttons/add-button/AddButton'
@@ -18,8 +17,6 @@ import MediumBodyText from '@/components/layout/body-text/medium-body-text/Mediu
 import Image from 'next/image'
 
 const AdminCarouselGallery = ({ isOpen, onClose }) => {
-  // If the modal is not open, render nothing
-  
   const { user } = useAuth()
   const {
     galleries,
@@ -39,12 +36,13 @@ const AdminCarouselGallery = ({ isOpen, onClose }) => {
   const [newGalleryImages, setNewGalleryImages] = useState([]) // Array to hold image files
   const [creationError, setCreationError] = useState(null)
   const [creationLoading, setCreationLoading] = useState(false)
-  
+
   // State for uploading images to existing galleries
   const [selectedGallery, setSelectedGallery] = useState(null)
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
-  
+
   if (!isOpen) return null
+
   // Handler for creating a new gallery
   const handleCreateGallery = async () => {
     if (!newGalleryTitle.trim()) {
@@ -89,10 +87,10 @@ const AdminCarouselGallery = ({ isOpen, onClose }) => {
   }
 
   // Handler for deleting an image from a gallery
-  const handleDeleteImage = async (imageUrl) => {
+  const handleDeleteImage = async (galleryId, imageUrl) => {
     if (confirm('Are you sure you want to delete this image?')) {
       // Ensure that the user has the right to delete the image
-      await deleteImageFromGallery(selectedGallery.id, imageUrl)
+      await deleteImageFromGallery(galleryId, imageUrl)
     }
   }
 
@@ -130,7 +128,6 @@ const AdminCarouselGallery = ({ isOpen, onClose }) => {
         className={styles.modalContent}
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
       >
-
         {loading && <p>Loading galleries...</p>}
         {error && <BodyText className={styles.error}>{error}</BodyText>}
 
@@ -162,13 +159,11 @@ const AdminCarouselGallery = ({ isOpen, onClose }) => {
               <input
                 type='file'
                 accept='image/*'
+                multiple // Allow multiple files to be selected
                 onChange={handleNewGalleryImageChange}
                 disabled={creationLoading}
               />
-              <p>
-                Upload images one by one. After each upload, you can add
-                another.
-              </p>
+              <p>Upload images by selecting multiple files at once.</p>
             </div>
             {/* Display uploaded images with option to remove */}
             {newGalleryImages.length > 0 && (
@@ -227,13 +222,26 @@ const AdminCarouselGallery = ({ isOpen, onClose }) => {
                   text='Delete Gallery'
                 />
               </div>
-              {/* Display images using CarouselGallery with delete functionality */}
+              {/* Display images in a simple grid with delete functionality */}
               {gallery.images.length > 0 ? (
-                <CarouselGallery
-                  images={gallery.images}
-                  canDelete={true}
-                  onDelete={handleDeleteImage}
-                />
+                <div className={styles.imageGrid}>
+                  {gallery.images.map((imageUrl, index) => (
+                    <div key={index} className={styles.imageWrapper}>
+                      <Image
+                        src={imageUrl}
+                        alt={`Image ${index + 1}`}
+                        className={styles.image}
+                        width={200}
+                        height={150}
+                      />
+                      <DeleteButton
+                        className={styles.deleteButton}
+                        onClick={() => handleDeleteImage(gallery.id, imageUrl)}
+                        text='Delete Image'
+                      />
+                    </div>
+                  ))}
+                </div>
               ) : (
                 <MediumBodyText>No images in this gallery.</MediumBodyText>
               )}

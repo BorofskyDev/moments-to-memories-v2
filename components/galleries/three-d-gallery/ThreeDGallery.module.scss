@@ -1,0 +1,20 @@
+// components/galleries/three-d-gallery/ThreeDGallery.module.scss
+
+.galleryContainer {
+  margin: 0 auto;
+  width: calc(100% - 4rem);
+  max-width: 1200px; // Adjust as needed
+  height: 60vh; // Adjust height as needed
+  position: relative;
+  overflow: hidden;
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.imagePlane {
+  cursor: pointer;
+box-shadow: var(--box-shadow-200);
+}

@@ -2,7 +2,7 @@
 
 .carouselContainer {
   position: relative;
-  width: 100dvw;
+  width: 50dvw;
   overflow: hidden;
   padding: var(--spacing-500) 0;
 
@@ -21,7 +21,7 @@
   & .carousel {
     display: flex;
     gap: var(--spacing-400);
-    padding-inline: 50%;
+    padding-inline: 25%;
     overflow-x: scroll;
     overflow-y: hidden;
     scroll-behavior: smooth;
@@ -43,8 +43,8 @@
 
   & .imageWrapper {
     flex: 0 0 auto;
-    width: 200px;
-    height: 300px;
+    width: 100%;
+    height: 100%;
     cursor: pointer;
     position: relative;
     box-shadow: var(--box-shadow-300);
@@ -54,21 +54,22 @@
     align-items: center;
     justify-content: center;
     transition: var(--transition-main);
+    object-fit: cover;
 
-    @include breakpoint(tab) {
-      width: 150px;
-      height: 225px;
-    }
+    // @include breakpoint(tab) {
+    //   width: 150px;
+    //   height: 225px;
+    // }
 
-    @include breakpoint(laptop) {
-      width: 180px;
-      height: 270px;
-    }
+    // @include breakpoint(laptop) {
+    //   width: 180px;
+    //   height: 270px;
+    // }
 
-    @include breakpoint(desktop) {
-      width: 200px;
-      height: 300px;
-    }
+    // @include breakpoint(desktop) {
+    //   width: 200px;
+    //   height: 300px;
+    // }
 
     &:focus {
       outline: 2px solid hsl(var(--primary-color));
@@ -83,12 +84,12 @@
     transition: var(--transition-main);
   }
 
-  & .expandedImage {
+  & .enlargedImage {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--box-shadow-300);
     cursor: zoom-out;
     transition: transform var(--transition-main);
 
@@ -107,4 +108,13 @@
       max-height: 85%;
     }
   }
+}
+.swiper-button-next,
+.swiper-button-prev {
+  color: hsl(var(--primary-color));
+}
+
+/* Swiper Pagination Dots */
+.swiper-pagination-bullet {
+  background: hsl(var(--primary-color));
 }
