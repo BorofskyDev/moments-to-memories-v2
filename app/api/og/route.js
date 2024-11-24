@@ -1,11 +1,10 @@
-// app/api/og/route.js (Next.js 13 with app directory)
+// app/api/og/route.js
 import { ImageResponse } from '@vercel/og'
 
-export const config = {
-  runtime: 'edge',
-}
+export const runtime = 'edge' // Updated configuration
 
-export default async function handler() {
+export async function GET() {
+  // Note the use of GET for route handlers
   // Fetch the home page image or any dynamic content you want
   const imageUrl = 'https://www.momentstomemories.com/path-to-home-image.jpg' // Replace with your image URL
 
