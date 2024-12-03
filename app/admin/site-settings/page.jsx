@@ -5,6 +5,7 @@ import styles from './SettingsPage.module.scss'
 import GallerySettingsPage from "@/components/pages/admin/settings/gallery-settings-page/GallerySettingsPage"
 import ServicesComponent from "@/components/pages/admin/settings/services/ServiceComponent"
 import ResetPassword from "@/components/password-reset/PasswordReset"
+import CreateAdmin from "@/components/pages/admin/settings/create-admin/CreateAdmin"
 
 function SettingsPage() {
   return (
@@ -14,6 +15,7 @@ function SettingsPage() {
       <Reviews />
       <GallerySettingsPage />
       <ServicesComponent />
+      <CreateAdmin />
       <ResetPassword />
     </div>
   )

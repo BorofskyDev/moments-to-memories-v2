@@ -1,4 +1,4 @@
-// components/galleries/carousel-gallery/modal/Modal.jsx
+// components/modals/modal/Modal.jsx
 
 'use client'
 
