@@ -38,11 +38,26 @@ const useFeaturedImages = () => {
     fetchImages()
   }, [])
 
+  const getNextImageId = () => {
+    if (images.length === 0) {
+      return 1
+    }
+    const maxId = Math.max(...images.map((img) => img.id))
+    return maxId + 1
+  }
+
   const uploadImage = async (imageFile, imageId) => {
     setLoading(true)
     setError(null)
+
+    // If no imageId provided, generate one
+    const finalImageId =
+      typeof imageId === 'undefined' || imageId === null
+        ? getNextImageId()
+        : imageId
+
     try {
-      const storageRef = ref(storage, `featuredImages/${imageId}`)
+      const storageRef = ref(storage, `featuredImages/${finalImageId}`)
       const uploadTask = uploadBytesResumable(storageRef, imageFile)
 
       await new Promise((resolve, reject) => {
@@ -64,17 +79,17 @@ const useFeaturedImages = () => {
       const downloadURL = await getDownloadURL(storageRef)
 
       // Update Firestore with the new image URL
-      const imageDocRef = doc(db, 'featuredImages', imageId.toString())
+      const imageDocRef = doc(db, 'featuredImages', finalImageId.toString())
       await setDoc(imageDocRef, { url: downloadURL })
 
       // Update local state
       setImages((prevImages) => {
         const updatedImages = prevImages.map((img) =>
-          img.id === imageId ? { ...img, url: downloadURL } : img
+          img.id === finalImageId ? { ...img, url: downloadURL } : img
         )
         // If the image wasn't in the array yet (new upload), add it
-        if (!updatedImages.find((img) => img.id === imageId)) {
-          updatedImages.push({ id: imageId, url: downloadURL })
+        if (!updatedImages.find((img) => img.id === finalImageId)) {
+          updatedImages.push({ id: finalImageId, url: downloadURL })
           // Sort images to maintain order
           updatedImages.sort((a, b) => a.id - b.id)
         }

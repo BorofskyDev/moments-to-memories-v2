@@ -66,6 +66,8 @@ const UploadModal = ({ onClose, uploadImage }) => {
                 src={URL.createObjectURL(imageFile)}
                 alt='Preview'
                 className={styles.previewImage}
+                width={1260}
+                height={1080}
               />
             </div>
           )}
